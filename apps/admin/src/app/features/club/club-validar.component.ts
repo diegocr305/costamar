@@ -1,11 +1,13 @@
 import {
   Component,
+  ChangeDetectorRef,
   ElementRef,
   OnDestroy,
   signal,
   inject,
   viewChild,
 } from '@angular/core';
+import jsQR from 'jsqr';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import {
@@ -31,6 +33,7 @@ declare const BarcodeDetector: {
 })
 export class ClubValidarComponent implements OnDestroy {
   private readonly staff = inject(ClubStaffService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
 
   protected readonly step = signal<Step>('scan');
   protected readonly loading = signal(false);
@@ -44,8 +47,9 @@ export class ClubValidarComponent implements OnDestroy {
   // --- Escáner de cámara ---
   protected readonly scanning = signal(false);
   protected readonly scanSupported = signal(
-    typeof window !== 'undefined' && 'BarcodeDetector' in window,
+    typeof navigator !== 'undefined' && !!navigator.mediaDevices?.getUserMedia,
   );
+  private scanSession = 0;
   private readonly videoRef = viewChild<ElementRef<HTMLVideoElement>>('video');
   private stream: MediaStream | null = null;
   private rafId: number | null = null;
@@ -56,28 +60,57 @@ export class ClubValidarComponent implements OnDestroy {
 
   /** Abre la cámara trasera y detecta QR. */
   async startScan(): Promise<void> {
+    if (this.scanning() || this.loading()) return;
     this.error.set(null);
     if (!this.scanSupported()) {
-      this.error.set('Tu navegador no soporta escaneo. Usa el código manual.');
+      this.error.set('La cámara no está disponible. Abre el admin en localhost o mediante HTTPS.');
       return;
     }
+    const session = ++this.scanSession;
     try {
       this.scanning.set(true);
-      this.stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
+      this.changeDetector.detectChanges();
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: { facingMode: { ideal: 'environment' } },
       });
+      if (session !== this.scanSession) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      this.stream = stream;
       const video = this.videoRef()?.nativeElement;
-      if (!video) return;
+      if (!video) throw new Error('Cámara no disponible');
       video.srcObject = this.stream;
       await video.play();
-      const detector = new BarcodeDetector({ formats: ['qr_code'] });
+      if (session !== this.scanSession) return;
+      // Decodificador compatible también cuando BarcodeDetector no existe.
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      if (!context) throw new Error('Lector QR no disponible');
+      let detector: BarcodeDetectorLike | null = null;
+      try {
+        if ('BarcodeDetector' in window) detector = new BarcodeDetector({ formats: ['qr_code'] });
+      } catch { /* usa jsQR */ }
       const tick = async () => {
-        if (!this.scanning()) return;
+        if (session !== this.scanSession || !this.scanning()) return;
         try {
-          const codes = await detector.detect(video);
-          if (codes.length > 0) {
-            const value = codes[0].rawValue?.trim();
-            if (value) {
+          let value: string | undefined;
+          if (video.readyState >= 2 && video.videoWidth > 0) {
+            if (detector) {
+              try { value = (await detector.detect(video))[0]?.rawValue; }
+              catch { detector = null; }
+            }
+            if (!detector) {
+              canvas.width = Math.min(video.videoWidth, 640);
+              canvas.height = Math.round(video.videoHeight * canvas.width / video.videoWidth);
+              context.drawImage(video, 0, 0, canvas.width, canvas.height);
+              const frame = context.getImageData(0, 0, canvas.width, canvas.height);
+              value = jsQR(frame.data, frame.width, frame.height)?.data;
+            }
+            if (session !== this.scanSession) return;
+            value = value?.trim().toUpperCase();
+            if (value && /^CM-[A-Z0-9]{6}$/.test(value)) {
               this.memberCodeInput.set(value);
               this.stopScan();
               void this.search();
@@ -87,17 +120,21 @@ export class ClubValidarComponent implements OnDestroy {
         } catch {
           /* ignora frames sin lectura */
         }
-        this.rafId = requestAnimationFrame(() => void tick());
+        if (session === this.scanSession) this.rafId = requestAnimationFrame(() => void tick());
       };
       this.rafId = requestAnimationFrame(() => void tick());
-    } catch {
-      this.scanning.set(false);
-      this.error.set('No se pudo abrir la cámara. Revisa permisos o usa el código manual.');
+    } catch (error) {
+      if (session !== this.scanSession) return;
+      this.stopScan();
+      this.error.set(error instanceof DOMException && error.name === 'NotAllowedError'
+        ? 'Permite el acceso a la cámara para escanear el QR del cliente.'
+        : 'No se pudo abrir la cámara. Revisa que esté conectada y disponible.');
     }
   }
 
   /** Detiene la cámara y libera recursos. */
   stopScan(): void {
+    this.scanSession++;
     this.scanning.set(false);
     if (this.rafId !== null) {
       cancelAnimationFrame(this.rafId);
@@ -111,6 +148,8 @@ export class ClubValidarComponent implements OnDestroy {
 
   /** Busca el socio por member_code (ingresado manual o leído del QR). */
   async search(): Promise<void> {
+    if (this.loading()) return;
+    this.stopScan();
     const code = this.memberCodeInput().trim();
     if (!code) return;
     this.loading.set(true);

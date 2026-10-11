@@ -1,7 +1,7 @@
 <section class="validar">
   <header class="validar__head">
     <h1>Validar cupón del Club</h1>
-    <p>Escanea o ingresa el código de socio para validar beneficios.</p>
+    <p>Escanea el QR de la tarjeta del cliente para consultar sus cupones.</p>
   </header>
 
   @if (error(); as e) {
@@ -24,10 +24,14 @@
             <button type="button" class="btn btn--primary" (click)="startScan()">
               📷 Escanear QR
             </button>
-            <p class="hint">O ingresa el código manualmente:</p>
+            <p class="hint">El cliente abre Mi tarjeta en Costa Mar Club. Apunta la cámara a su QR.</p>
+          } @else {
+            <p class="hint">Para usar la cámara, abre el admin en localhost o mediante HTTPS.</p>
           }
         }
 
+        <details>
+          <summary>Ingresar código manualmente como alternativa</summary>
         <label class="field">
           <span>Código de socio</span>
           <input
@@ -47,10 +51,7 @@
         >
           {{ loading() ? 'Buscando…' : 'Buscar socio' }}
         </button>
-        <p class="hint">
-          El socio muestra su QR en Costa Mar Club. Escanéalo con la cámara o
-          escribe el código que aparece bajo el QR.
-        </p>
+        </details>
       </div>
     }
 
