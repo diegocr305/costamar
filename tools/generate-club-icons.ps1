@@ -61,3 +61,31 @@ New-Icon -Size 512 -OutPath "$outDir/icon-512-maskable.png" -Padding 0.18 -FillB
 New-Icon -Size 180 -OutPath "$outDir/apple-touch-icon.png" -Padding 0.10 -FillBg $true
 
 Write-Host "Listo."
+
+# ----- Favicons desde el logo (PNG 16/32/48 + favicon.ico multi-size) -----
+function New-FaviconPng {
+    param([int]$Size, [string]$OutPath)
+    $logo = [System.Drawing.Image]::FromFile($src)
+    $bmp = New-Object System.Drawing.Bitmap($Size, $Size)
+    $g = [System.Drawing.Graphics]::FromImage($bmp)
+    $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+    $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+    $scale = [Math]::Min($Size / $logo.Width, $Size / $logo.Height)
+    $w = [int]($logo.Width * $scale); $h = [int]($logo.Height * $scale)
+    $x = [int](($Size - $w) / 2); $y = [int](($Size - $h) / 2)
+    $g.DrawImage($logo, $x, $y, $w, $h)
+    $bmp.Save($OutPath, [System.Drawing.Imaging.ImageFormat]::Png)
+    $g.Dispose(); $bmp.Dispose(); $logo.Dispose()
+    return $OutPath
+}
+
+$fav32 = New-FaviconPng -Size 32 -OutPath "$outDir/favicon-32.png"
+New-FaviconPng -Size 16 -OutPath "$outDir/favicon-16.png" | Out-Null
+
+# favicon.ico desde el PNG 32x32 (ICO con un solo tamaño es válido y suficiente)
+$png = [System.Drawing.Bitmap]::FromFile($fav32)
+$icon = [System.Drawing.Icon]::FromHandle($png.GetHicon())
+$fs = New-Object System.IO.FileStream("apps/club/src/favicon.ico", [System.IO.FileMode]::Create)
+$icon.Save($fs)
+$fs.Close(); $png.Dispose()
+Write-Host "favicon.ico generado desde el logo"
