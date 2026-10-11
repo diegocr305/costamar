@@ -1,5 +1,12 @@
-import { CurrencyPipe } from '@angular/common';
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { CurrencyPipe, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  PLATFORM_ID,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { catchError, of } from 'rxjs';
 import type { CartaPublica, Product } from '@costamar/shared';
 import { CartaService } from '../../core/carta.service';
@@ -18,6 +25,8 @@ type LoadState = 'loading' | 'loaded' | 'error';
 export class CartaComponent implements OnInit {
   private readonly cartaService = inject(CartaService);
   private readonly seo = inject(SeoService);
+  private readonly document = inject(DOCUMENT);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   protected readonly state = signal<LoadState>('loading');
   protected readonly carta = signal<CartaPublica | null>(null);
@@ -76,5 +85,14 @@ export class CartaComponent implements OnInit {
 
   protected anchorId(categoryId: string): string {
     return `cat-${categoryId}`;
+  }
+
+  /** Desplaza suavemente a la categoría. SSR-safe (usa DOCUMENT inyectado). */
+  protected scrollToCategory(categoryId: string): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    const el = this.document.getElementById(this.anchorId(categoryId));
+    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }

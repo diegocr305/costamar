@@ -24,6 +24,9 @@ export * from './types/reservations';
 // Tipos — Fidelización
 export * from './types/loyalty';
 
+// Tipos — Club Costa Mar (membresía)
+export * from './types/club';
+
 // Tipos — Reseñas de Google
 export * from './types/reviews';
 

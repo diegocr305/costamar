@@ -1,0 +1,71 @@
+.page {
+  flex: 1;
+  padding: 2.5rem 1.5rem;
+}
+
+.back {
+  color: var(--cm-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+h1 {
+  margin: 1rem 0 1rem;
+  font-size: 1.8rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin: 2rem 0 0.75rem;
+  color: var(--cm-ocean);
+}
+
+.data {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.data > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px dotted rgba(18, 99, 160, 0.15);
+  padding-bottom: 0.5rem;
+}
+
+.data dt {
+  color: var(--cm-muted);
+  font-size: 0.85rem;
+}
+
+.data dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  cursor: pointer;
+}
+
+.switch input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--cm-primary-dark);
+}
+
+.hint {
+  color: var(--cm-muted);
+  font-size: 0.9rem;
+}
+
+.cm-btn--primary {
+  width: 100%;
+  margin-top: 0.75rem;
+}

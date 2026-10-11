@@ -17,5 +17,9 @@
         "files": ["/assets/**", "/*.(svg|png|jpg|jpeg|webp)"]
       }
     }
+  ],
+  "navigationUrls": [
+    "/**",
+    "!/auth/**"
   ]
 }

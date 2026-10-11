@@ -1,9 +1,20 @@
-/* Estilos globales — Club Costa Mar PWA */
+/* ================================================================
+   Estilos globales — Club Costa Mar PWA
+   Paleta marina Costa Mar + tipografía (coherente con la web).
+   ================================================================ */
 :root {
-  --cm-primary: #0a5c7a;
-  --cm-accent: #e8743b;
-  --cm-bg: #fcfbf8;
-  --cm-text: #1a2b33;
+  --cm-primary: #12a7c2;
+  --cm-primary-dark: #087c91;
+  --cm-gold: #e28e06;
+  --cm-ocean: #1263a0;
+  --cm-background: #f5fbfc;
+  --cm-surface: #ffffff;
+  --cm-text: #17324d;
+  --cm-muted: #5a7382;
+
+  --cm-font-head: 'Rufina', Georgia, 'Times New Roman', serif;
+  --cm-font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --cm-shadow: 0 10px 30px rgba(18, 99, 160, 0.1);
 }
 
 * {
@@ -14,7 +25,80 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background: var(--cm-bg);
+  font-family: var(--cm-font-body);
+  background: var(--cm-background);
   color: var(--cm-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--cm-font-head);
+  color: var(--cm-ocean);
+  line-height: 1.15;
+}
+
+a {
+  color: var(--cm-ocean);
+}
+
+/* Botón base reutilizable */
+.cm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  border: 0;
+  font-family: var(--cm-font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.cm-btn:hover {
+  transform: translateY(-1px);
+}
+
+.cm-btn--primary {
+  background: var(--cm-primary-dark);
+  color: #fff;
+}
+
+.cm-btn--google {
+  background: #fff;
+  color: #17324d;
+  border: 1px solid #dadce0;
+}
+
+.cm-btn--gold {
+  background: var(--cm-gold);
+  color: #fff;
+}
+
+.cm-btn:focus-visible {
+  outline: 3px solid var(--cm-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-btn {
+    transition: none;
+  }
+}
+
+/* Contenedor móvil-first centrado */
+.cm-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }

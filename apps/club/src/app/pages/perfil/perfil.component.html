@@ -1,0 +1,46 @@
+<section class="page">
+  <a routerLink="/mi-tarjeta" class="back">← Mi tarjeta</a>
+  <h1>Mi perfil</h1>
+
+  @if (store.member(); as m) {
+    <dl class="data">
+      <div><dt>Nombre</dt><dd>{{ m.fullName }}</dd></div>
+      @if (m.phone) {
+        <div><dt>Teléfono</dt><dd>{{ m.phone }}</dd></div>
+      }
+      <div><dt>Código de socio</dt><dd>{{ m.memberCode }}</dd></div>
+      <div><dt>Nivel</dt><dd>{{ m.level }}</dd></div>
+    </dl>
+  }
+
+  <h2>Comunicaciones</h2>
+  @if (store.preferences(); as p) {
+    <label class="switch">
+      <input
+        type="checkbox"
+        [checked]="p.marketingEmail"
+        (change)="toggleEmail($any($event.target).checked)"
+        [disabled]="savingPrefs()"
+      />
+      <span>Promociones por correo</span>
+    </label>
+    <label class="switch">
+      <input
+        type="checkbox"
+        [checked]="p.marketingWhatsapp"
+        (change)="toggleWhatsapp($any($event.target).checked)"
+        [disabled]="savingPrefs()"
+      />
+      <span>Promociones por WhatsApp</span>
+    </label>
+  }
+
+  <h2>Acceso</h2>
+  <p class="hint">
+    Tu identidad la gestiona Google. Para cambiar de cuenta, cierra sesión y
+    vuelve a ingresar.
+  </p>
+  <button type="button" class="cm-btn cm-btn--primary" (click)="logout()">
+    Cerrar sesión
+  </button>
+</section>

@@ -1,0 +1,91 @@
+<section class="perfil">
+  <h1>Completa tu perfil</h1>
+  <p class="perfil__sub">Un último paso para activar tu membresía.</p>
+
+  @if (error(); as e) {
+    <div class="perfil__error" role="alert">{{ e }}</div>
+  }
+
+  <form (ngSubmit)="submit()" class="form">
+    <label class="field">
+      <span class="field__label">Nombre completo *</span>
+      <input
+        type="text"
+        name="fullName"
+        [ngModel]="fullName()"
+        (ngModelChange)="fullName.set($event)"
+        autocomplete="name"
+        required
+      />
+    </label>
+
+    <label class="field">
+      <span class="field__label">Teléfono (opcional)</span>
+      <input
+        type="tel"
+        name="phone"
+        [ngModel]="phone()"
+        (ngModelChange)="phone.set($event)"
+        autocomplete="tel"
+        inputmode="tel"
+        placeholder="+56 9 ..."
+      />
+    </label>
+
+    <fieldset class="consents">
+      <legend>Consentimientos</legend>
+
+      <label class="check">
+        <input
+          type="checkbox"
+          name="terms"
+          [ngModel]="acceptTerms()"
+          (ngModelChange)="acceptTerms.set($event)"
+        />
+        <span>Acepto los <strong>términos del Club</strong> *</span>
+      </label>
+
+      <label class="check">
+        <input
+          type="checkbox"
+          name="privacy"
+          [ngModel]="acceptPrivacy()"
+          (ngModelChange)="acceptPrivacy.set($event)"
+        />
+        <span>Acepto la <strong>política de privacidad</strong> *</span>
+      </label>
+
+      <hr class="consents__sep" />
+
+      <p class="consents__optin">Comunicaciones (opcional):</p>
+
+      <label class="check">
+        <input
+          type="checkbox"
+          name="mktEmail"
+          [ngModel]="marketingEmail()"
+          (ngModelChange)="marketingEmail.set($event)"
+        />
+        <span>Quiero recibir promociones por correo</span>
+      </label>
+
+      <label class="check">
+        <input
+          type="checkbox"
+          name="mktWa"
+          [ngModel]="marketingWhatsapp()"
+          (ngModelChange)="marketingWhatsapp.set($event)"
+        />
+        <span>Quiero recibir promociones por WhatsApp</span>
+      </label>
+    </fieldset>
+
+    <button
+      type="submit"
+      class="cm-btn cm-btn--primary"
+      [disabled]="!canSubmit()"
+    >
+      {{ saving() ? 'Activando…' : 'Activar mi membresía' }}
+    </button>
+  </form>
+</section>

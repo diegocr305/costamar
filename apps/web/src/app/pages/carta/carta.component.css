@@ -60,16 +60,23 @@
 }
 
 .catnav__chip {
-  padding: 0.4rem 0.95rem;
+  padding: 0.45rem 0.95rem;
   border-radius: 999px;
   background: var(--cm-surface);
   border: 1px solid rgba(18, 99, 160, 0.15);
   color: var(--cm-ocean);
   text-decoration: none;
+  font-family: var(--cm-font-body);
   font-size: 0.82rem;
   font-weight: 700;
   white-space: nowrap;
+  cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
+}
+
+.catnav__chip:focus-visible {
+  outline: 3px solid var(--cm-gold);
+  outline-offset: 2px;
 }
 
 .catnav__chip:hover {

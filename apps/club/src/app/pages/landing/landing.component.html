@@ -1,0 +1,52 @@
+<section class="landing">
+  <header class="landing__head">
+    <img
+      class="landing__logo"
+      src="assets/brand/costamar-logo.png"
+      alt="Costa Mar Barra Cevichera"
+      width="96"
+      height="96"
+    />
+    <span class="landing__eyebrow">Programa de socios</span>
+    <h1 class="landing__title">Club Costa Mar</h1>
+    <p class="landing__intro">
+      Únete gratis y acumula beneficios en cada visita. Tu tarjeta digital,
+      siempre contigo.
+    </p>
+  </header>
+
+  <ul class="benefits">
+    <li class="benefit">
+      <span class="benefit__icon" aria-hidden="true">★</span>
+      <div>
+        <strong>Beneficios exclusivos</strong>
+        <p>Promociones pensadas solo para socios del club.</p>
+      </div>
+    </li>
+    <li class="benefit">
+      <span class="benefit__icon" aria-hidden="true">◆</span>
+      <div>
+        <strong>Tarjeta digital</strong>
+        <p>Preséntala en el local, sin apps ni plásticos.</p>
+      </div>
+    </li>
+    <li class="benefit">
+      <span class="benefit__icon" aria-hidden="true">✦</span>
+      <div>
+        <strong>Sin complicaciones</strong>
+        <p>Entras con tu cuenta de Google. Nada de contraseñas nuevas.</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="landing__cta">
+    <button type="button" class="cm-btn cm-btn--primary" (click)="goToLogin()">
+      Continuar con Google
+    </button>
+    <a routerLink="/beneficios" class="landing__link">Ver todos los beneficios</a>
+  </div>
+
+  <footer class="landing__foot">
+    <a routerLink="/ayuda">¿Necesitas ayuda?</a>
+  </footer>
+</section>

@@ -25,10 +25,16 @@
         @if (c.categories.length === 0) {
           <p class="state">La carta se está actualizando. Vuelve pronto.</p>
         } @else {
-          <!-- Navegación por categorías (anclas accesibles) -->
+          <!-- Navegación por categorías (scroll suave accesible) -->
           <nav class="catnav" aria-label="Categorías de la carta">
             @for (nav of categoryNav(); track nav.id) {
-              <a class="catnav__chip" [href]="'#' + nav.anchor">{{ nav.name }}</a>
+              <button
+                type="button"
+                class="catnav__chip"
+                (click)="scrollToCategory(nav.id)"
+              >
+                {{ nav.name }}
+              </button>
             }
           </nav>
 

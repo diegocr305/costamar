@@ -1,0 +1,73 @@
+<section class="tarjeta-page">
+  @switch (store.state()) {
+    @case ('loading') {
+      <div class="status"><div class="spinner" aria-hidden="true"></div><p>Cargando tu tarjeta…</p></div>
+    }
+    @case ('offline') {
+      <div class="status" role="alert">
+        <p>Sin conexión. Revisa tu internet.</p>
+        <button type="button" class="cm-btn cm-btn--primary" (click)="retry()">Reintentar</button>
+      </div>
+    }
+    @case ('error') {
+      <div class="status" role="alert">
+        <p>No pudimos cargar tu membresía.</p>
+        <button type="button" class="cm-btn cm-btn--primary" (click)="retry()">Reintentar</button>
+      </div>
+    }
+    @case ('incomplete') {
+      <div class="status">
+        <p>Aún no completas tu perfil de socio.</p>
+        <a routerLink="/completar-perfil" class="cm-btn cm-btn--primary">Completar perfil</a>
+      </div>
+    }
+    @case ('active') {
+      @if (store.member(); as m) {
+        <article class="tarjeta">
+          <div class="tarjeta__top">
+            <img src="assets/brand/costamar-logo.png" alt="Costa Mar" width="44" height="44" />
+            <span class="tarjeta__brand">Club Costa Mar</span>
+          </div>
+
+          <div class="tarjeta__body">
+            <span class="tarjeta__label">Socio</span>
+            <h1 class="tarjeta__name">{{ m.fullName }}</h1>
+
+            <div class="tarjeta__meta">
+              <div>
+                <span class="tarjeta__label">Nivel</span>
+                <strong>{{ levelLabel(m.level) }}</strong>
+              </div>
+              <div>
+                <span class="tarjeta__label">Estado</span>
+                <strong class="tarjeta__status">
+                  {{ m.status === 'active' ? 'Activo' : 'Suspendido' }}
+                </strong>
+              </div>
+            </div>
+
+            <span class="tarjeta__code">{{ m.memberCode }}</span>
+          </div>
+
+          <!-- Espacio reservado para el QR. Aún no se genera credencial de
+               canje: se habilitará cuando exista validación segura en el local. -->
+          <div class="tarjeta__qr" aria-label="Código QR disponible próximamente">
+            <div class="tarjeta__qr-box">
+              <span>QR</span>
+              <small>Disponible pronto</small>
+            </div>
+          </div>
+        </article>
+
+        <nav class="tarjeta__nav">
+          <a routerLink="/beneficios">Beneficios</a>
+          <a routerLink="/perfil">Mi perfil</a>
+          <button type="button" class="linkbtn" (click)="logout()">Cerrar sesión</button>
+        </nav>
+      }
+    }
+    @default {
+      <div class="status"><div class="spinner" aria-hidden="true"></div></div>
+    }
+  }
+</section>
