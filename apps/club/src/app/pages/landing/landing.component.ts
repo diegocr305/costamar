@@ -18,7 +18,22 @@ export class LandingComponent implements OnInit {
   private readonly router = inject(Router);
 
   async ngOnInit(): Promise<void> {
-    // Espera breve a la restauración de sesión; si ya hay sesión, a la tarjeta.
+    // Salvaguarda: si Supabase devolvió el código OAuth a la raíz del club
+    // (p. ej. porque la Redirect URL apunta a "/"), reenviar al callback
+    // conservando el query, para completar el intercambio PKCE.
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('code')) {
+        const queryParams: Record<string, string> = {};
+        params.forEach((value, key) => {
+          queryParams[key] = value;
+        });
+        await this.router.navigate(['/auth/callback'], { queryParams });
+        return;
+      }
+    }
+
+    // Si ya hay sesión, a la tarjeta.
     if (this.auth.ready() && this.auth.isAuthenticated()) {
       await this.router.navigate(['/mi-tarjeta']);
     }

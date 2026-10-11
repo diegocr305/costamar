@@ -40,9 +40,18 @@ No requieren tocar código. No incluyen secretos en el repositorio.
    - Guardar.
 2. **Authentication → URL Configuration**:
    - **Site URL**: `https://club.restaurantecostamar.cl`
-   - **Redirect URLs** (añadir todas las que uses):
+   - **Redirect URLs** (añadir TODAS, exactas):
      - `https://club.restaurantecostamar.cl/auth/callback`
+     - `https://club.restaurantecostamar.cl` (salvaguarda: la landing reenvía al callback)
      - `http://localhost:4202/auth/callback` (desarrollo local)
+     - `http://localhost:4202` (desarrollo local)
+
+   > IMPORTANTE: La **Site URL** del proyecto Supabase es compartida. Si el
+   > admin o la web usan otra Site URL, NO la cambies por el club: en su lugar
+   > asegúrate de que las Redirect URLs del club estén en la lista blanca.
+   > Si una `redirectTo` solicitada no está en la lista, Supabase la ignora y
+   > redirige a la Site URL por defecto (síntoma: vuelve a
+   > `restaurantecostamar.cl/?code=...` en vez de al club).
 3. (Opcional) **Authentication → Policies / Rate limits**: dejar los valores por
    defecto para el piloto.
 
