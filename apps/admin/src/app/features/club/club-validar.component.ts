@@ -1,4 +1,11 @@
-import { Component, signal, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  signal,
+  inject,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import {
@@ -8,6 +15,13 @@ import {
 
 type Step = 'scan' | 'review' | 'done';
 
+interface BarcodeDetectorLike {
+  detect(source: CanvasImageSource): Promise<{ rawValue: string }[]>;
+}
+declare const BarcodeDetector: {
+  new (opts?: { formats?: string[] }): BarcodeDetectorLike;
+};
+
 @Component({
   selector: 'cm-club-validar',
   standalone: true,
@@ -15,7 +29,7 @@ type Step = 'scan' | 'review' | 'done';
   templateUrl: './club-validar.component.html',
   styleUrl: './club-validar.component.css',
 })
-export class ClubValidarComponent {
+export class ClubValidarComponent implements OnDestroy {
   private readonly staff = inject(ClubStaffService);
 
   protected readonly step = signal<Step>('scan');
@@ -26,6 +40,74 @@ export class ClubValidarComponent {
   protected readonly lookup = signal<StaffLookup | null>(null);
   protected selectedCoupon = signal<string | null>(null);
   protected consumptionRef = signal('');
+
+  // --- Escáner de cámara ---
+  protected readonly scanning = signal(false);
+  protected readonly scanSupported = signal(
+    typeof window !== 'undefined' && 'BarcodeDetector' in window,
+  );
+  private readonly videoRef = viewChild<ElementRef<HTMLVideoElement>>('video');
+  private stream: MediaStream | null = null;
+  private rafId: number | null = null;
+
+  ngOnDestroy(): void {
+    this.stopScan();
+  }
+
+  /** Abre la cámara trasera y detecta QR. */
+  async startScan(): Promise<void> {
+    this.error.set(null);
+    if (!this.scanSupported()) {
+      this.error.set('Tu navegador no soporta escaneo. Usa el código manual.');
+      return;
+    }
+    try {
+      this.scanning.set(true);
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+      });
+      const video = this.videoRef()?.nativeElement;
+      if (!video) return;
+      video.srcObject = this.stream;
+      await video.play();
+      const detector = new BarcodeDetector({ formats: ['qr_code'] });
+      const tick = async () => {
+        if (!this.scanning()) return;
+        try {
+          const codes = await detector.detect(video);
+          if (codes.length > 0) {
+            const value = codes[0].rawValue?.trim();
+            if (value) {
+              this.memberCodeInput.set(value);
+              this.stopScan();
+              void this.search();
+              return;
+            }
+          }
+        } catch {
+          /* ignora frames sin lectura */
+        }
+        this.rafId = requestAnimationFrame(() => void tick());
+      };
+      this.rafId = requestAnimationFrame(() => void tick());
+    } catch {
+      this.scanning.set(false);
+      this.error.set('No se pudo abrir la cámara. Revisa permisos o usa el código manual.');
+    }
+  }
+
+  /** Detiene la cámara y libera recursos. */
+  stopScan(): void {
+    this.scanning.set(false);
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.stream) {
+      this.stream.getTracks().forEach((t) => t.stop());
+      this.stream = null;
+    }
+  }
 
   /** Busca el socio por member_code (ingresado manual o leído del QR). */
   async search(): Promise<void> {
@@ -67,6 +149,7 @@ export class ClubValidarComponent {
   }
 
   reset(): void {
+    this.stopScan();
     this.step.set('scan');
     this.memberCodeInput.set('');
     this.lookup.set(null);

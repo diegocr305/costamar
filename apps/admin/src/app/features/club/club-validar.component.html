@@ -11,8 +11,25 @@
   @switch (step()) {
     @case ('scan') {
       <div class="card">
+        <!-- Escáner de cámara (si el navegador lo soporta) -->
+        @if (scanning()) {
+          <div class="scanner">
+            <video #video playsinline muted class="scanner__video"></video>
+            <button type="button" class="btn btn--ghost" (click)="stopScan()">
+              Detener cámara
+            </button>
+          </div>
+        } @else {
+          @if (scanSupported()) {
+            <button type="button" class="btn btn--primary" (click)="startScan()">
+              📷 Escanear QR
+            </button>
+            <p class="hint">O ingresa el código manualmente:</p>
+          }
+        }
+
         <label class="field">
-          <span>Código de socio (QR)</span>
+          <span>Código de socio</span>
           <input
             type="text"
             [ngModel]="memberCodeInput()"
@@ -31,8 +48,8 @@
           {{ loading() ? 'Buscando…' : 'Buscar socio' }}
         </button>
         <p class="hint">
-          El socio muestra su QR en Costa Mar Club. Escanéalo con el lector del
-          dispositivo o escribe el código que aparece bajo el QR.
+          El socio muestra su QR en Costa Mar Club. Escanéalo con la cámara o
+          escribe el código que aparece bajo el QR.
         </p>
       </div>
     }

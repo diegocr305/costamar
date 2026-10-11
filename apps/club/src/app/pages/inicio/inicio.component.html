@@ -49,22 +49,56 @@
 
   @if (foundersCampaign(); as f) {
     <div class="founders">
-      <span class="cm-eyebrow">Beneficio de bienvenida</span>
+      <span class="cm-eyebrow">Regalo de bienvenida</span>
       <strong>{{ f.name }}</strong>
       @if (f.description) {
         <p>{{ f.description }}</p>
       }
-      <button
-        type="button"
-        class="cm-btn cm-btn--gold"
-        [disabled]="claiming()"
-        (click)="claimFounder()"
-      >
-        {{ claiming() ? 'Reclamando…' : 'Reclamar mi beneficio' }}
-      </button>
+
+      @if (canClaimFounder()) {
+        <!-- No tiene cupón: puede reclamar -->
+        <button
+          type="button"
+          class="cm-btn cm-btn--gold"
+          [disabled]="claiming()"
+          (click)="claimFounder()"
+        >
+          {{ claiming() ? 'Reclamando…' : 'Reclamar mi regalo' }}
+        </button>
+      } @else if (founderCoupon(); as fc) {
+        <!-- Ya tiene cupón: mostrar estado, nunca reofrecer canje -->
+        @if (fc.status === 'issued') {
+          <span class="founders__state founders__state--ok">
+            ✓ Ya reclamaste tu regalo. Preséntalo en el local.
+          </span>
+          <a routerLink="/cupones" class="cm-btn cm-btn--gold">Ver mi cupón</a>
+        } @else if (fc.status === 'redeemed') {
+          <span class="founders__state">Regalo ya utilizado. ¡Gracias!</span>
+        } @else {
+          <span class="founders__state">Este regalo ya no está vigente.</span>
+        }
+      }
+
       @if (claimMsg(); as msg) {
         <p class="founders__msg">{{ msg }}</p>
       }
+    </div>
+  }
+
+  <!-- Beneficios disponibles (issued y vigentes) -->
+  @if (availableCoupons().length > 0) {
+    <h2 class="inicio__title">Beneficios disponibles</h2>
+    <ul class="campaigns">
+      @for (c of availableCoupons(); track c.id) {
+        <li class="campaign">
+          <strong>{{ c.campaign.name }}</strong>
+          <small class="campaign__code">{{ c.code }}</small>
+        </li>
+      }
+    </ul>
+  } @else if (state() === 'loaded' && !canClaimFounder()) {
+    <div class="empty empty--soft">
+      <p>¡Pronto tendrás nuevas sorpresas en Costa Mar! 🌊</p>
     </div>
   }
 

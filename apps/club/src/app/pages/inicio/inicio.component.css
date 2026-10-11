@@ -125,3 +125,29 @@
   color: var(--cm-gold) !important;
   font-weight: 700;
 }
+
+.founders__state {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--cm-muted);
+}
+
+.founders__state--ok {
+  color: var(--cm-gold);
+}
+
+.campaign__code {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: monospace;
+  color: var(--cm-gold);
+  font-size: 0.85rem;
+}
+
+.empty--soft {
+  background: var(--cm-surface);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--cm-shadow);
+}

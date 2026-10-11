@@ -1,4 +1,11 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import type { CouponWithCampaign } from '@costamar/shared';
@@ -51,6 +58,14 @@ export class CuponesComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  /** Revalidar al volver el foco a la PWA (estado siempre fresco). */
+  @HostListener('document:visibilitychange')
+  protected onVisibility(): void {
+    if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+      this.load();
+    }
   }
 
   protected setTab(t: Tab): void {
