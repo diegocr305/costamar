@@ -38,6 +38,11 @@ export const NAV_SECTIONS: NavSection[] = [
     path: '/usuarios',
     roles: ['superadmin', 'admin'],
   },
+  {
+    label: 'Validar cupón',
+    path: '/club/validar',
+    roles: ['superadmin', 'admin', 'manager', 'cashier'],
+  },
 ];
 
 export function sectionsForRole(role: UserRole): NavSection[] {

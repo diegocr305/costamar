@@ -45,4 +45,9 @@ export class ClubService {
   getCoupons(): Observable<CouponWithCampaign[]> {
     return this.http.get<CouponWithCampaign[]>(`${this.base}/coupons`);
   }
+
+  /** Reclama el cupón de fundador (si la campaña está activa). */
+  claimFounder(): Observable<unknown> {
+    return this.http.post(`${this.base}/founders/claim`, {});
+  }
 }

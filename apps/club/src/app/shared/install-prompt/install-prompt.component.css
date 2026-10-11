@@ -28,7 +28,7 @@
 
 .install__body strong {
   display: block;
-  color: var(--cm-ocean);
+  color: var(--cm-heading);
   font-size: 0.92rem;
 }
 

@@ -20,9 +20,9 @@
   flex-shrink: 0;
   padding: 0.5rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid rgba(18, 99, 160, 0.15);
+  border: 1px solid var(--cm-border);
   background: var(--cm-surface);
-  color: var(--cm-ocean);
+  color: var(--cm-text);
   font-weight: 700;
   font-size: 0.82rem;
   cursor: pointer;
@@ -94,7 +94,7 @@
 }
 
 .coupon__name {
-  color: var(--cm-ocean);
+  color: var(--cm-heading);
   font-family: var(--cm-font-head);
 }
 
@@ -113,10 +113,10 @@
 
 .coupon__code {
   font-family: monospace;
-  background: rgba(18, 99, 160, 0.08);
+  background: rgba(255, 255, 255, 0.08);
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
-  color: var(--cm-ocean);
+  color: var(--cm-gold);
 }
 
 .coupon__exp {

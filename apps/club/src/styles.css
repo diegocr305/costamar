@@ -3,18 +3,24 @@
    Paleta marina Costa Mar + tipografía (coherente con la web).
    ================================================================ */
 :root {
+  /* Marca */
   --cm-primary: #12a7c2;
-  --cm-primary-dark: #087c91;
+  --cm-primary-dark: #0b8aa3;
   --cm-gold: #e28e06;
   --cm-ocean: #1263a0;
-  --cm-background: #f5fbfc;
-  --cm-surface: #ffffff;
-  --cm-text: #17324d;
-  --cm-muted: #5a7382;
+
+  /* Tema OSCURO premium (paleta marina Costa Mar) */
+  --cm-background: #0e2a38; /* azul profundo */
+  --cm-surface: #15415a; /* azul marino (tarjetas) */
+  --cm-surface-2: #1b4f6b; /* superficie elevada */
+  --cm-border: rgba(255, 255, 255, 0.1);
+  --cm-text: #f5ebdd; /* marfil */
+  --cm-muted: #a7c4d2; /* azul grisáceo claro */
+  --cm-heading: #ffffff;
 
   --cm-font-head: 'Rufina', Georgia, 'Times New Roman', serif;
   --cm-font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --cm-shadow: 0 10px 30px rgba(18, 99, 160, 0.1);
+  --cm-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 
 * {
@@ -36,12 +42,12 @@ h1,
 h2,
 h3 {
   font-family: var(--cm-font-head);
-  color: var(--cm-ocean);
+  color: var(--cm-heading);
   line-height: 1.15;
 }
 
 a {
-  color: var(--cm-ocean);
+  color: var(--cm-gold);
 }
 
 /* Botón base reutilizable */

@@ -54,6 +54,14 @@ export const routes: Routes = [
         data: { title: 'Pedidos' },
       },
       {
+        path: 'club/validar',
+        canActivate: [roleGuard(['superadmin', 'admin', 'manager', 'cashier'])],
+        loadComponent: () =>
+          import('./features/club/club-validar.component').then(
+            (m) => m.ClubValidarComponent,
+          ),
+      },
+      {
         path: 'usuarios',
         canActivate: [roleGuard(['superadmin', 'admin'])],
         loadComponent: () =>

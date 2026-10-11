@@ -55,4 +55,10 @@ export class ClubController {
   myCoupons(@CurrentUser() user: AuthenticatedUser) {
     return this.club.getMyCoupons(user.userId);
   }
+
+  /** Reclama el cupón de fundador (campaña activa, tope e idempotencia en BD). */
+  @Post('founders/claim')
+  claimFounder(@CurrentUser() user: AuthenticatedUser) {
+    return this.club.claimFounderCoupon(user.userId);
+  }
 }

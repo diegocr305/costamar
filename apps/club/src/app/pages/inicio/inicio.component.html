@@ -47,5 +47,26 @@
     }
   }
 
+  @if (foundersCampaign(); as f) {
+    <div class="founders">
+      <span class="cm-eyebrow">Beneficio de bienvenida</span>
+      <strong>{{ f.name }}</strong>
+      @if (f.description) {
+        <p>{{ f.description }}</p>
+      }
+      <button
+        type="button"
+        class="cm-btn cm-btn--gold"
+        [disabled]="claiming()"
+        (click)="claimFounder()"
+      >
+        {{ claiming() ? 'Reclamando…' : 'Reclamar mi beneficio' }}
+      </button>
+      @if (claimMsg(); as msg) {
+        <p class="founders__msg">{{ msg }}</p>
+      }
+    </div>
+  }
+
   <a routerLink="/cupones" class="cm-btn cm-btn--gold inicio__cta">Ver mis cupones</a>
 </section>

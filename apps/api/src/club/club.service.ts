@@ -259,6 +259,50 @@ export class ClubService {
     }));
   }
 
+  /**
+   * Reclama el cupón de fundador para el socio autenticado.
+   * Valida elegibilidad (socio activo, perfil completo, mayor de edad) y
+   * delega la emisión a la función transaccional issue_founder_coupon,
+   * que respeta el tope de cupos y es idempotente.
+   */
+  async claimFounderCoupon(userId: string) {
+    const { data: member, error } = await this.supabase.client
+      .from('club_members')
+      .select('status, full_name, phone, birth_date')
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (error) throw new BadRequestException(error.message);
+    if (!member) {
+      throw new BadRequestException('Debes completar tu perfil primero.');
+    }
+    if (member.status !== 'active') {
+      throw new BadRequestException('Tu membresía no está activa.');
+    }
+    if (!member.full_name || !member.phone || !member.birth_date) {
+      throw new BadRequestException('Completa tu perfil para reclamar el beneficio.');
+    }
+    if (!isAdult(member.birth_date as string)) {
+      throw new BadRequestException(
+        `Debes tener al menos ${CLUB_MIN_AGE} años.`,
+      );
+    }
+
+    const { data, error: rpcError } = await this.supabase.client.rpc(
+      'issue_founder_coupon',
+      { p_user_id: userId },
+    );
+    if (rpcError) {
+      const map: Record<string, string> = {
+        CAMPAIGN_NOT_FOUND: 'La campaña no existe.',
+        CAMPAIGN_NOT_ACTIVE: 'La campaña no está activa en este momento.',
+        NO_COUPONS_LEFT: 'Se agotaron los cupos de fundadores.',
+      };
+      const msg = map[rpcError.message] ?? rpcError.message;
+      throw new BadRequestException(msg);
+    }
+    return data;
+  }
+
   // ---------- Cupones del socio (solo lectura en Fase 1) ----------
 
   /** Cupones del socio autenticado, con datos de su campaña. */

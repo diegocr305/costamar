@@ -1,0 +1,126 @@
+<section class="validar">
+  <header class="validar__head">
+    <h1>Validar cupón del Club</h1>
+    <p>Escanea o ingresa el código de socio para validar beneficios.</p>
+  </header>
+
+  @if (error(); as e) {
+    <div class="alert alert--error" role="alert">{{ e }}</div>
+  }
+
+  @switch (step()) {
+    @case ('scan') {
+      <div class="card">
+        <label class="field">
+          <span>Código de socio (QR)</span>
+          <input
+            type="text"
+            [ngModel]="memberCodeInput()"
+            (ngModelChange)="memberCodeInput.set($event)"
+            placeholder="CM-XXXXXX"
+            (keyup.enter)="search()"
+            autocapitalize="characters"
+          />
+        </label>
+        <button
+          type="button"
+          class="btn btn--primary"
+          [disabled]="loading() || !memberCodeInput().trim()"
+          (click)="search()"
+        >
+          {{ loading() ? 'Buscando…' : 'Buscar socio' }}
+        </button>
+        <p class="hint">
+          El socio muestra su QR en Costa Mar Club. Escanéalo con el lector del
+          dispositivo o escribe el código que aparece bajo el QR.
+        </p>
+      </div>
+    }
+
+    @case ('review') {
+      @if (lookup(); as l) {
+        <div class="card">
+          <div class="member">
+            <span class="member__code">{{ l.member.memberCode }}</span>
+            <strong class="member__name">{{ l.member.fullName }}</strong>
+            <span class="member__status">
+              {{ l.member.status === 'active' ? 'Socio activo' : 'Suspendido' }}
+              · Nivel {{ l.member.level }}
+            </span>
+          </div>
+
+          <p class="validar__instruction">
+            Compara el nombre con el documento de identidad del cliente.
+          </p>
+
+          <h2 class="validar__subtitle">Cupones</h2>
+          @if (l.coupons.length === 0) {
+            <p class="empty">Este socio no tiene cupones.</p>
+          } @else {
+            <ul class="coupons">
+              @for (c of l.coupons; track c.code) {
+                <li class="coupon">
+                  <label class="coupon__pick">
+                    <input
+                      type="radio"
+                      name="coupon"
+                      [disabled]="c.status !== 'issued'"
+                      [checked]="selectedCoupon() === c.code"
+                      (change)="pickCoupon(c.code)"
+                    />
+                    <span>
+                      <strong>{{ c.campaignName }}</strong>
+                      <small>{{ c.code }}</small>
+                    </span>
+                  </label>
+                  <span class="badge badge--{{ c.status }}">
+                    {{
+                      c.status === 'issued' ? 'Disponible' :
+                      c.status === 'redeemed' ? 'Canjeado' :
+                      c.status === 'expired' ? 'Vencido' : 'Anulado'
+                    }}
+                  </span>
+                </li>
+              }
+            </ul>
+
+            <label class="field">
+              <span>Referencia de consumo (mesa / pedido / boleta)</span>
+              <input
+                type="text"
+                [ngModel]="consumptionRef()"
+                (ngModelChange)="consumptionRef.set($event)"
+                placeholder="Ej: Mesa 5 / Boleta 1234"
+              />
+            </label>
+
+            <div class="actions">
+              <button type="button" class="btn btn--ghost" (click)="reset()">
+                Cancelar
+              </button>
+              <button
+                type="button"
+                class="btn btn--primary"
+                [disabled]="loading() || !selectedCoupon()"
+                (click)="confirmRedeem()"
+              >
+                {{ loading() ? 'Canjeando…' : 'Confirmar canje' }}
+              </button>
+            </div>
+          }
+        </div>
+      }
+    }
+
+    @case ('done') {
+      <div class="card card--success">
+        <div class="check" aria-hidden="true">✓</div>
+        <h2>Canje confirmado</h2>
+        <p>El beneficio fue registrado correctamente.</p>
+        <button type="button" class="btn btn--primary" (click)="reset()">
+          Validar otro cupón
+        </button>
+      </div>
+    }
+  }
+</section>

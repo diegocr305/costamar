@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, firstValueFrom, of } from 'rxjs';
+import { computed } from '@angular/core';
 import type { Campaign } from '@costamar/shared';
 import { ClubService } from '../../core/club.service';
 import { AuthService } from '../../core/auth.service';
@@ -21,6 +22,14 @@ export class InicioComponent implements OnInit {
   protected readonly state = signal<State>('loading');
   protected readonly campaigns = signal<Campaign[]>([]);
   protected readonly firstName = signal('');
+
+  protected readonly claiming = signal(false);
+  protected readonly claimMsg = signal<string | null>(null);
+
+  /** Campaña de fundadores activa, si existe. */
+  protected readonly foundersCampaign = computed(() =>
+    this.campaigns().find((c) => c.type === 'founders'),
+  );
 
   ngOnInit(): void {
     const name = this.auth.user()?.fullName ?? '';
@@ -43,5 +52,20 @@ export class InicioComponent implements OnInit {
         this.campaigns.set(data);
         this.state.set('loaded');
       });
+  }
+
+  /** Reclama el beneficio de fundador. */
+  async claimFounder(): Promise<void> {
+    this.claiming.set(true);
+    this.claimMsg.set(null);
+    try {
+      await firstValueFrom(this.club.claimFounder());
+      this.claimMsg.set('¡Listo! Tu beneficio está en "Mis cupones".');
+    } catch (e: unknown) {
+      const err = e as { error?: { message?: string } };
+      this.claimMsg.set(err?.error?.message ?? 'No se pudo reclamar el beneficio.');
+    } finally {
+      this.claiming.set(false);
+    }
   }
 }

@@ -37,7 +37,7 @@
 }
 
 .bnav__item.is-active {
-  color: var(--cm-primary-dark);
+  color: var(--cm-gold);
 }
 
 .bnav__item:focus-visible {
