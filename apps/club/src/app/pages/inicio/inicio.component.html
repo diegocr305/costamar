@@ -49,8 +49,17 @@
 
   @if (foundersCampaign(); as f) {
     <div class="founders">
+      @if (f.imagePath) {
+        <img
+          class="founders__img"
+          [src]="image(f.imagePath)"
+          [alt]="f.name"
+          loading="lazy"
+        />
+      }
       <span class="cm-eyebrow">Regalo de bienvenida</span>
       <strong>{{ f.name }}</strong>
+      <span class="founders__benefit">1 bebestible personal de regalo</span>
       @if (f.description) {
         <p>{{ f.description }}</p>
       }
@@ -90,9 +99,19 @@
     <h2 class="inicio__title">Beneficios disponibles</h2>
     <ul class="campaigns">
       @for (c of availableCoupons(); track c.id) {
-        <li class="campaign">
-          <strong>{{ c.campaign.name }}</strong>
-          <small class="campaign__code">{{ c.code }}</small>
+        <li class="campaign campaign--coupon">
+          @if (c.campaign.imagePath) {
+            <img
+              class="campaign__thumb"
+              [src]="image(c.campaign.imagePath)"
+              [alt]="c.campaign.name"
+              loading="lazy"
+            />
+          }
+          <div class="campaign__info">
+            <strong>{{ c.campaign.name }}</strong>
+            <small class="campaign__code">{{ c.code }}</small>
+          </div>
         </li>
       }
     </ul>

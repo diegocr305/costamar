@@ -88,6 +88,14 @@
   box-shadow: var(--cm-shadow);
 }
 
+.coupon__thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
 .coupon__body {
   flex: 1;
   min-width: 0;

@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import type { CouponWithCampaign } from '@costamar/shared';
 import { ClubService } from '../../core/club.service';
+import { mediaUrl } from '../../core/media-url';
 
 type Tab = 'disponibles' | 'proximos' | 'canjeados' | 'vencidos';
 type State = 'loading' | 'loaded' | 'error' | 'offline';
@@ -70,6 +71,11 @@ export class CuponesComponent implements OnInit {
 
   protected setTab(t: Tab): void {
     this.tab.set(t);
+  }
+
+  /** URL de imagen de la campaña (Storage). */
+  protected image(path?: string): string {
+    return mediaUrl(path);
   }
 
   protected load(): void {

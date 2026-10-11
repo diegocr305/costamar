@@ -44,6 +44,14 @@
         <ul class="list">
           @for (c of visible(); track c.id) {
             <li class="coupon">
+              @if (c.campaign.imagePath) {
+                <img
+                  class="coupon__thumb"
+                  [src]="image(c.campaign.imagePath)"
+                  [alt]="c.campaign.name"
+                  loading="lazy"
+                />
+              }
               <div class="coupon__body">
                 <strong class="coupon__name">{{ c.campaign.name }}</strong>
                 @if (c.campaign.description) {

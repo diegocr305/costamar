@@ -11,6 +11,7 @@ import { forkJoin, catchError, firstValueFrom, of } from 'rxjs';
 import type { Campaign, CouponWithCampaign } from '@costamar/shared';
 import { ClubService } from '../../core/club.service';
 import { AuthService } from '../../core/auth.service';
+import { mediaUrl } from '../../core/media-url';
 
 type State = 'loading' | 'loaded' | 'error' | 'offline';
 
@@ -52,15 +53,25 @@ export class InicioComponent implements OnInit {
     () => !!this.foundersCampaign() && !this.founderCoupon(),
   );
 
-  /** Beneficios disponibles para usar (issued y no vencidos). */
+  /**
+   * Beneficios disponibles para usar (issued y no vencidos), EXCLUYENDO el
+   * cupón de fundadores que ya se muestra en su propio bloque (evita duplicar).
+   */
   protected readonly availableCoupons = computed(() => {
     const now = Date.now();
+    const founderCouponId = this.founderCoupon()?.id;
     return this.coupons().filter(
       (c) =>
+        c.id !== founderCouponId &&
         c.status === 'issued' &&
         (!c.expiresAt || new Date(c.expiresAt).getTime() >= now),
     );
   });
+
+  /** URL de imagen de una campaña (Storage). */
+  protected image(path?: string): string {
+    return mediaUrl(path);
+  }
 
   ngOnInit(): void {
     const name = this.auth.user()?.fullName ?? '';
