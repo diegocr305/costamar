@@ -28,11 +28,19 @@ Repositorio: https://github.com/diegocr305/costamar (rama `main`)
 
 ## Pendientes para "terminar" el Club
 
-### 1. Iconos de la PWA (404 en DevTools) — rápido
-Faltan `apps/club/src/assets/icons/icon-192.png` y `icon-512.png`
-(referenciados en `manifest.webmanifest`). Generarlos desde el logo y
-colocarlos ahí. Sin ellos, la instalación PWA usa fallback y DevTools muestra
-404 inofensivos.
+### 1. Iconos de la PWA — HECHO ✅
+Generados desde el logo con `tools/generate-club-icons.ps1`:
+`icon-192.png`, `icon-512.png` (any), `icon-192-maskable.png`,
+`icon-512-maskable.png` (maskable con safe zone) y `apple-touch-icon.png`
+(iOS, 180x180). Manifest actualizado (any + maskable separados) y
+`apple-touch-icon` añadido al `index.html`. Banner discreto de instalación
+(`InstallPromptComponent`) que no bloquea el registro: botón nativo en
+Android/Chrome e instrucciones en iOS, descartable.
+
+Pendiente de validar en dispositivos reales:
+- Android/Chrome: ver prompt de instalación y el icono correcto.
+- iPhone/Safari: "Compartir → Agregar a inicio" usa apple-touch-icon.
+- Escritorio: instalación desde la barra de direcciones.
 
 ### 2. Probar el alta end-to-end (completar-perfil → enroll)
 Verificar en vivo que al enviar "Completa tu perfil":

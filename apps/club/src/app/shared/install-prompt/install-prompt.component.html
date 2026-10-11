@@ -1,0 +1,37 @@
+@if (visible()) {
+  <div class="install" role="dialog" aria-label="Instalar Costa Mar Club">
+    <img
+      class="install__icon"
+      src="assets/icons/icon-192.png"
+      alt=""
+      width="40"
+      height="40"
+    />
+    <div class="install__body">
+      <strong>Instala Costa Mar Club</strong>
+      @if (showIosHelp()) {
+        <p>
+          Toca el botón <span aria-hidden="true">⎙</span> Compartir y luego
+          "Agregar a pantalla de inicio".
+        </p>
+      } @else {
+        <p>Acceso directo en tu pantalla de inicio, sin ocupar espacio.</p>
+      }
+    </div>
+    <div class="install__actions">
+      @if (!showIosHelp()) {
+        <button type="button" class="install__btn" (click)="install()">
+          {{ isIos() ? 'Cómo' : 'Instalar' }}
+        </button>
+      }
+      <button
+        type="button"
+        class="install__close"
+        aria-label="Cerrar"
+        (click)="close()"
+      >
+        ✕
+      </button>
+    </div>
+  </div>
+}
