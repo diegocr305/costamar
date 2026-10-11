@@ -61,9 +61,28 @@ export class AuthCallbackComponent implements OnInit {
   protected readonly message = signal('Validando tu identidad…');
 
   async ngOnInit(): Promise<void> {
+    // Paso 1: intercambiar el código por sesión (PKCE).
     try {
       await this.auth.handleOAuthCallback(window.location.href);
-      this.message.set('Cargando tu membresía…');
+    } catch (err) {
+      // Log para diagnóstico (sin datos sensibles). Visible en consola.
+      console.error('[club] fallo intercambio OAuth:', err);
+      this.message.set('No se pudo completar el inicio de sesión.');
+      await this.router.navigate(['/ingresar']);
+      return;
+    }
+
+    // Si tras el intercambio no hay sesión, algo falló en la autenticación.
+    if (!this.auth.isAuthenticated()) {
+      this.message.set('No se pudo iniciar sesión. Inténtalo de nuevo.');
+      await this.router.navigate(['/ingresar']);
+      return;
+    }
+
+    // Paso 2: ya hay sesión válida. Cargar la membresía. Si /me falla
+    // (p. ej. red/CORS), NO expulsar: llevar a la tarjeta, que reintenta.
+    this.message.set('Cargando tu membresía…');
+    try {
       const me = await firstValueFrom(this.club.getMe());
       if (me.member) {
         await this.router.navigate(['/mi-tarjeta']);
@@ -71,8 +90,9 @@ export class AuthCallbackComponent implements OnInit {
         await this.router.navigate(['/completar-perfil']);
       }
     } catch {
-      this.message.set('No se pudo completar el inicio de sesión.');
-      await this.router.navigate(['/ingresar']);
+      // Sesión válida pero no pudimos leer la membresía: a la tarjeta,
+      // que muestra estado de error/reintento sin perder la sesión.
+      await this.router.navigate(['/mi-tarjeta']);
     }
   }
 }
