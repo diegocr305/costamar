@@ -1,0 +1,110 @@
+<a class="cm-skip" href="#contenido">Saltar al contenido</a>
+
+<header class="cm-header">
+  <div class="cm-header__inner">
+    <a routerLink="/" class="cm-logo" (click)="closeMenu()">
+      <img
+        src="assets/brand/costamar-logo.png"
+        alt="Costa Mar Barra Cevichera"
+        width="48"
+        height="48"
+      />
+      <span class="cm-logo__text">
+        <span class="cm-logo__name">Costa Mar</span>
+        <span class="cm-logo__descriptor">Barra Cevichera</span>
+      </span>
+    </a>
+
+    <button
+      type="button"
+      class="cm-burger"
+      [class.is-open]="menuOpen()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="cm-primary-nav"
+      aria-label="Abrir menú de navegación"
+      (click)="toggleMenu()"
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav
+      id="cm-primary-nav"
+      class="cm-nav"
+      [class.is-open]="menuOpen()"
+      aria-label="Navegación principal"
+    >
+      <a routerLink="/carta" routerLinkActive="is-active" (click)="closeMenu()">Carta</a>
+      <a routerLink="/reservas" routerLinkActive="is-active" (click)="closeMenu()">Reservas</a>
+      <a routerLink="/pedidos" routerLinkActive="is-active" (click)="closeMenu()">Pedidos</a>
+      <a routerLink="/club" routerLinkActive="is-active" (click)="closeMenu()">Club</a>
+      <a
+        [href]="business.whatsapp"
+        target="_blank"
+        rel="noopener"
+        class="cm-header__cta"
+        (click)="closeMenu()"
+        >Reservar</a
+      >
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="cm-footer">
+  <div class="cm-footer__cols">
+    <!-- Columna 1: marca -->
+    <div class="cm-footer__col cm-footer__brand">
+      <img src="assets/brand/costamar-logo.png" alt="Costa Mar" width="56" height="56" />
+      <strong>{{ business.name }}</strong>
+      <p>Sabores del Perú en el corazón de Quillota.</p>
+    </div>
+
+    <!-- Columna 2: Explora -->
+    <nav class="cm-footer__col" aria-label="Enlaces rápidos">
+      <h4>Explora</h4>
+      <ul class="cm-footer__links">
+        <li><a routerLink="/carta">Carta</a></li>
+        <li><a routerLink="/reservas">Reservas</a></li>
+        <li><a routerLink="/pedidos">Pedidos</a></li>
+        <li><a routerLink="/club">Club Costa Mar</a></li>
+      </ul>
+    </nav>
+
+    <!-- Columna 3: Contacto -->
+    <div class="cm-footer__col">
+      <h4>Contacto</h4>
+      <ul class="cm-footer__links">
+        <li><a [href]="'tel:' + business.phone">{{ business.phoneDisplay }}</a></li>
+        <li><a [href]="'mailto:' + business.email">{{ business.email }}</a></li>
+        <li><a [href]="business.instagram" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a [href]="business.facebook" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a [href]="business.whatsapp" target="_blank" rel="noopener">WhatsApp</a></li>
+      </ul>
+    </div>
+
+    <!-- Columna 4: Visítanos -->
+    <div class="cm-footer__col">
+      <h4>Visítanos</h4>
+      <p class="cm-footer__address">
+        <a
+          href="https://maps.app.goo.gl/EYVh6tqsw4tDTLVv9"
+          target="_blank"
+          rel="noopener"
+          >{{ business.address }}</a
+        >
+      </p>
+      <ul class="cm-footer__hours">
+        @for (h of business.hours; track h.days) {
+          <li>
+            <span>{{ h.days }}</span>
+            <span>{{ h.open }} – {{ h.close }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+  <p class="cm-footer__legal">© {{ year }} {{ business.legalName }}</p>
+</footer>

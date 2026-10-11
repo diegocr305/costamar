@@ -1,0 +1,239 @@
+.carta {
+  max-width: var(--cm-maxw);
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 2rem;
+}
+
+.carta__head {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.carta__head h1 {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  margin: 0;
+}
+
+.carta__lead {
+  color: var(--cm-muted);
+  margin: 1rem auto 0;
+  max-width: 480px;
+}
+
+.state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--cm-muted);
+}
+
+.state--error {
+  background: #fff4f0;
+  border: 1px solid #f6c6b4;
+  border-radius: 12px;
+}
+
+.btn-retry {
+  margin-top: 0.75rem;
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--cm-primary-dark);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* ===== Navegación por categorías ===== */
+.catnav {
+  position: sticky;
+  top: 76px;
+  z-index: 10;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0.9rem 0.5rem;
+  margin-bottom: 2rem;
+  background: color-mix(in srgb, var(--cm-background) 85%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(18, 99, 160, 0.08);
+}
+
+.catnav__chip {
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  background: var(--cm-surface);
+  border: 1px solid rgba(18, 99, 160, 0.15);
+  color: var(--cm-ocean);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.catnav__chip:hover {
+  background: var(--cm-primary);
+  color: #fff;
+  border-color: var(--cm-primary);
+}
+
+/* ===== Categoría ===== */
+.category {
+  margin-bottom: 3.5rem;
+  scroll-margin-top: 140px;
+}
+
+.category__title {
+  font-size: 1.9rem;
+  text-align: center;
+  margin: 0 0 0.25rem;
+  color: var(--cm-ocean);
+}
+
+.category__title::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: var(--cm-gold);
+  margin: 0.6rem auto 0;
+}
+
+.category__desc {
+  color: var(--cm-muted);
+  text-align: center;
+  margin: 0.5rem auto 1.5rem;
+  max-width: 520px;
+}
+
+/* ===== Destacados (tarjetas) ===== */
+.featured {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.fcard {
+  background: var(--cm-surface);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--cm-shadow);
+  border: 1px solid rgba(18, 99, 160, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.fcard__img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.fcard__img--placeholder {
+  background:
+    radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.2), transparent 50%),
+    linear-gradient(140deg, var(--cm-primary), var(--cm-ocean));
+}
+
+.fcard__body {
+  padding: 1rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.fcard__name {
+  font-family: var(--cm-font-head);
+  font-size: 1.15rem;
+  margin: 0;
+  color: var(--cm-text);
+}
+
+.fcard__desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--cm-muted);
+  line-height: 1.5;
+}
+
+.fcard__price {
+  margin-top: auto;
+  font-family: var(--cm-font-head);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--cm-gold);
+}
+
+/* ===== Resto (lista) ===== */
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(18, 99, 160, 0.06);
+}
+
+.menu-item:last-child {
+  border-bottom: 0;
+}
+
+.menu-item__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.menu-item__name {
+  font-family: var(--cm-font-head);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--cm-text);
+}
+
+.menu-item__dots {
+  flex: 1;
+  border-bottom: 2px dotted rgba(18, 99, 160, 0.25);
+  transform: translateY(-4px);
+}
+
+.menu-item__price {
+  font-family: var(--cm-font-head);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--cm-gold);
+  white-space: nowrap;
+}
+
+.menu-item__desc {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  color: var(--cm-muted);
+  line-height: 1.5;
+}
+
+/* En móvil, puntos decorativos más discretos para no robar espacio */
+@media (max-width: 520px) {
+  .menu-item__row {
+    flex-wrap: wrap;
+  }
+  .menu-item__dots {
+    display: none;
+  }
+  .menu-item__price {
+    margin-left: auto;
+  }
+  .catnav {
+    top: 68px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}

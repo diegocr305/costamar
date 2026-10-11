@@ -1,0 +1,3538 @@
+{
+  "source": "https://menu.fu.do/costamarbarracevichera",
+  "scrapedAt": "2026-10-11T00:04:06.528Z",
+  "products": [
+    {
+      "sourceId": "55",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/caldos-sopas-y-chupes/chupe-de-camarones-carta-55",
+      "category": "Caldos, Sopas y Chupes",
+      "subcategory": null,
+      "rawName": "Chupe de camarones  CARTA",
+      "name": "Chupe de camarones",
+      "description": "Un caldo tradicional peruano lleno de sabor y tradición. Elaborado con camarones frescos, ají amarillo, choclo tierno, papas amarillas y un toque de queso fresco y huacatay que se derrite en cada cucharada.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/55"
+    },
+    {
+      "sourceId": "53",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/caldos-sopas-y-chupes/parihuela-carta-53",
+      "category": "Caldos, Sopas y Chupes",
+      "subcategory": null,
+      "rawName": "Parihuela  CARTA",
+      "name": "Parihuela",
+      "description": "Una sopa tradicional y de sabor intenso, con filete de pescado y mariscos seleccionados, lleno de sabor y frescura.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/53"
+    },
+    {
+      "sourceId": "54",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/caldos-sopas-y-chupes/sudado-de-pescado-carta-54",
+      "category": "Caldos, Sopas y Chupes",
+      "subcategory": null,
+      "rawName": "Sudado de Pescado  CARTA",
+      "name": "Sudado de Pescado",
+      "description": "Pescado fresco cocinado en su jugo con aji amarillo y especias con intenso sabor a mar, acompañado de arroz blanco.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/54"
+    },
+    {
+      "sourceId": "63",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/aji-de-gallina-carta-63",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Ají de Gallina  CARTA",
+      "name": "Ají de Gallina",
+      "description": "Un plato tradicional peruano: pollo deshilachado en una cremosa salsa de ají amarillo con nueces, acompañado de papas cocidas y arroz blanco.",
+      "priceText": "$12.990",
+      "priceCLP": 12990,
+      "priceAmounts": [
+        "$12.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/63"
+    },
+    {
+      "sourceId": "65",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/arroz-chaufa-criollo-carta-65",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Arroz Chaufa Criollo  CARTA",
+      "name": "Arroz Chaufa Criollo",
+      "description": "Arroz salteado al wok con sabores criollos y especias orientales, a elección de pollo, carne o camarones.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/65"
+    },
+    {
+      "sourceId": "59",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/lomo-saltado-carta-59",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Lomo Saltado  CARTA",
+      "name": "Lomo Saltado",
+      "description": "Lomo jugoso salteado al wok con vegetales y especias peruanas, una experiencia única, acompañado de arroz y papas fritas.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/59"
+    },
+    {
+      "sourceId": "237",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/pollo-saltado-carta-237",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Pollo saltado  CARTA",
+      "name": "Pollo saltado",
+      "description": "Jugosos trozos de pollo salteados al wok con cebolla, tomate y un toque de soya, servidos con arroz blanco y papas fritas. Un clásico lleno de sabor peruano.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/237"
+    },
+    {
+      "sourceId": "69",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/chicharron-de-pollo-carta-69",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Chicharrón de Pollo  CARTA",
+      "name": "Chicharrón de Pollo",
+      "description": "Trozos de pollo marinados y fritos hasta alcanzar la perfección crujiente, un clásico peruano irresistible, acompañado de papas doradas o fritas con sarza criolla y cremosa salsa tártara.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/69"
+    },
+    {
+      "sourceId": "68",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/mostrito-broaster-carta-68",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Mostrito Broaster  CARTA",
+      "name": "Mostrito Broaster",
+      "description": "Delicioso pollo broaster al estilo peruano, dorado por fuera, jugoso por dentro, acompañado de papas fritas y arroz chaufa.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/68"
+    },
+    {
+      "sourceId": "70",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/filete-de-lomo-al-grill-carta-70",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Filete de Lomo al Grill  CARTA",
+      "name": "Filete de Lomo al Grill",
+      "description": "Suave lomo grillado, ideal para los paladares más exigentes, acompañado de papas doradas y panaché de verduras.",
+      "priceText": "$15.990",
+      "priceCLP": 15990,
+      "priceAmounts": [
+        "$15.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/70"
+    },
+    {
+      "sourceId": "315",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/pechuga-a-la-plancha-carta-315",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Pechuga a la Plancha CARTA",
+      "name": "Pechuga a la Plancha",
+      "description": "Pollo a la plancha acompañado de panaché de verduras y papas doradas",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/315"
+    },
+    {
+      "sourceId": "107",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/menu-kids-carta-107",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "Menu Kids  CARTA",
+      "name": "Menu Kids",
+      "description": "A eleccion : Papas fritas o pasta con pollo broaster o chicharrón de pollo.",
+      "priceText": "$7.990",
+      "priceCLP": 7990,
+      "priceAmounts": [
+        "$7.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/107"
+    },
+    {
+      "sourceId": "181",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/criollos-calientitos/saltado-veguie-carta-181",
+      "category": "Criollos calientitos",
+      "subcategory": null,
+      "rawName": "SALTADO VEGUIE  CARTA",
+      "name": "SALTADO VEGUIE",
+      "description": "",
+      "priceText": "$12.990",
+      "priceCLP": 12990,
+      "priceAmounts": [
+        "$12.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/181"
+    },
+    {
+      "sourceId": "80",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/fetuccini-a-la-huancaina-con-lomo-saltado-carta-80",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Fetuccini a la Huancaína con Lomo Saltado CARTA",
+      "name": "Fetuccini a la Huancaína con Lomo Saltado",
+      "description": "Deliciosos fettuccini bañados en nuestra salsa huancaína cremosa, servidos con un lomo saltado al wok que resalta los sabores peruanos en cada bocado.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/80"
+    },
+    {
+      "sourceId": "318",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/fetuccini-al-pesto-con-lomo-saltado-carta-318",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Fetuccini al Pesto con Lomo Saltado  CARTA",
+      "name": "Fetuccini al Pesto con Lomo Saltado",
+      "description": "Deliciosos fettuccini bañados en salsa pesto, servidos con un lomo saltado al wok que resalta los sabores peruanos en cada bocado.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/318"
+    },
+    {
+      "sourceId": "51",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/fetuccini-al-pesto-con-milanesa-de-pescado-carta-51",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Fetuccini al Pesto con Milanesa de Pescado  CARTA",
+      "name": "Fetuccini al Pesto con Milanesa de Pescado",
+      "description": "Fetuccini en una cremosa salsa de pesto a base de albahaca fresca, acompañado de una crujiente milanesa de pescado dorada al punto perfecto. Un equilibrio de texturas y sabores que deleita el paladar.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/51"
+    },
+    {
+      "sourceId": "101",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/risotto-a-la-huancaina-con-lomo-saltado-carta-101",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Risotto a la huancaína con lomo saltado  CARTA",
+      "name": "Risotto a la huancaína con lomo saltado",
+      "description": "Cremoso risotto preparado con la tradicional salsa huancaína, acompañado de un jugoso lomo saltado al wok. Una fusión de texturas y sabores únicos",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/101"
+    },
+    {
+      "sourceId": "66",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/fettucini-al-pesto-criollo-carta-66",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Fettucini al Pesto Criollo  CARTA",
+      "name": "Fettucini al Pesto Criollo",
+      "description": "fetuccini al dente bañado en cremosa salsa pesto, auténtico sabor peruano con proteína de pollo, vacuno ó mar y tierra.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/66"
+    },
+    {
+      "sourceId": "207",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/risotto-al-pesto-con-lomo-saltado-carta-207",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Risotto al Pesto con Lomo Saltado  CARTA",
+      "name": "Risotto al Pesto con Lomo Saltado",
+      "description": "Cremoso risotto al pesto acompañado de jugoso lomo saltado.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/207"
+    },
+    {
+      "sourceId": "50",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/fetuccini-frutos-de-mar-carta-50",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Fetuccini Frutos de Mar  CARTA",
+      "name": "Fetuccini Frutos de Mar",
+      "description": "Pasta al dente servida con una exquisita crema de mariscos frescos, una perfecta combinación.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/50"
+    },
+    {
+      "sourceId": "64",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/tallarin-saltado-criollo-carta-64",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Tallarín Saltado Criollo  CARTA",
+      "name": "Tallarín Saltado Criollo",
+      "description": "Tallarines salteados al wok con vegetales frescos y orientales una explosión de sabores peruanos, de pollo y carne ó mar y tierra.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/64"
+    },
+    {
+      "sourceId": "52",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pastas-y-cremosos/tallarin-saltado-de-camarones-carta-52",
+      "category": "Pastas y cremosos",
+      "subcategory": null,
+      "rawName": "Tallarín Saltado de Camarones  CARTA",
+      "name": "Tallarín Saltado de Camarones",
+      "description": "Tallarines salteados al wok con camarones y vegetales sazonados con especias orientales.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/52"
+    },
+    {
+      "sourceId": "45",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/chicharron-de-mariscos-carta-45",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Chicharrón de Mariscos CARTA",
+      "name": "Chicharrón de Mariscos",
+      "description": "Una selección de mariscos frescos fritos hasta alcanzar el punto perfecto de crocancia, acompañado de papas doradas o fritas y sarza criolla.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/45"
+    },
+    {
+      "sourceId": "44",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/chicharron-de-pescado-carta-44",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Chicharrón de Pescado  CARTA",
+      "name": "Chicharrón de Pescado",
+      "description": "Trozos de pescado dorados, crujientes y llenos de sabor, acompañado de papas doradas ó fritas y sarza criolla.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/44"
+    },
+    {
+      "sourceId": "58",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/grill-marino-carta-58",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Grill Marino  CARTA",
+      "name": "Grill Marino",
+      "description": "Pescado, pulpo, camarones y calamares al grill, una combinación marina única, acompañado de papas doradas y verduras salteadas.",
+      "priceText": "$23.990",
+      "priceCLP": 23990,
+      "priceAmounts": [
+        "$23.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/58"
+    },
+    {
+      "sourceId": "41",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/pescado-a-lo-macho-carta-41",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Pescado a lo Macho CARTA",
+      "name": "Pescado a lo Macho",
+      "description": "Pescado fresco cubierto con una salsa de mariscos, intensa y cremosa, acompañado de papas doradas y arroz blanco.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/41"
+    },
+    {
+      "sourceId": "42",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/pescado-en-salsa-de-camarones-carta-42",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Pescado en Salsa de Camarones  CARTA",
+      "name": "Pescado en Salsa de Camarones",
+      "description": "Filete de pescado tierno a la plancha con una cremosa salsa de camarones, acompañado de papas doradas y arroz.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/42"
+    },
+    {
+      "sourceId": "43",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/pescado-frito-tradicional-carta-43",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Pescado Frito Tradicional  CARTA",
+      "name": "Pescado Frito Tradicional",
+      "description": "Un clásico peruano: pescado frito dorado y crujiente, acompañado de papas doradas o fritas con arroz y cremosa salsa tártara.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/43"
+    },
+    {
+      "sourceId": "57",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/pulpo-grillado-carta-57",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Pulpo Grillado  CARTA",
+      "name": "Pulpo Grillado",
+      "description": "Pulpo tierno cocido a la parrilla con especias y delicioso chimichurri, acompañado de papas doradas y panaché de verduras.",
+      "priceText": "$20.990",
+      "priceCLP": 20990,
+      "priceAmounts": [
+        "$20.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/57"
+    },
+    {
+      "sourceId": "61",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/saltado-de-pescado-carta-61",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Saltado de Pescado  CARTA",
+      "name": "Saltado de Pescado",
+      "description": "Filetes de pescado fritos y salteados al wok con vegetales, una mezcla de sabores marinos y peruanos, acompañado de papas fritas y arroz.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/61"
+    },
+    {
+      "sourceId": "62",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/pescados-y-mariscos/saltado-mar-y-tierra-carta-62",
+      "category": "Pescados y mariscos",
+      "subcategory": null,
+      "rawName": "Saltado Mar y Tierra  CARTA",
+      "name": "Saltado Mar y Tierra",
+      "description": "Una combinación perfecta de camarón, carne y pollo, salteados con vegetales al estilo peruano, acompañado de papas fritas caseras y arroz.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/62"
+    },
+    {
+      "sourceId": "48",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/arroces/arroz-con-camarones-carta-48",
+      "category": "Pescados y mariscos",
+      "subcategory": "Arroces",
+      "rawName": "Arroz con Camarones  CARTA",
+      "name": "Arroz con Camarones",
+      "description": "Arroz preparado con camarones frescos en deliciosa salsa marina, perfecto para quienes aman los sabores del mar.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/48"
+    },
+    {
+      "sourceId": "49",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/arroces/arroz-chaufa-de-mariscos-carta-49",
+      "category": "Pescados y mariscos",
+      "subcategory": "Arroces",
+      "rawName": "Arroz Chaufa de Mariscos  CARTA",
+      "name": "Arroz Chaufa de Mariscos",
+      "description": "El clásico chaufa peruano sazonado con especias orientales y una variedad de mariscos frescos.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/49"
+    },
+    {
+      "sourceId": "47",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/arroces/arroz-con-mariscos-carta-47",
+      "category": "Pescados y mariscos",
+      "subcategory": "Arroces",
+      "rawName": "Arroz con Mariscos  CARTA",
+      "name": "Arroz con Mariscos",
+      "description": "Arroz cremoso en deliciosa salsa de mariscos y especias acompañado de sarza criolla.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/47"
+    },
+    {
+      "sourceId": "152",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/barco-costa-mar-personal-152",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Barco Costa Mar Personal",
+      "name": "Barco Costa Mar Personal",
+      "description": "Disfruta de un combo criollo: arroz con mariscos y un ceviche clásico más 1 Limonada ó Chicha morada Una elección de los mejores sabores peruanos.",
+      "priceText": "$18.990",
+      "priceCLP": 18990,
+      "priceAmounts": [
+        "$18.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/152"
+    },
+    {
+      "sourceId": "151",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/barco-limeno-mediano-151",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Barco Limeño Mediano",
+      "name": "Barco Limeño Mediano",
+      "description": "Incluye: lomo saltado, ají de gallina, arroz chaufa de pollo, una causa limeña y yuquitas a la huancaína. Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa.",
+      "priceText": "$40.990",
+      "priceCLP": 40990,
+      "priceAmounts": [
+        "$40.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/151"
+    },
+    {
+      "sourceId": "109",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/barco-costa-mar-familiar-109",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Barco Costa Mar Familiar",
+      "name": "Barco Costa Mar Familiar",
+      "description": "Incluye 1 de leche de tigre, arroz chaufa de mariscos, arroz con mariscos, chicharrón de pescado, una fresca causa limeña, un delicioso ceviche clásico y una porcion de papas fritas caseras. Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa.🌊🍹",
+      "priceText": "$55.990",
+      "priceCLP": 55990,
+      "priceAmounts": [
+        "$55.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/109"
+    },
+    {
+      "sourceId": "149",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/barco-criollo-familiar-149",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Barco Criollo Familiar",
+      "name": "Barco Criollo Familiar",
+      "description": "Incluye: Ají de gallina, Lomo saltado, Arroz chaufa, Chicharrón de pollo, Causa limeña, Papas a la Huancaína y una porcion de papas o yucas fritas . Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa. 🌽🍗🍹",
+      "priceText": "$55.990",
+      "priceCLP": 55990,
+      "priceAmounts": [
+        "$55.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/149"
+    },
+    {
+      "sourceId": "150",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/barco-costeno-familiar-150",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Barco Costeño Familiar",
+      "name": "Barco Costeño Familiar",
+      "description": "Incluye: Tiradito clásico, Arroz chaufa de pollo, Arroz con mariscos, Chicharrón de pollo, Pulpo al olivo, Causa limeña y una porción de papas fritas o doradas. Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa. Ideal para compartir entre familia o amigos. 🌊🍤🍹",
+      "priceText": "$57.990",
+      "priceCLP": 57990,
+      "priceAmounts": [
+        "$57.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/150"
+    },
+    {
+      "sourceId": "148",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/barco-mar-y-campo-mediano-148",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Barco Mar y Campo Mediano",
+      "name": "Barco Mar y Campo Mediano",
+      "description": "Incluye: Lomo saltado, Chicharrón de pescado, Pulpo al Olivo, Causa con topping crocante, Papa a la huancaína. Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa.",
+      "priceText": "$42.990",
+      "priceCLP": 42990,
+      "priceAmounts": [
+        "$42.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/148"
+    },
+    {
+      "sourceId": "97",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/ronda-marina-97",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Ronda Marina",
+      "name": "Ronda Marina",
+      "description": "Ronda marina de causa limeña, ceviche clásico, chicharrón de pescado, pulpo al olivo y arroz con marisco",
+      "priceText": "$39.990",
+      "priceCLP": 39990,
+      "priceAmounts": [
+        "$39.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/97"
+    },
+    {
+      "sourceId": "225",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/ronda-criollaza-225",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Ronda Criollaza",
+      "name": "Ronda Criollaza",
+      "description": "Incluye: ceviche clásico , chicharrón de pollo, lomo saltado, arroz chaufa de pollo y papas fritas caseras .",
+      "priceText": "$39.990",
+      "priceCLP": 39990,
+      "priceAmounts": [
+        "$39.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/225"
+    },
+    {
+      "sourceId": "224",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/ronda-costa-mar-224",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Ronda Costa Mar",
+      "name": "Ronda Costa Mar",
+      "description": "Incluye: causa limeña, ceviche clásico al rocoto, chicharrón de calamar, leche de tigre y arroz chaufa de mariscos.",
+      "priceText": "$39.990",
+      "priceCLP": 39990,
+      "priceAmounts": [
+        "$39.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/224"
+    },
+    {
+      "sourceId": "226",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/ronda-achicharrada-226",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Ronda Achicharrada",
+      "name": "Ronda Achicharrada",
+      "description": "Incluye: chicharrones en sus variedades de calamar, camarones, pulpo, pescado y una copa de leche de tigre",
+      "priceText": "$37.990",
+      "priceCLP": 37990,
+      "priceAmounts": [
+        "$37.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/226"
+    },
+    {
+      "sourceId": "74",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/trio-costero-74",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Trio Costero",
+      "name": "Trio Costero",
+      "description": "La mejor selección del mar: ceviche clásico, causa limeña y chicharrón de pescado.",
+      "priceText": "$19.990",
+      "priceCLP": 19990,
+      "priceAmounts": [
+        "$19.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/74"
+    },
+    {
+      "sourceId": "73",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/trio-criollo-73",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Trio Criollo",
+      "name": "Trio Criollo",
+      "description": "Un plato tradicional con lomo saltado, chicharrón de pollo y arroz chaufa que evoca los sabores criollos.",
+      "priceText": "$19.990",
+      "priceCLP": 19990,
+      "priceAmounts": [
+        "$19.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/73"
+    },
+    {
+      "sourceId": "186",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/duo-marino-186",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Duo Marino",
+      "name": "Duo Marino",
+      "description": "Dos de nuestros platos bandera en una sola presentación , una opción marina que te encantará, arroz con mariscos y chicharrón de pescado.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/186"
+    },
+    {
+      "sourceId": "187",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/duo-criollo-187",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Duo Criollo",
+      "name": "Duo Criollo",
+      "description": "Una combinación única de nuestros mejores platillos criollos, lomo saltado y chaufa de pollo.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/187"
+    },
+    {
+      "sourceId": "188",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/duo-costero-188",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Duo Costero",
+      "name": "Duo Costero",
+      "description": "Una presentación especial de nuestros platos marinos y criollos en uno solo ! chicharrón de pescado y lomo saltado.",
+      "priceText": "$15.990",
+      "priceCLP": 15990,
+      "priceAmounts": [
+        "$15.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/188"
+    },
+    {
+      "sourceId": "75",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/jalea-costa-mar-75",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Jalea Costa Mar",
+      "name": "Jalea Costa Mar",
+      "description": "Chicharrones de pescado y variedad de mariscos seleccionados, servidos con copa de ceviche fresco y cremosa salsa tártara, el sabor del mar en cada bocado.",
+      "priceText": "$19.990",
+      "priceCLP": 19990,
+      "priceAmounts": [
+        "$19.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/75"
+    },
+    {
+      "sourceId": "71",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/habla-causa-71",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "¡ Habla Causa !",
+      "name": "¡ Habla Causa !",
+      "description": "Un combo perfecto: causa camarones, ceviche de pescado, arroz chaufa de mariscos, para compartir o disfrutar solo.",
+      "priceText": "$19.990",
+      "priceCLP": 19990,
+      "priceAmounts": [
+        "$19.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/71"
+    },
+    {
+      "sourceId": "234",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/compartir/que-fue-mano-234",
+      "category": "Combos / Compartir",
+      "subcategory": "Compartir",
+      "rawName": "Que fue mano!",
+      "name": "Que fue mano!",
+      "description": "Una explosión de sabores: pesto peruano, chicharrón crocante de pollo y causa limeña",
+      "priceText": "$19.990",
+      "priceCLP": 19990,
+      "priceAmounts": [
+        "$19.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/234"
+    },
+    {
+      "sourceId": "191",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/empanadas-y-piqueos/chorrillana-x2-191",
+      "category": "Empanadas y Piqueos",
+      "subcategory": null,
+      "rawName": "Chorrillana x2",
+      "name": "Chorrillana x2",
+      "description": "Para compartir 2 personas",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "200",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/empanadas-y-piqueos/chorrillana-xl-200",
+      "category": "Empanadas y Piqueos",
+      "subcategory": null,
+      "rawName": "Chorrillana XL",
+      "name": "Chorrillana XL",
+      "description": "Para compartir 4 personas",
+      "priceText": "$16.990",
+      "priceCLP": 16990,
+      "priceAmounts": [
+        "$16.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/200"
+    },
+    {
+      "sourceId": "196",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/empanadas-y-piqueos/empanada-queso-196",
+      "category": "Empanadas y Piqueos",
+      "subcategory": null,
+      "rawName": "Empanada Queso",
+      "name": "Empanada Queso",
+      "description": "",
+      "priceText": "$2.990",
+      "priceCLP": 2990,
+      "priceAmounts": [
+        "$2.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/196"
+    },
+    {
+      "sourceId": "197",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/empanadas-y-piqueos/empanada-camaron-queso-197",
+      "category": "Empanadas y Piqueos",
+      "subcategory": null,
+      "rawName": "Empanada Camaron Queso",
+      "name": "Empanada Camaron Queso",
+      "description": "",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/197"
+    },
+    {
+      "sourceId": "198",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/empanadas-y-piqueos/empanada-mariscos-queso-198",
+      "category": "Empanadas y Piqueos",
+      "subcategory": null,
+      "rawName": "Empanada Mariscos Queso",
+      "name": "Empanada Mariscos Queso",
+      "description": "",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/198"
+    },
+    {
+      "sourceId": "199",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/empanadas-y-piqueos/empanada-de-lomo-saltado-199",
+      "category": "Empanadas y Piqueos",
+      "subcategory": null,
+      "rawName": "Empanada de Lomo Saltado",
+      "name": "Empanada de Lomo Saltado",
+      "description": "",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/199"
+    },
+    {
+      "sourceId": "302",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/empanadas-y-piqueos/empanada-mechada-queso-302",
+      "category": "Empanadas y Piqueos",
+      "subcategory": null,
+      "rawName": "Empanada Mechada Queso",
+      "name": "Empanada Mechada Queso",
+      "description": "",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/302"
+    },
+    {
+      "sourceId": "303",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/empanadas-y-piqueos/empanada-champinon-queso-303",
+      "category": "Empanadas y Piqueos",
+      "subcategory": null,
+      "rawName": "Empanada Champiñón Queso",
+      "name": "Empanada Champiñón Queso",
+      "description": "",
+      "priceText": "$3.490",
+      "priceCLP": 3490,
+      "priceAmounts": [
+        "$3.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/303"
+    },
+    {
+      "sourceId": "10",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-clasico-costeno-10",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche Clásico Costeño",
+      "name": "Ceviche Clásico Costeño",
+      "description": "Pescado fresco y pulpo en su punto perfecto, marinados con leche de tigre y ají peruano.",
+      "priceText": "$15.990",
+      "priceCLP": 15990,
+      "priceAmounts": [
+        "$15.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/10"
+    },
+    {
+      "sourceId": "15",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-costamar-15",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche CostaMar",
+      "name": "Ceviche CostaMar",
+      "description": "Un festín del mar: ceviche clásico de pescado y chicharrón crujiente de calamar y camarones.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/15"
+    },
+    {
+      "sourceId": "14",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-palteao-14",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche Palteao",
+      "name": "Ceviche Palteao",
+      "description": "Ceviche clásico de pescado fresco coronado con palta, creando una combinación perfecta de frescura y cremosidad.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/14"
+    },
+    {
+      "sourceId": "13",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-clasico-perucho-13",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche Clásico Perucho",
+      "name": "Ceviche Clásico Perucho",
+      "description": "El clásico ceviche peruano: pescado fresco, ají y una leche de tigre que resalta nuestras tradiciones.",
+      "priceText": "$13.500",
+      "priceCLP": 13500,
+      "priceAmounts": [
+        "$13.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/13"
+    },
+    {
+      "sourceId": "12",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-mixto-12",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche Mixto",
+      "name": "Ceviche Mixto",
+      "description": "Una fiesta marina, pescado fresco con una mezcla de los mejores mariscos, marinados en leche de tigre.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/12"
+    },
+    {
+      "sourceId": "21",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/cevicopa-21",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Cevicopa",
+      "name": "Cevicopa",
+      "description": "El ceviche clásico en abundante leche de tigre servido en una gran copa acompañado de chicharrón de mariscos, ideal para ocasiones especiales.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/21"
+    },
+    {
+      "sourceId": "22",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/cevicopa-sabores-22",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Cevicopa Sabores",
+      "name": "Cevicopa Sabores",
+      "description": "Ceviche de pescado en salsa de rocoto o ají amarillo servido en una gran copa acompañado de chicharrón de mariscos.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/22"
+    },
+    {
+      "sourceId": "93",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/triologia-de-leche-de-tigre-93",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Triologia de Leche de Tigre",
+      "name": "Triologia de Leche de Tigre",
+      "description": "Una experiencia única para los amantes del ceviche: Clásico, crema de ají amarillo y rocoto: tres sabores únicos para disfrutar la esencia del ceviche peruano.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/93"
+    },
+    {
+      "sourceId": "180",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/copa-de-leche-de-tigre-180",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Copa de Leche de Tigre",
+      "name": "Copa de Leche de Tigre",
+      "description": "",
+      "priceText": "$7.990",
+      "priceCLP": 7990,
+      "priceAmounts": [
+        "$7.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/180"
+    },
+    {
+      "sourceId": "190",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/trilogia-de-ceviches-190",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Trilogia de Ceviches",
+      "name": "Trilogia de Ceviches",
+      "description": "",
+      "priceText": "$18.990",
+      "priceCLP": 18990,
+      "priceAmounts": [
+        "$18.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/190"
+    },
+    {
+      "sourceId": "208",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-al-paso-208",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche al Paso",
+      "name": "Ceviche al Paso",
+      "description": "",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/208"
+    },
+    {
+      "sourceId": "231",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-chalaco-231",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche  Chalaco",
+      "name": "Ceviche  Chalaco",
+      "description": "Una explosión de frescura con pescado bañado en chalaquita de mariscos, el verdadero sabor del puerto",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/231"
+    },
+    {
+      "sourceId": "232",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-norteno-232",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche -Norteño",
+      "name": "Ceviche -Norteño",
+      "description": "Delicadamente preparado con pescado fresco y una leche de tigre al cilantro que define al norte peruano.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/232"
+    },
+    {
+      "sourceId": "233",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/ceviches/ceviche-soberano-233",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Ceviches",
+      "rawName": "Ceviche Soberano",
+      "name": "Ceviche Soberano",
+      "description": "La realeza de los ceviche: reineta y salmón en un plato que redefine la experiencia del mar.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/233"
+    },
+    {
+      "sourceId": "26",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/causas/causa-acevichada-26",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Causas",
+      "rawName": "Causa Acevichada",
+      "name": "Causa Acevichada",
+      "description": "Delicada base de papa prensada y sazonada con ají amarillo y limón, coronada con nuestro clásico ceviche fresco.",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/26"
+    },
+    {
+      "sourceId": "29",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/causas/causa-con-pulpo-a-la-parrilla-29",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Causas",
+      "rawName": "Causa con Pulpo a la Parrilla",
+      "name": "Causa con Pulpo a la Parrilla",
+      "description": "La perfecta combinación de papa suave, pulpo a la parrilla y salsa al olivo.",
+      "priceText": "$16.990",
+      "priceCLP": 16990,
+      "priceAmounts": [
+        "$16.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/29"
+    },
+    {
+      "sourceId": "28",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/causas/causa-crocante-28",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Causas",
+      "rawName": "Causa Crocante",
+      "name": "Causa Crocante",
+      "description": "Base crocante de papa coronada con cremosa palta y pollo ó camarones en deliciosa salsa tártara.",
+      "priceText": "$12.990",
+      "priceCLP": 12990,
+      "priceAmounts": [
+        "$12.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/28"
+    },
+    {
+      "sourceId": "24",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/causas/causa-ochentera-24",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Causas",
+      "rawName": "Causa Ochentera",
+      "name": "Causa Ochentera",
+      "description": "Una base de papa amarilla sazonada, rellena con camarones ecuatorianos crocantes, servido en salsa golf, que evoca los años dorados.",
+      "priceText": "$12.990",
+      "priceCLP": 12990,
+      "priceAmounts": [
+        "$12.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/24"
+    },
+    {
+      "sourceId": "223",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/causas/causa-oliveiro-223",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Causas",
+      "rawName": "Causa Oliveiro",
+      "name": "Causa Oliveiro",
+      "description": "Una combinación clásica de papa peruana y pulpo al olivo, que ofrece una experiencia gourmet.",
+      "priceText": "$15.990",
+      "priceCLP": 15990,
+      "priceAmounts": [
+        "$15.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/223"
+    },
+    {
+      "sourceId": "240",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/causas/causa-limenas-240",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Causas",
+      "rawName": "Causa Limeñas",
+      "name": "Causa Limeñas",
+      "description": "Suave base de papa amarilla peruana, sazonada con ají amarillo y limón, rellena con pollo cremoso y palta fresca.",
+      "priceText": "$10.990",
+      "priceCLP": 10990,
+      "priceAmounts": [
+        "$10.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/240"
+    },
+    {
+      "sourceId": "37",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/entradas/palta-rellena-de-camarones-37",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Entradas",
+      "rawName": "Palta Rellena de Camarones",
+      "name": "Palta Rellena de Camarones",
+      "description": "Palta cremosa de la zona rellena con camarones en salsa tártara y golf, un plato lleno de tradición.",
+      "priceText": "$11.990",
+      "priceCLP": 11990,
+      "priceAmounts": [
+        "$11.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/37"
+    },
+    {
+      "sourceId": "35",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/entradas/papa-a-la-huancaina-35",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Entradas",
+      "rawName": "Papa a la Huancaína",
+      "name": "Papa a la Huancaína",
+      "description": "Papas hervidas acompañadas de la clásica salsa huancaína, una joya de la cocina peruana.",
+      "priceText": "$8.990",
+      "priceCLP": 8990,
+      "priceAmounts": [
+        "$8.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/35"
+    },
+    {
+      "sourceId": "38",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/entradas/pulpo-al-olivo-38",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Entradas",
+      "rawName": "Pulpo al Olivo",
+      "name": "Pulpo al Olivo",
+      "description": "Pulpo laminado y bañado en una salsa de olivo suave, acompañado de una corona de palta y galletas crujientes, un plato lleno de sabor.",
+      "priceText": "$15.990",
+      "priceCLP": 15990,
+      "priceAmounts": [
+        "$15.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/38"
+    },
+    {
+      "sourceId": "30",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tiraditos/tiradito-clasico-30",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Tiraditos",
+      "rawName": "Tiradito Clásico",
+      "name": "Tiradito Clásico",
+      "description": "Pescado fresco cortado en finas láminas, marinado en clásica leche de tigre, acompañado de choclo peruano y palta.",
+      "priceText": "$12.990",
+      "priceCLP": 12990,
+      "priceAmounts": [
+        "$12.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/30"
+    },
+    {
+      "sourceId": "31",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tiraditos/tiradito-tricolor-31",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Tiraditos",
+      "rawName": "Tiradito Tricolor",
+      "name": "Tiradito Tricolor",
+      "description": "Un deleite visual y de sabor, tiradito clásico, en salsa de ají amarillo y en salsa rocoto que crean un contraste perfecto, acompañado de choclo peruano y corona de palta.",
+      "priceText": "$12.990",
+      "priceCLP": 12990,
+      "priceAmounts": [
+        "$12.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/31"
+    },
+    {
+      "sourceId": "227",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tiraditos/tiradito-infiern0-227",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Tiraditos",
+      "rawName": "Tiradito Infiern0",
+      "name": "Tiradito Infiern0",
+      "description": "Para los amantes del picante: tiradito bañado en una salsa de rocoto intensa y sabrosa.",
+      "priceText": "$13.500",
+      "priceCLP": 13500,
+      "priceAmounts": [
+        "$13.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/227"
+    },
+    {
+      "sourceId": "228",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tiraditos/tiradito-nikkei-228",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Tiraditos",
+      "rawName": "Tiradito Nikkei",
+      "name": "Tiradito Nikkei",
+      "description": "Una fusión peruano-japonesa con láminas de pescado, alcaparras, palta y un toque de ajonjolí.",
+      "priceText": "$13.500",
+      "priceCLP": 13500,
+      "priceAmounts": [
+        "$13.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/228"
+    },
+    {
+      "sourceId": "229",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tiraditos/tiradito-poseidon-229",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Tiraditos",
+      "rawName": "Tiradito Poseidon",
+      "name": "Tiradito Poseidon",
+      "description": "Pescado fresco cortado en finas laminas con ají amarillo y palta, una experiencia que lleva los sabores del mar a otro nivel.",
+      "priceText": "$13.500",
+      "priceCLP": 13500,
+      "priceAmounts": [
+        "$13.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/229"
+    },
+    {
+      "sourceId": "230",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tiraditos/tiradito-chalaco-230",
+      "category": "Ceviches y Entradas",
+      "subcategory": "Tiraditos",
+      "rawName": "Tiradito Chalaco",
+      "name": "Tiradito Chalaco",
+      "description": "Finas láminas de salmón bañado en una salsas de ajíes , acompañado de chalaquita y palta.",
+      "priceText": "$13.990",
+      "priceCLP": 13990,
+      "priceAmounts": [
+        "$13.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/230"
+    },
+    {
+      "sourceId": "96",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/postres/crema-volteada-peru-96",
+      "category": "Postres",
+      "subcategory": null,
+      "rawName": "Crema volteada peru",
+      "name": "Crema volteada peru",
+      "description": "Suave y delicado postre peruano, similar al flan, con un irresistible caramelo dorado que endulza cada bocado.",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/96"
+    },
+    {
+      "sourceId": "102",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/postres/suspiro-limeno-102",
+      "category": "Postres",
+      "subcategory": null,
+      "rawName": "Suspiro limeño",
+      "name": "Suspiro limeño",
+      "description": "Delicioso postre tradicional peruano, con suave y cremosa base de manjar blanco coronada con un merengue. Un dulce suspiro que enamora con cada cucharada.",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/102"
+    },
+    {
+      "sourceId": "203",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/postres/cheesecake-frutos-rojos-203",
+      "category": "Postres",
+      "subcategory": null,
+      "rawName": "Cheesecake Frutos Rojos",
+      "name": "Cheesecake Frutos Rojos",
+      "description": "",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/203"
+    },
+    {
+      "sourceId": "260",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/postres/cheesecake-de-maracuya-260",
+      "category": "Postres",
+      "subcategory": null,
+      "rawName": "Cheesecake de Maracuyá",
+      "name": "Cheesecake de Maracuyá",
+      "description": "Cheesecake cremoso con maracuyá.",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/260"
+    },
+    {
+      "sourceId": "262",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/postres/torta-de-chocolate-262",
+      "category": "Postres",
+      "subcategory": null,
+      "rawName": "Torta de Chocolate",
+      "name": "Torta de Chocolate",
+      "description": "Torta húmeda de chocolate.",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/262"
+    },
+    {
+      "sourceId": "155",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/postres/copa-de-helado-155",
+      "category": "Postres",
+      "subcategory": null,
+      "rawName": "Copa de Helado🍨",
+      "name": "Copa de Helado🍨",
+      "description": "Disfruta de 3 bolas de helado de los sabores que prefieras, servidas en una copa y decoradas con un toque de fudge de chocolate para un final perfecto. ¡Frescura y dulzura en cada bocado!",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/155"
+    },
+    {
+      "sourceId": "274",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/waffles-y-panqueques/banana-split-274",
+      "category": "Waffles Y Panqueques",
+      "subcategory": null,
+      "rawName": "Banana Split",
+      "name": "Banana Split",
+      "description": "Waffles con plátano y helado.",
+      "priceText": "$4.990",
+      "priceCLP": 4990,
+      "priceAmounts": [
+        "$4.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "273",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/waffles-y-panqueques/helado-frutos-rojos-273",
+      "category": "Waffles Y Panqueques",
+      "subcategory": null,
+      "rawName": "Helado – Frutos Rojos",
+      "name": "Helado – Frutos Rojos",
+      "description": "Waffles con helado y frutos rojos.",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "271",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/waffles-y-panqueques/macedonia-de-frutas-271",
+      "category": "Waffles Y Panqueques",
+      "subcategory": null,
+      "rawName": "Macedonia de Frutas",
+      "name": "Macedonia de Frutas",
+      "description": "Waffles con frutas frescas.",
+      "priceText": "$4.990",
+      "priceCLP": 4990,
+      "priceAmounts": [
+        "$4.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "272",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/waffles-y-panqueques/manjar-nutella-272",
+      "category": "Waffles Y Panqueques",
+      "subcategory": null,
+      "rawName": "Manjar – Nutella",
+      "name": "Manjar – Nutella",
+      "description": "Waffles con manjar o Nutella.",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "252",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/te-twinings-252",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Té Twinings",
+      "name": "Té Twinings",
+      "description": "Variedad de té Twinings.",
+      "priceText": "$1.990",
+      "priceCLP": 1990,
+      "priceAmounts": [
+        "$1.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/252"
+    },
+    {
+      "sourceId": "277",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/combo-cafe-torta-277",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Combo Café + Torta",
+      "name": "Combo Café + Torta",
+      "description": "",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/277"
+    },
+    {
+      "sourceId": "248",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/espresso-248",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Espresso",
+      "name": "Espresso",
+      "description": "Café espresso intenso y aromático.",
+      "priceText": "$1.990",
+      "priceCLP": 1990,
+      "priceAmounts": [
+        "$1.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/248"
+    },
+    {
+      "sourceId": "247",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/americano-247",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Americano",
+      "name": "Americano",
+      "description": "Café americano recién preparado.",
+      "priceText": "$2.490",
+      "priceCLP": 2490,
+      "priceAmounts": [
+        "$2.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/247"
+    },
+    {
+      "sourceId": "292",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/espresso-doble-292",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Espresso Doble",
+      "name": "Espresso Doble",
+      "description": "Doble shot de Café espresso intenso y aromático.",
+      "priceText": "$2.990",
+      "priceCLP": 2990,
+      "priceAmounts": [
+        "$2.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/292"
+    },
+    {
+      "sourceId": "245",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/cortado-245",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Cortado",
+      "name": "Cortado",
+      "description": "Café espresso con un toque de leche.",
+      "priceText": "$2.490",
+      "priceCLP": 2490,
+      "priceAmounts": [
+        "$2.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/245"
+    },
+    {
+      "sourceId": "249",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/capuccino-249",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Capuccino",
+      "name": "Capuccino",
+      "description": "Café con leche espumada.",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/249"
+    },
+    {
+      "sourceId": "250",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/mocaccino-250",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Mocaccino",
+      "name": "Mocaccino",
+      "description": "Café con chocolate y leche espumada.",
+      "priceText": "$4.490",
+      "priceCLP": 4490,
+      "priceAmounts": [
+        "$4.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/250"
+    },
+    {
+      "sourceId": "251",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cafeteria/chocolate-caliente-251",
+      "category": "Cafetería",
+      "subcategory": null,
+      "rawName": "Chocolate Caliente",
+      "name": "Chocolate Caliente",
+      "description": "Bebida caliente de chocolate.",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/251"
+    },
+    {
+      "sourceId": "79",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/jugos/jugo-natural-a-eleccion-79",
+      "category": "Bebestibles",
+      "subcategory": "Jugos",
+      "rawName": "Jugo Natural a elección",
+      "name": "Jugo Natural a elección",
+      "description": "",
+      "priceText": "$3.500",
+      "priceCLP": 3500,
+      "priceAmounts": [
+        "$3.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "92",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/jugos/limonada-clasica-92",
+      "category": "Bebestibles",
+      "subcategory": "Jugos",
+      "rawName": "Limonada Clasica",
+      "name": "Limonada Clasica",
+      "description": "",
+      "priceText": "$3.500",
+      "priceCLP": 3500,
+      "priceAmounts": [
+        "$3.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "99",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/jugos/chicha-morada-99",
+      "category": "Bebestibles",
+      "subcategory": "Jugos",
+      "rawName": "Chicha Morada",
+      "name": "Chicha Morada",
+      "description": "La refrescante bebida tradicional peruana, preparada con maíz morado, frutas frescas y un toque de canela y clavo.",
+      "priceText": "$3.500",
+      "priceCLP": 3500,
+      "priceAmounts": [
+        "$3.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "113",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/jugos/jarra-chicha-morada-1-lt-113",
+      "category": "Bebestibles",
+      "subcategory": "Jugos",
+      "rawName": "Jarra Chicha Morada 1 Lt.",
+      "name": "Jarra Chicha Morada 1 Lt.",
+      "description": "La refrescante bebida tradicional peruana, preparada con maíz morado, frutas frescas y un toque de canela y clavo.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "160",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/jugos/jarra-limonada1-lt-160",
+      "category": "Bebestibles",
+      "subcategory": "Jugos",
+      "rawName": "Jarra Limonada1 Lt.",
+      "name": "Jarra Limonada1 Lt.",
+      "description": "Una clásica bebida elaborada con jugo de limones frescos, endulzada al punto justo y servida bien fría para calmar tu sed y acompañar perfectamente tus comidas. 🍋✨",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "238",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/jugos/jugo-natural-con-leche-238",
+      "category": "Bebestibles",
+      "subcategory": "Jugos",
+      "rawName": "Jugo Natural con LECHE",
+      "name": "Jugo Natural con LECHE",
+      "description": "",
+      "priceText": "$4.000",
+      "priceCLP": 4000,
+      "priceAmounts": [
+        "$4.000"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "324",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/jugos/limonada-menta-jengibre-324",
+      "category": "Bebestibles",
+      "subcategory": "Jugos",
+      "rawName": "Limonada Menta Jengibre",
+      "name": "Limonada Menta Jengibre",
+      "description": "",
+      "priceText": "$3.500",
+      "priceCLP": 3500,
+      "priceAmounts": [
+        "$3.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "325",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/jugos/limonada-menta-325",
+      "category": "Bebestibles",
+      "subcategory": "Jugos",
+      "rawName": "Limonada Menta",
+      "name": "Limonada Menta",
+      "description": "",
+      "priceText": "$3.500",
+      "priceCLP": 3500,
+      "priceAmounts": [
+        "$3.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "1",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/coca-cola-350-ml-1",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Coca-Cola 350 ml",
+      "name": "Coca-Cola 350 ml",
+      "description": "Lata",
+      "priceText": "$2.500",
+      "priceCLP": 2500,
+      "priceAmounts": [
+        "$2.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "81",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/sprite-350-ml-81",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Sprite 350 ml",
+      "name": "Sprite 350 ml",
+      "description": "Lata",
+      "priceText": "$2.500",
+      "priceCLP": 2500,
+      "priceAmounts": [
+        "$2.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "82",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/fanta-350-ml-82",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Fanta 350 ml",
+      "name": "Fanta 350 ml",
+      "description": "Lata",
+      "priceText": "$2.500",
+      "priceCLP": 2500,
+      "priceAmounts": [
+        "$2.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "104",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/agua-sin-gas-104",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Agua sin gas",
+      "name": "Agua sin gas",
+      "description": "",
+      "priceText": "$2.000",
+      "priceCLP": 2000,
+      "priceAmounts": [
+        "$2.000"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "105",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/redbull-105",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "redbull",
+      "name": "redbull",
+      "description": "",
+      "priceText": "$3.000",
+      "priceCLP": 3000,
+      "priceAmounts": [
+        "$3.000"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "183",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/inca-kola-350-ml-183",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Inca Kola 350 ml",
+      "name": "Inca Kola 350 ml",
+      "description": "Lata",
+      "priceText": "$2.500",
+      "priceCLP": 2500,
+      "priceAmounts": [
+        "$2.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "184",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/bebida-lata-mini-184",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Bebida lata MINI",
+      "name": "Bebida lata MINI",
+      "description": "",
+      "priceText": "$1.500",
+      "priceCLP": 1500,
+      "priceAmounts": [
+        "$1.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "206",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/mision-gran-reserva-carmenere-by-misiones-de-rengo-206",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Mision Gran Reserva Carmenere by Misiones de Rengo",
+      "name": "Mision Gran Reserva Carmenere by Misiones de Rengo",
+      "description": "",
+      "priceText": "$14.990",
+      "priceCLP": 14990,
+      "priceAmounts": [
+        "$14.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "323",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/agua-con-gas-323",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Agua con gas",
+      "name": "Agua con gas",
+      "description": "",
+      "priceText": "$2.000",
+      "priceCLP": 2000,
+      "priceAmounts": [
+        "$2.000"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "338",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/coca-cola-zero-350-ml-338",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Coca-Cola Zero 350 ml",
+      "name": "Coca-Cola Zero 350 ml",
+      "description": "",
+      "priceText": "$2.500",
+      "priceCLP": 2500,
+      "priceAmounts": [
+        "$2.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "339",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/bebidas/sprite-zero-350-ml-339",
+      "category": "Bebestibles",
+      "subcategory": "Bebidas",
+      "rawName": "Sprite Zero 350 ml",
+      "name": "Sprite Zero 350 ml",
+      "description": "",
+      "priceText": "$2.500",
+      "priceCLP": 2500,
+      "priceAmounts": [
+        "$2.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "140",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/peruvian-mule-140",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Peruvian Mule",
+      "name": "Peruvian Mule",
+      "description": "Pisco, maracuyá, triple sec y ginger beer, servido en taza de cobre.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "135",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/berri-el-bravo-135",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Berri el Bravo",
+      "name": "Berri el Bravo",
+      "description": "Gin Bombay, mix de berries y Saint Germain, servido con agua tónica.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "134",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/mojito-de-la-buena-134",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Mojito de la Buena",
+      "name": "Mojito de la Buena",
+      "description": "Ron, jarabe de maracuyá y mix de berries, una explosión de sabores tropicales.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "139",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/enigma-jagger-139",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Enigma Jagger",
+      "name": "Enigma Jagger",
+      "description": "Pisco, jarabe de goma, maracuyá y Jaggermeister, con un toque de ginger ale.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "138",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/la-colorada-138",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "La Colorada",
+      "name": "La Colorada",
+      "description": "Gin Beefeater, almíbar de piña, maracuyá y cranberry, un cóctel vibrante y refrescante.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "137",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/la-fresca-137",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "La Fresca",
+      "name": "La Fresca",
+      "description": "Gin Tanqueray, jarabe de maracuyá y tónica, con un toque de limón y jengibre.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "126",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/orgasmo-multiple-126",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Orgasmo Múltiple",
+      "name": "Orgasmo Múltiple",
+      "description": "Una experiencia dulce y cremosa con Kahlúa, Amaretto, Baileys y una bola de helado.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "136",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/negroni-embrujado-136",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Negroni Embrujado",
+      "name": "Negroni Embrujado",
+      "description": "Beefeater, Campari, Aperol y vermouth rosso, un cóctel intenso y equilibrado.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "132",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/el-viajero-132",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "El Viajero",
+      "name": "El Viajero",
+      "description": "Whiskey, aguaymiel y maracuyá, con un toque de angostura.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "141",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/sangria-de-la-casa-141",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Sangría de la Casa",
+      "name": "Sangría de la Casa",
+      "description": "Una mezcla de vodka, vino tinto, jugo de naranja y triple sec con frutas frescas.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "131",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/caribeno-131",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Caribeño",
+      "name": "Caribeño",
+      "description": "Un mix tropical de Bacardi de coco, maracuyá, triple sec y Saint Germain, decorado con albahaca.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "133",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/mojito-tropical-133",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Mojito Tropical",
+      "name": "Mojito Tropical",
+      "description": "Bacardi de coco, almíbar de piña y pepino, una versión refrescante del clásico mojito.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "311",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/tragos-de-la-casa/pina-colada-311",
+      "category": "Bebestibles",
+      "subcategory": "Tragos de La Casa",
+      "rawName": "Piña Colada",
+      "name": "Piña Colada",
+      "description": "",
+      "priceText": "$7.990",
+      "priceCLP": 7990,
+      "priceAmounts": [
+        "$7.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "78",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/pisco-sour-sabores-78",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Pisco Sour Sabores",
+      "name": "Pisco Sour Sabores",
+      "description": "El clásico coctel peruano con pisco, limón fresco sabor a elección",
+      "priceText": "$6.490",
+      "priceCLP": 6490,
+      "priceAmounts": [
+        "$6.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "84",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/mojito-sabores-84",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Mojito Sabores",
+      "name": "Mojito Sabores",
+      "description": "Sabor a elección.",
+      "priceText": "$6.490",
+      "priceCLP": 6490,
+      "priceAmounts": [
+        "$6.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "94",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/pisco-sour-94",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Pisco Sour",
+      "name": "Pisco Sour",
+      "description": "El clásico coctel peruano con pisco, limón fresco",
+      "priceText": "$5.990",
+      "priceCLP": 5990,
+      "priceAmounts": [
+        "$5.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "95",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/pisco-sour-peruano-catedral-95",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Pisco Sour Peruano Catedral",
+      "name": "Pisco Sour Peruano Catedral",
+      "description": "Una versión XL del clásico coctel peruano, con pisco, limón fresco y la misma perfección en cada sorbo.",
+      "priceText": "$7.990",
+      "priceCLP": 7990,
+      "priceAmounts": [
+        "$7.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "112",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/aperol-spritz-112",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Aperol Spritz",
+      "name": "Aperol Spritz",
+      "description": "",
+      "priceText": "$5.990",
+      "priceCLP": 5990,
+      "priceAmounts": [
+        "$5.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "128",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/chicha-punch-128",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Chicha Punch",
+      "name": "Chicha Punch",
+      "description": "Pisco con almíbar de piña, chicha morada y limón, un cóctel peruano único.",
+      "priceText": "$6.490",
+      "priceCLP": 6490,
+      "priceAmounts": [
+        "$6.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "142",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/chilcano-142",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Chilcano",
+      "name": "Chilcano",
+      "description": "Pisco, ginger ale, limón de pica y un toque de amargo de angostura.",
+      "priceText": "$5.990",
+      "priceCLP": 5990,
+      "priceAmounts": [
+        "$5.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "143",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/chilcano-maracuya-albahaca-143",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Chilcano Maracuyá Albahaca",
+      "name": "Chilcano Maracuyá Albahaca",
+      "description": "Pisco macerado de albahaca, maracuyá y ginger ale, fresco y aromático.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "116",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/cosmopolitan-116",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Cosmopolitan",
+      "name": "Cosmopolitan",
+      "description": "Un refrescante cóctel de vodka, triple sec y jugo de cranberry, con un toque de lime juice.",
+      "priceText": "$6.490",
+      "priceCLP": 6490,
+      "priceAmounts": [
+        "$6.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "121",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/godfather-padrino-121",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Godfather / Padrino",
+      "name": "Godfather / Padrino",
+      "description": "Whiskey Scotch con un toque de Amaretto, suave y con carácter.",
+      "priceText": "$6.490",
+      "priceCLP": 6490,
+      "priceAmounts": [
+        "$6.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "119",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/manhattan-119",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Manhattan",
+      "name": "Manhattan",
+      "description": "Un cóctel icónico de whiskey bourbon y vermouth rosso, con un toque de amargo de angostura.",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "127",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/pisco-punch-127",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Pisco Punch",
+      "name": "Pisco Punch",
+      "description": "Un mix tropical de pisco, almíbar de piña y limón de pica, servido frío.",
+      "priceText": "$5.990",
+      "priceCLP": 5990,
+      "priceAmounts": [
+        "$5.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "130",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/ramazzotti-130",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Ramazzotti",
+      "name": "Ramazzotti",
+      "description": "Ramazzotti con espumante y soda, un aperitivo elegante con burbujas.",
+      "priceText": "$6.490",
+      "priceCLP": 6490,
+      "priceAmounts": [
+        "$6.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "129",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/tequila-margarita-129",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Tequila Margarita",
+      "name": "Tequila Margarita",
+      "description": "Tequila, triple sec, lime juice y limón de pica, un cóctel refrescante y vibrante.",
+      "priceText": "$6.490",
+      "priceCLP": 6490,
+      "priceAmounts": [
+        "$6.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "163",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/moscow-mule-163",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "moscow mule",
+      "name": "moscow mule",
+      "description": "",
+      "priceText": "$6.990",
+      "priceCLP": 6990,
+      "priceAmounts": [
+        "$6.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "174",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/bajativo-174",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "bajativo",
+      "name": "bajativo",
+      "description": "",
+      "priceText": "$2.990",
+      "priceCLP": 2990,
+      "priceAmounts": [
+        "$2.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "176",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/vino-botella-casas-del-bosque-gran-reserva-cabernet-sauvig-176",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Vino Botella Casas del Bosque Gran Reserva Cabernet Sauvig.",
+      "name": "Vino Botella Casas del Bosque Gran Reserva Cabernet Sauvig.",
+      "description": "2020 Valle Maipo",
+      "priceText": "$17.990",
+      "priceCLP": 17990,
+      "priceAmounts": [
+        "$17.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "185",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/wisky-a-las-rocas-185",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "wisky a las rocas",
+      "name": "wisky a las rocas",
+      "description": "",
+      "priceText": "$5.990",
+      "priceCLP": 5990,
+      "priceAmounts": [
+        "$5.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "319",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/coctel-de-algarrobina-319",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Cóctel de Algarrobina",
+      "name": "Cóctel de Algarrobina",
+      "description": "Un preparado dulce y ultra cremoso a base de auténtica algarrobina, leche evaporada y hielo batido. Textura suave que conquista el paladar.",
+      "priceText": "$7.990",
+      "priceCLP": 7990,
+      "priceAmounts": [
+        "$7.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "327",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/capitan-327",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "Capitan",
+      "name": "Capitan",
+      "description": "Clásico cóctel peruano, elegante e intenso, preparado con pisco, vermut rosso y un toque de amargo de Angostura. Aromático, fuerte y equilibrado, ideal para comenzar la experiencia en Costa Mar.",
+      "priceText": "$5.990",
+      "priceCLP": 5990,
+      "priceAmounts": [
+        "$5.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "340",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cocteles/copa-de-espumante-340",
+      "category": "Bebestibles",
+      "subcategory": "Cócteles",
+      "rawName": "COPA DE ESPUMANTE",
+      "name": "COPA DE ESPUMANTE",
+      "description": "",
+      "priceText": "$5.990",
+      "priceCLP": 5990,
+      "priceAmounts": [
+        "$5.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "85",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/michelada-85",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Michelada",
+      "name": "Michelada",
+      "description": "",
+      "priceText": "$5.490",
+      "priceCLP": 5490,
+      "priceAmounts": [
+        "$5.490"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "86",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/cusquena-330-ml-86",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Cusqueña 330 ml.",
+      "name": "Cusqueña 330 ml.",
+      "description": "Botella",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "87",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/corona-330-ml-87",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Corona 330 ml.",
+      "name": "Corona 330 ml.",
+      "description": "Botella",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "88",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/heineken-330-ml-88",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Heineken 330 ml.",
+      "name": "Heineken 330 ml.",
+      "description": "Botella",
+      "priceText": "$2.990",
+      "priceCLP": 2990,
+      "priceAmounts": [
+        "$2.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "89",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/cusquena-trigo-330-ml-89",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Cusqueña Trigo 330 ml.",
+      "name": "Cusqueña Trigo 330 ml.",
+      "description": "Botella",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "91",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/kunstmann-330-ml-91",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Kunstmann 330 ml.",
+      "name": "Kunstmann 330 ml.",
+      "description": "Botella",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "103",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/vino-botellin-103",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Vino botellin",
+      "name": "Vino botellin",
+      "description": "",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "157",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/pilsen-330-ml-157",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Pilsen 330 ml.",
+      "name": "Pilsen 330 ml.",
+      "description": "",
+      "priceText": "$3.990",
+      "priceCLP": 3990,
+      "priceAmounts": [
+        "$3.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "165",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/botella-vino-blanco-sauvignon-blanc-165",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Botella Vino Blanco Sauvignon Blanc",
+      "name": "Botella Vino Blanco Sauvignon Blanc",
+      "description": "",
+      "priceText": "$12.990",
+      "priceCLP": 12990,
+      "priceAmounts": [
+        "$12.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "170",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/botella-vino-tinto-casillero-170",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Botella vino tinto CASILLERO",
+      "name": "Botella vino tinto CASILLERO",
+      "description": "",
+      "priceText": "$12.990",
+      "priceCLP": 12990,
+      "priceAmounts": [
+        "$12.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "177",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/vino-botella-casas-del-bosque-botanico-series-savig-bl-177",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Vino Botella Casas del Bosque Botánico Series Savig. Bl.",
+      "name": "Vino Botella Casas del Bosque Botánico Series Savig. Bl.",
+      "description": "2023 Valle Casablanca",
+      "priceText": "$15.990",
+      "priceCLP": 15990,
+      "priceAmounts": [
+        "$15.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "320",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/kunstman-miel-500cc-320",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Kunstman Miel 500cc",
+      "name": "Kunstman Miel 500cc",
+      "description": "",
+      "priceText": "$5.990",
+      "priceCLP": 5990,
+      "priceAmounts": [
+        "$5.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "329",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/vino-castillo-de-molina-750-ml-329",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Vino Castillo de Molina 750 ml.",
+      "name": "Vino Castillo de Molina 750 ml.",
+      "description": "",
+      "priceText": "$12.000",
+      "priceCLP": 12000,
+      "priceAmounts": [
+        "$12.000"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "330",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/vino-valle-del-elqui-750-ml-330",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Vino Valle del Elqui 750 ml.",
+      "name": "Vino Valle del Elqui 750 ml.",
+      "description": "",
+      "priceText": "$12.000",
+      "priceCLP": 12000,
+      "priceAmounts": [
+        "$12.000"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "331",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/vino-valle-del-maipo-750-ml-331",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Vino Valle del Maipo 750 ml.",
+      "name": "Vino Valle del Maipo 750 ml.",
+      "description": "",
+      "priceText": "$17.990",
+      "priceCLP": 17990,
+      "priceAmounts": [
+        "$17.990"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "337",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/cervezas/merlot-misiones-del-rengo-750-ml-337",
+      "category": "Bebestibles",
+      "subcategory": "Cervezas",
+      "rawName": "Merlot Misiones del Rengo 750 ml.",
+      "name": "Merlot Misiones del Rengo 750 ml.",
+      "description": "",
+      "priceText": "$12.000",
+      "priceCLP": 12000,
+      "priceAmounts": [
+        "$12.000"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "98",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/extras/papas-fritas-caseras-98",
+      "category": "Extras",
+      "subcategory": null,
+      "rawName": "Papas Fritas caseras",
+      "name": "Papas Fritas caseras",
+      "description": "",
+      "priceText": "$4.500",
+      "priceCLP": 4500,
+      "priceAmounts": [
+        "$4.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "110",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/extras/porcion-arroz-110",
+      "category": "Extras",
+      "subcategory": null,
+      "rawName": "Porción arroz",
+      "name": "Porción arroz",
+      "description": "",
+      "priceText": "$2.500",
+      "priceCLP": 2500,
+      "priceAmounts": [
+        "$2.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "147",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/extras/ensalada-mixta-carta-147",
+      "category": "Extras",
+      "subcategory": null,
+      "rawName": "Ensalada mixta CARTA",
+      "name": "Ensalada mixta",
+      "description": "",
+      "priceText": "$5.900",
+      "priceCLP": 5900,
+      "priceAmounts": [
+        "$5.900"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    },
+    {
+      "sourceId": "314",
+      "sourceUrl": "https://menu.fu.do/costamarbarracevichera/extras/yucas-fritas-314",
+      "category": "Extras",
+      "subcategory": null,
+      "rawName": "yucas fritas",
+      "name": "yucas fritas",
+      "description": "",
+      "priceText": "$4.500",
+      "priceCLP": 4500,
+      "priceAmounts": [
+        "$4.500"
+      ],
+      "currency": "CLP",
+      "stockObserved": "out_of_stock",
+      "imageUrl": null
+    }
+  ],
+  "brandAssets": [
+    {
+      "role": "background",
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/online-menu/background-image"
+    },
+    {
+      "role": "logo",
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/online-menu/logo"
+    }
+  ],
+  "links": [
+    {
+      "text": "962838538",
+      "url": "tel:962838538"
+    },
+    {
+      "text": "costamarbarracevichera@gmail.com",
+      "url": "mailto:costamarbarracevichera@gmail.com"
+    },
+    {
+      "text": "56962838538",
+      "url": "https://api.whatsapp.com/send?phone=56962838538"
+    },
+    {
+      "text": "Costamar",
+      "url": "https://www.facebook.com/Costamar"
+    },
+    {
+      "text": "costamarbarracevichera",
+      "url": "https://www.instagram.com/costamarbarracevichera/"
+    }
+  ],
+  "visibleText": "NUEVO HORARIO 🕛 Lun a Jue | 12 a 19 hrs, 🕛 Vie y Sáb | 12 a 22 hrs, 🕛 Dom | 12 a 19 hrs\nCOSTAMAR\nDisponible\nDelivery\nPara retirar\nLo antes posible\nProgramar pedido\nElegir día\nSA-10/10\nDO-11/10\nLU-12/10\nMA-13/10\nMI-14/10\nJU-15/10\nVI-16/10\nElegir hora\nCaldos, Sopas y Chupes\nCriollos calientitos\nPastas y cremosos\nPescados y mariscos\nCombos / Compartir\nEmpanadas y Piqueos\nCeviches y Entradas\nPostres\nWaffles Y Panqueques\nCafetería\nBebestibles\nExtras\nIniciar sesión\nCaldos, Sopas y Chupes\nChupe de camarones CARTA\n\nUn caldo tradicional peruano lleno de sabor y tradición. Elaborado con camarones frescos, ají amarillo, choclo tierno, papas amarillas y un toque de queso fresco y huacatay que se derrite en cada cucharada.\n\n$13.990\nParihuela CARTA\n\nUna sopa tradicional y de sabor intenso, con filete de pescado y mariscos seleccionados, lleno de sabor y frescura.\n\n$14.990\nSudado de Pescado CARTA\n\nPescado fresco cocinado en su jugo con aji amarillo y especias con intenso sabor a mar, acompañado de arroz blanco.\n\n$13.990\nCriollos calientitos\nAjí de Gallina CARTA\n\nUn plato tradicional peruano: pollo deshilachado en una cremosa salsa de ají amarillo con nueces, acompañado de papas cocidas y arroz blanco.\n\n$12.990\nArroz Chaufa Criollo CARTA\n\nArroz salteado al wok con sabores criollos y especias orientales, a elección de pollo, carne o camarones.\n\n$14.990\nLomo Saltado CARTA\n\nLomo jugoso salteado al wok con vegetales y especias peruanas, una experiencia única, acompañado de arroz y papas fritas.\n\n$14.990\nPollo saltado CARTA\n\nJugosos trozos de pollo salteados al wok con cebolla, tomate y un toque de soya, servidos con arroz blanco y papas fritas. Un clásico lleno de sabor peruano.\n\n$13.990\nChicharrón de Pollo CARTA\n\nTrozos de pollo marinados y fritos hasta alcanzar la perfección crujiente, un clásico peruano irresistible, acompañado de papas doradas o fritas con sarza criolla y cremosa salsa tártara.\n\n$13.990\nMostrito Broaster CARTA\n\nDelicioso pollo broaster al estilo peruano, dorado por fuera, jugoso por dentro, acompañado de papas fritas y arroz chaufa.\n\n$13.990\nFilete de Lomo al Grill CARTA\n\nSuave lomo grillado, ideal para los paladares más exigentes, acompañado de papas doradas y panaché de verduras.\n\n$15.990\nPechuga a la Plancha CARTA\n\nPollo a la plancha acompañado de panaché de verduras y papas doradas\n\n$13.990\nMenu Kids CARTA\n\nA eleccion : Papas fritas o pasta con pollo broaster o chicharrón de pollo.\n\n$7.990\nSALTADO VEGUIE CARTA\n$12.990\nPastas y cremosos\nFetuccini a la Huancaína con Lomo Saltado CARTA\n\nDeliciosos fettuccini bañados en nuestra salsa huancaína cremosa, servidos con un lomo saltado al wok que resalta los sabores peruanos en cada bocado.\n\n$14.990\nFetuccini al Pesto con Lomo Saltado CARTA\n\nDeliciosos fettuccini bañados en salsa pesto, servidos con un lomo saltado al wok que resalta los sabores peruanos en cada bocado.\n\n$14.990\nFetuccini al Pesto con Milanesa de Pescado CARTA\n\nFetuccini en una cremosa salsa de pesto a base de albahaca fresca, acompañado de una crujiente milanesa de pescado dorada al punto perfecto. Un equilibrio de texturas y sabores que deleita el paladar.\n\n$13.990\nRisotto a la huancaína con lomo saltado CARTA\n\nCremoso risotto preparado con la tradicional salsa huancaína, acompañado de un jugoso lomo saltado al wok. Una fusión de texturas y sabores únicos\n\n$14.990\nFettucini al Pesto Criollo CARTA\n\nfetuccini al dente bañado en cremosa salsa pesto, auténtico sabor peruano con proteína de pollo, vacuno ó mar y tierra.\n\n$14.990\nRisotto al Pesto con Lomo Saltado CARTA\n\nCremoso risotto al pesto acompañado de jugoso lomo saltado.\n\n$14.990\nFetuccini Frutos de Mar CARTA\n\nPasta al dente servida con una exquisita crema de mariscos frescos, una perfecta combinación.\n\n$13.990\nTallarín Saltado Criollo CARTA\n\nTallarines salteados al wok con vegetales frescos y orientales una explosión de sabores peruanos, de pollo y carne ó mar y tierra.\n\n$14.990\nTallarín Saltado de Camarones CARTA\n\nTallarines salteados al wok con camarones y vegetales sazonados con especias orientales.\n\n$14.990\nPescados y mariscos\nChicharrón de Mariscos CARTA\n\nUna selección de mariscos frescos fritos hasta alcanzar el punto perfecto de crocancia, acompañado de papas doradas o fritas y sarza criolla.\n\n$13.990\nChicharrón de Pescado CARTA\n\nTrozos de pescado dorados, crujientes y llenos de sabor, acompañado de papas doradas ó fritas y sarza criolla.\n\n$13.990\nGrill Marino CARTA\n\nPescado, pulpo, camarones y calamares al grill, una combinación marina única, acompañado de papas doradas y verduras salteadas.\n\n$23.990\nPescado a lo Macho CARTA\n\nPescado fresco cubierto con una salsa de mariscos, intensa y cremosa, acompañado de papas doradas y arroz blanco.\n\n$14.990\nPescado en Salsa de Camarones CARTA\n\nFilete de pescado tierno a la plancha con una cremosa salsa de camarones, acompañado de papas doradas y arroz.\n\n$14.990\nPescado Frito Tradicional CARTA\n\nUn clásico peruano: pescado frito dorado y crujiente, acompañado de papas doradas o fritas con arroz y cremosa salsa tártara.\n\n$13.990\nPulpo Grillado CARTA\n\nPulpo tierno cocido a la parrilla con especias y delicioso chimichurri, acompañado de papas doradas y panaché de verduras.\n\n$20.990\nSaltado de Pescado CARTA\n\nFiletes de pescado fritos y salteados al wok con vegetales, una mezcla de sabores marinos y peruanos, acompañado de papas fritas y arroz.\n\n$13.990\nSaltado Mar y Tierra CARTA\n\nUna combinación perfecta de camarón, carne y pollo, salteados con vegetales al estilo peruano, acompañado de papas fritas caseras y arroz.\n\n$14.990\nArroces\nArroz con Camarones CARTA\n\nArroz preparado con camarones frescos en deliciosa salsa marina, perfecto para quienes aman los sabores del mar.\n\n$14.990\nArroz Chaufa de Mariscos CARTA\n\nEl clásico chaufa peruano sazonado con especias orientales y una variedad de mariscos frescos.\n\n$13.990\nArroz con Mariscos CARTA\n\nArroz cremoso en deliciosa salsa de mariscos y especias acompañado de sarza criolla.\n\n$13.990\nCombos / Compartir\nCompartir\nBarco Costa Mar Personal\n\nDisfruta de un combo criollo: arroz con mariscos y un ceviche clásico más 1 Limonada ó Chicha morada Una elección de los mejores sabores peruanos.\n\n$18.990\nBarco Limeño Mediano\n\nIncluye: lomo saltado, ají de gallina, arroz chaufa de pollo, una causa limeña y yuquitas a la huancaína. Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa.\n\n$40.990\nBarco Costa Mar Familiar\n\nIncluye 1 de leche de tigre, arroz chaufa de mariscos, arroz con mariscos, chicharrón de pescado, una fresca causa limeña, un delicioso ceviche clásico y una porcion de papas fritas caseras. Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa.🌊🍹\n\n$55.990\nBarco Criollo Familiar\n\nIncluye: Ají de gallina, Lomo saltado, Arroz chaufa, Chicharrón de pollo, Causa limeña, Papas a la Huancaína y una porcion de papas o yucas fritas . Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa. 🌽🍗🍹\n\n$55.990\nBarco Costeño Familiar\n\nIncluye: Tiradito clásico, Arroz chaufa de pollo, Arroz con mariscos, Chicharrón de pollo, Pulpo al olivo, Causa limeña y una porción de papas fritas o doradas. Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa. Ideal para compartir entre familia o amigos. 🌊🍤🍹\n\n$57.990\nBarco Mar y Campo Mediano\n\nIncluye: Lomo saltado, Chicharrón de pescado, Pulpo al Olivo, Causa con topping crocante, Papa a la huancaína. Incluye una refrescante jarra de chicha morada o limonada para compartir y disfrutar la experiencia completa.\n\n$42.990\nRonda Marina\n\nRonda marina de causa limeña, ceviche clásico, chicharrón de pescado, pulpo al olivo y arroz con marisco\n\n$39.990\nRonda Criollaza\n\nIncluye: ceviche clásico , chicharrón de pollo, lomo saltado, arroz chaufa de pollo y papas fritas caseras .\n\n$39.990\nRonda Costa Mar\n\nIncluye: causa limeña, ceviche clásico al rocoto, chicharrón de calamar, leche de tigre y arroz chaufa de mariscos.\n\n$39.990\nRonda Achicharrada\n\nIncluye: chicharrones en sus variedades de calamar, camarones, pulpo, pescado y una copa de leche de tigre\n\n$37.990\nTrio Costero\n\nLa mejor selección del mar: ceviche clásico, causa limeña y chicharrón de pescado.\n\n$19.990\nTrio Criollo\n\nUn plato tradicional con lomo saltado, chicharrón de pollo y arroz chaufa que evoca los sabores criollos.\n\n$19.990\nDuo Marino\n\nDos de nuestros platos bandera en una sola presentación , una opción marina que te encantará, arroz con mariscos y chicharrón de pescado.\n\n$14.990\nDuo Criollo\n\nUna combinación única de nuestros mejores platillos criollos, lomo saltado y chaufa de pollo.\n\n$14.990\nDuo Costero\n\nUna presentación especial de nuestros platos marinos y criollos en uno solo ! chicharrón de pescado y lomo saltado.\n\n$15.990\nJalea Costa Mar\n\nChicharrones de pescado y variedad de mariscos seleccionados, servidos con copa de ceviche fresco y cremosa salsa tártara, el sabor del mar en cada bocado.\n\n$19.990\n¡ Habla Causa !\n\nUn combo perfecto: causa camarones, ceviche de pescado, arroz chaufa de mariscos, para compartir o disfrutar solo.\n\n$19.990\nQue fue mano!\n\nUna explosión de sabores: pesto peruano, chicharrón crocante de pollo y causa limeña\n\n$19.990\nEmpanadas y Piqueos\nChorrillana x2\n\nPara compartir 2 personas\n\n$13.990\nChorrillana XL\n\nPara compartir 4 personas\n\n$16.990\nEmpanada Queso\n$2.990\nEmpanada Camaron Queso\n$3.990\nEmpanada Mariscos Queso\n$3.990\nEmpanada de Lomo Saltado\n$3.990\nEmpanada Mechada Queso\n$3.990\nEmpanada Champiñón Queso\n$3.490\nCeviches y Entradas\nCeviches\nCeviche Clásico Costeño\n\nPescado fresco y pulpo en su punto perfecto, marinados con leche de tigre y ají peruano.\n\n$15.990\nCeviche CostaMar\n\nUn festín del mar: ceviche clásico de pescado y chicharrón crujiente de calamar y camarones.\n\n$14.990\nCeviche Palteao\n\nCeviche clásico de pescado fresco coronado con palta, creando una combinación perfecta de frescura y cremosidad.\n\n$13.990\nCeviche Clásico Perucho\n\nEl clásico ceviche peruano: pescado fresco, ají y una leche de tigre que resalta nuestras tradiciones.\n\n$13.500\nCeviche Mixto\n\nUna fiesta marina, pescado fresco con una mezcla de los mejores mariscos, marinados en leche de tigre.\n\n$13.990\nCevicopa\n\nEl ceviche clásico en abundante leche de tigre servido en una gran copa acompañado de chicharrón de mariscos, ideal para ocasiones especiales.\n\n$14.990\nCevicopa Sabores\n\nCeviche de pescado en salsa de rocoto o ají amarillo servido en una gran copa acompañado de chicharrón de mariscos.\n\n$14.990\nTriologia de Leche de Tigre\n\nUna experiencia única para los amantes del ceviche: Clásico, crema de ají amarillo y rocoto: tres sabores únicos para disfrutar la esencia del ceviche peruano.\n\n$14.990\nCopa de Leche de Tigre\n$7.990\nTrilogia de Ceviches\n$18.990\nCeviche al Paso\n$6.990\nCeviche Chalaco\n\nUna explosión de frescura con pescado bañado en chalaquita de mariscos, el verdadero sabor del puerto\n\n$14.990\nCeviche -Norteño\n\nDelicadamente preparado con pescado fresco y una leche de tigre al cilantro que define al norte peruano.\n\n$13.990\nCeviche Soberano\n\nLa realeza de los ceviche: reineta y salmón en un plato que redefine la experiencia del mar.\n\n$14.990\nCausas\nCausa Acevichada\n\nDelicada base de papa prensada y sazonada con ají amarillo y limón, coronada con nuestro clásico ceviche fresco.\n\n$14.990\nCausa con Pulpo a la Parrilla\n\nLa perfecta combinación de papa suave, pulpo a la parrilla y salsa al olivo.\n\n$16.990\nCausa Crocante\n\nBase crocante de papa coronada con cremosa palta y pollo ó camarones en deliciosa salsa tártara.\n\n$12.990\nCausa Ochentera\n\nUna base de papa amarilla sazonada, rellena con camarones ecuatorianos crocantes, servido en salsa golf, que evoca los años dorados.\n\n$12.990\nCausa Oliveiro\n\nUna combinación clásica de papa peruana y pulpo al olivo, que ofrece una experiencia gourmet.\n\n$15.990\nCausa Limeñas\n\nSuave base de papa amarilla peruana, sazonada con ají amarillo y limón, rellena con pollo cremoso y palta fresca.\n\n$10.990\nEntradas\nPalta Rellena de Camarones\n\nPalta cremosa de la zona rellena con camarones en salsa tártara y golf, un plato lleno de tradición.\n\n$11.990\nPapa a la Huancaína\n\nPapas hervidas acompañadas de la clásica salsa huancaína, una joya de la cocina peruana.\n\n$8.990\nPulpo al Olivo\n\nPulpo laminado y bañado en una salsa de olivo suave, acompañado de una corona de palta y galletas crujientes, un plato lleno de sabor.\n\n$15.990\nTiraditos\nTiradito Clásico\n\nPescado fresco cortado en finas láminas, marinado en clásica leche de tigre, acompañado de choclo peruano y palta.\n\n$12.990\nTiradito Tricolor\n\nUn deleite visual y de sabor, tiradito clásico, en salsa de ají amarillo y en salsa rocoto que crean un contraste perfecto, acompañado de choclo peruano y corona de palta.\n\n$12.990\nTiradito Infiern0\n\nPara los amantes del picante: tiradito bañado en una salsa de rocoto intensa y sabrosa.\n\n$13.500\nTiradito Nikkei\n\nUna fusión peruano-japonesa con láminas de pescado, alcaparras, palta y un toque de ajonjolí.\n\n$13.500\nTiradito Poseidon\n\nPescado fresco cortado en finas laminas con ají amarillo y palta, una experiencia que lleva los sabores del mar a otro nivel.\n\n$13.500\nTiradito Chalaco\n\nFinas láminas de salmón bañado en una salsas de ajíes , acompañado de chalaquita y palta.\n\n$13.990\nPostres\nCrema volteada peru\n\nSuave y delicado postre peruano, similar al flan, con un irresistible caramelo dorado que endulza cada bocado.\n\n$3.990\nSuspiro limeño\n\nDelicioso postre tradicional peruano, con suave y cremosa base de manjar blanco coronada con un merengue. Un dulce suspiro que enamora con cada cucharada.\n\n$3.990\nCheesecake Frutos Rojos\n$3.990\nCheesecake de Maracuyá\n\nCheesecake cremoso con maracuyá.\n\n$3.990\nTorta de Chocolate\n\nTorta húmeda de chocolate.\n\n$3.990\nCopa de Helado🍨\n\nDisfruta de 3 bolas de helado de los sabores que prefieras, servidas en una copa y decoradas con un toque de fudge de chocolate para un final perfecto. ¡Frescura y dulzura en cada bocado!\n\n$3.990\nWaffles Y Panqueques\nBanana Split\n\nWaffles con plátano y helado.\n\n$4.990\nHelado – Frutos Rojos\n\nWaffles con helado y frutos rojos.\n\n$3.990\nMacedonia de Frutas\n\nWaffles con frutas frescas.\n\n$4.990\nManjar – Nutella\n\nWaffles con manjar o Nutella.\n\n$3.990\nCafetería\nTé Twinings\n\nVariedad de té Twinings.\n\n$1.990\nCombo Café + Torta\n$3.990\nEspresso\n\nCafé espresso intenso y aromático.\n\n$1.990\nAmericano\n\nCafé americano recién preparado.\n\n$2.490\nEspresso Doble\n\nDoble shot de Café espresso intenso y aromático.\n\n$2.990\nCortado\n\nCafé espresso con un toque de leche.\n\n$2.490\nCapuccino\n\nCafé con leche espumada.\n\n$3.990\nMocaccino\n\nCafé con chocolate y leche espumada.\n\n$4.490\nChocolate Caliente\n\nBebida caliente de chocolate.\n\n$3.990\nBebestibles\nJugos\nJugo Natural a elección\n$3.500\nLimonada Clasica\n$3.500\nChicha Morada\n\nLa refrescante bebida tradicional peruana, preparada con maíz morado, frutas frescas y un toque de canela y clavo.\n\n$3.500\nJarra Chicha Morada 1 Lt.\n\nLa refrescante bebida tradicional peruana, preparada con maíz morado, frutas frescas y un toque de canela y clavo.\n\n$6.990\nJarra Limonada1 Lt.\n\nUna clásica bebida elaborada con jugo de limones frescos, endulzada al punto justo y servida bien fría para calmar tu sed y acompañar perfectamente tus comidas. 🍋✨\n\n$6.990\nJugo Natural con LECHE\n$4.000\nLimonada Menta Jengibre\n$3.500\nLimonada Menta\n$3.500\nBebidas\nCoca-Cola 350 ml\n\nLata\n\n$2.500\nSprite 350 ml\n\nLata\n\n$2.500\nFanta 350 ml\n\nLata\n\n$2.500\nAgua sin gas\n$2.000\nredbull\n$3.000\nInca Kola 350 ml\n\nLata\n\n$2.500\nBebida lata MINI\n$1.500\nMision Gran Reserva Carmenere by Misiones de Rengo\n$14.990\nAgua con gas\n$2.000\nCoca-Cola Zero 350 ml\n$2.500\nSprite Zero 350 ml\n$2.500\nTragos de La Casa\nPeruvian Mule\n\nPisco, maracuyá, triple sec y ginger beer, servido en taza de cobre.\n\n$6.990\nBerri el Bravo\n\nGin Bombay, mix de berries y Saint Germain, servido con agua tónica.\n\n$6.990\nMojito de la Buena\n\nRon, jarabe de maracuyá y mix de berries, una explosión de sabores tropicales.\n\n$6.990\nEnigma Jagger\n\nPisco, jarabe de goma, maracuyá y Jaggermeister, con un toque de ginger ale.\n\n$6.990\nLa Colorada\n\nGin Beefeater, almíbar de piña, maracuyá y cranberry, un cóctel vibrante y refrescante.\n\n$6.990\nLa Fresca\n\nGin Tanqueray, jarabe de maracuyá y tónica, con un toque de limón y jengibre.\n\n$6.990\nOrgasmo Múltiple\n\nUna experiencia dulce y cremosa con Kahlúa, Amaretto, Baileys y una bola de helado.\n\n$6.990\nNegroni Embrujado\n\nBeefeater, Campari, Aperol y vermouth rosso, un cóctel intenso y equilibrado.\n\n$6.990\nEl Viajero\n\nWhiskey, aguaymiel y maracuyá, con un toque de angostura.\n\n$6.990\nSangría de la Casa\n\nUna mezcla de vodka, vino tinto, jugo de naranja y triple sec con frutas frescas.\n\n$6.990\nCaribeño\n\nUn mix tropical de Bacardi de coco, maracuyá, triple sec y Saint Germain, decorado con albahaca.\n\n$6.990\nMojito Tropical\n\nBacardi de coco, almíbar de piña y pepino, una versión refrescante del clásico mojito.\n\n$6.990\nPiña Colada\n$7.990\nCócteles\nPisco Sour Sabores\n\nEl clásico coctel peruano con pisco, limón fresco sabor a elección\n\n$6.490\nMojito Sabores\n\nSabor a elección.\n\n$6.490\nPisco Sour\n\nEl clásico coctel peruano con pisco, limón fresco\n\n$5.990\nPisco Sour Peruano Catedral\n\nUna versión XL del clásico coctel peruano, con pisco, limón fresco y la misma perfección en cada sorbo.\n\n$7.990\nAperol Spritz\n$5.990\nChicha Punch\n\nPisco con almíbar de piña, chicha morada y limón, un cóctel peruano único.\n\n$6.490\nChilcano\n\nPisco, ginger ale, limón de pica y un toque de amargo de angostura.\n\n$5.990\nChilcano Maracuyá Albahaca\n\nPisco macerado de albahaca, maracuyá y ginger ale, fresco y aromático.\n\n$6.990\nCosmopolitan\n\nUn refrescante cóctel de vodka, triple sec y jugo de cranberry, con un toque de lime juice.\n\n$6.490\nGodfather / Padrino\n\nWhiskey Scotch con un toque de Amaretto, suave y con carácter.\n\n$6.490\nManhattan\n\nUn cóctel icónico de whiskey bourbon y vermouth rosso, con un toque de amargo de angostura.\n\n$6.990\nPisco Punch\n\nUn mix tropical de pisco, almíbar de piña y limón de pica, servido frío.\n\n$5.990\nRamazzotti\n\nRamazzotti con espumante y soda, un aperitivo elegante con burbujas.\n\n$6.490\nTequila Margarita\n\nTequila, triple sec, lime juice y limón de pica, un cóctel refrescante y vibrante.\n\n$6.490\nmoscow mule\n$6.990\nbajativo\n$2.990\nVino Botella Casas del Bosque Gran Reserva Cabernet Sauvig.\n\n2020 Valle Maipo\n\n$17.990\nwisky a las rocas\n$5.990\nCóctel de Algarrobina\n\nUn preparado dulce y ultra cremoso a base de auténtica algarrobina, leche evaporada y hielo batido. Textura suave que conquista el paladar.\n\n$7.990\nCapitan\n\nClásico cóctel peruano, elegante e intenso, preparado con pisco, vermut rosso y un toque de amargo de Angostura. Aromático, fuerte y equilibrado, ideal para comenzar la experiencia en Costa Mar.\n\n$5.990\nCOPA DE ESPUMANTE\n$5.990\nCervezas\nMichelada\n$5.490\nCusqueña 330 ml.\n\nBotella\n\n$3.990\nCorona 330 ml.\n\nBotella\n\n$3.990\nHeineken 330 ml.\n\nBotella\n\n$2.990\nCusqueña Trigo 330 ml.\n\nBotella\n\n$3.990\nKunstmann 330 ml.\n\nBotella\n\n$3.990\nVino botellin\n$3.990\nPilsen 330 ml.\n$3.990\nBotella Vino Blanco Sauvignon Blanc\n$12.990\nBotella vino tinto CASILLERO\n$12.990\nVino Botella Casas del Bosque Botánico Series Savig. Bl.\n\n2023 Valle Casablanca\n\n$15.990\nKunstman Miel 500cc\n$5.990\nVino Castillo de Molina 750 ml.\n$12.000\nVino Valle del Elqui 750 ml.\n$12.000\nVino Valle del Maipo 750 ml.\n$17.990\nMerlot Misiones del Rengo 750 ml.\n$12.000\nExtras\nPapas Fritas caseras\n$4.500\nPorción arroz\n$2.500\nEnsalada mixta CARTA\n$5.900\nyucas fritas\n$4.500\n\nCOSTAMAR\n\nDirección y horarios\nAv. Rafael Ariztía 220, Local 1, Quillota\nDesde las 12:00 hrs\nContacto\n962838538\ncostamarbarracevichera@gmail.com\nRedes sociales\n56962838538\nCostamar\ncostamarbarracevichera\nEsta tienda online fue creada con",
+  "downloadFailures": [
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/online-menu/background-image",
+      "error": "Unsupported image type: binary/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/online-menu/logo",
+      "error": "Unsupported image type: binary/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/55",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/53",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/54",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/63",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/65",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/59",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/237",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/69",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/68",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/70",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/315",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/107",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/181",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/80",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/318",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/51",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/101",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/66",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/207",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/50",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/64",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/52",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/45",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/44",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/58",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/41",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/42",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/43",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/57",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/61",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/62",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/48",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/49",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/47",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/152",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/151",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/109",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/149",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/150",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/148",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/97",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/225",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/224",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/226",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/74",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/73",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/186",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/187",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/188",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/75",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/71",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/234",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/200",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/196",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/197",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/198",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/199",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/302",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/303",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/10",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/15",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/14",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/13",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/12",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/21",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/22",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/93",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/180",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/190",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/208",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/231",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/232",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/233",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/26",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/29",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/28",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/24",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/223",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/240",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/37",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/35",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/38",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/30",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/31",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/227",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/228",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/229",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/230",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/96",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/102",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/203",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/260",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/262",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/155",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/252",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/277",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/248",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/247",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/292",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/245",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/249",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/250",
+      "error": "Unsupported image type: application/octet-stream"
+    },
+    {
+      "url": "https://fudo-apps-storage.s3.sa-east-1.amazonaws.com/production/251426/common/products/251",
+      "error": "Unsupported image type: application/octet-stream"
+    }
+  ]
+}

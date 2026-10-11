@@ -1,0 +1,341 @@
+# Plan de Implementación: Plataforma Digital Costa Mar
+
+## Descripción general
+
+Implementación incremental del monorepo TypeScript con Angular SSR (web pública), Angular SPA (admin), Ionic PWA (club) y NestJS (API), usando Supabase Cloud como base de datos y autenticación, Docker Compose en Lightsail, y Nginx como proxy inverso. Cada fase entrega funcionalidad integrada y verificable antes de avanzar a la siguiente.
+
+## Tareas
+
+- [x] 1. Inicializar monorepo y estructura base
+  - Crear `package.json` raíz con `pnpm workspaces` apuntando a `apps/*` y `packages/*`
+  - Configurar `tsconfig.base.json` raíz con paths para `@costamar/shared`
+  - Crear `packages/shared/` con `package.json`, `tsconfig.json` y `src/index.ts` exportando los tipos base (auth, roles, constantes)
+  - Crear scaffolding mínimo de `apps/api` con NestJS CLI (`nest new`), `apps/web` y `apps/admin` con Angular CLI (`ng new`), `apps/club` con Ionic CLI
+  - Agregar `.env.example` en raíz y en cada app con todas las variables requeridas (sin valores reales)
+  - Agregar `.gitignore` que excluya `.env`, `node_modules`, `dist`, `*.pem`, claves privadas
+  - Verificar que `pnpm install` desde la raíz instala todas las dependencias
+  - _Requisitos: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7_
+
+- [x] 2. Infraestructura Docker y Nginx
+  - [x] 2.1 Crear `Dockerfile` multi-stage para `apps/api` (imagen base `node:22-alpine`, sin `latest`)
+    - Stage build: compila NestJS; stage runtime: copia `dist/` y ejecuta
+    - _Requisitos: 2.1, 2.4_
+  - [x] 2.2 Crear `Dockerfile` multi-stage para `apps/web` (Angular SSR con `node:22-alpine`)
+    - _Requisitos: 2.1, 2.4_
+  - [x] 2.3 Crear `Dockerfile` multi-stage para `apps/admin` y `apps/club` (nginx:1.24-alpine para servir SPA/PWA)
+    - _Requisitos: 2.1, 2.4_
+  - [x] 2.4 Crear `docker-compose.yml` raíz con servicios `api`, `web`, `admin`, `club` en red interna `costamar_net`
+    - Ningún servicio expone puertos directamente al host; solo Nginx accede a ellos
+    - Incluir validación de variables de entorno requeridas con `condition: service_healthy` o variables obligatorias
+    - _Requisitos: 2.2, 2.3, 2.5, 2.7_
+  - [x] 2.5 Crear `docker-compose.override.yml` para desarrollo local (exponer puertos de apps al host)
+    - _Requisitos: 2.2_
+  - [x] 2.6 Crear configuraciones Nginx en `nginx/` para los tres subdominios y el dominio principal
+    - `restaurantecostamar.cl` → `web:4000`; `admin.restaurantecostamar.cl` → `admin:4001`; `api.restaurantecostamar.cl` → `api:3000`; `club.restaurantecostamar.cl` → `club:4002`
+    - Incluir bloque SSL con el certificado Cloudflare Origin CA ya instalado en `/etc/ssl/cloudflare/`
+    - _Requisitos: 2.6, 2.7_
+  - [x] 2.7 Crear `docs/deployment.md` con procedimiento de instalación local, despliegue en Lightsail y rollback
+    - _Requisitos: 2.8, 18.6_
+
+- [x] 3. Checkpoint — Verificar que `docker-compose up` levanta todos los servicios
+  - Asegurar que todos los servicios arrancan y Nginx responde en los puertos configurados. Consultar al usuario si hay dudas sobre la configuración del servidor.
+
+- [x] 4. Módulo de autenticación en la API (NestJS)
+  - [x] 4.1 Instalar y configurar `@supabase/supabase-js` en `apps/api`; crear `SupabaseModule` con cliente `service_role` inyectable
+    - El `service_role` se lee exclusivamente desde variables de entorno; nunca hardcodeado
+    - _Requisitos: 3.6, 17.5_
+  - [x] 4.2 Implementar `JwtStrategy` (Passport) que valide la firma JWT de Supabase usando el JWK público y extraiga el rol desde los claims sin consultar la BD
+    - _Requisitos: 3.3, 3.4_
+  - [x] 4.3 Implementar `AuthGuard` y `RolesGuard` con decorador `@Roles()` y `@PublicRoute()`
+    - _Requisitos: 4.3, 4.4, 4.5, 4.6_
+  - [x]* 4.4 Escribir property test para validación de roles (Prop 1)
+    - **Propiedad 1: Validación de roles**
+    - Para cualquier string enviado como rol, si no está en `{superadmin, admin, manager, kitchen, inventory, cashier, customer}`, el guard/servicio debe rechazar con HTTP 400
+    - **Valida: Requisito 4.3**
+  - [x]* 4.5 Escribir property test para extracción de rol desde JWT (Prop 2)
+    - **Propiedad 2: Extracción de rol sin consulta a BD**
+    - Para cualquier JWT válido firmado por Supabase, `JwtStrategy.validate()` debe devolver el rol extraído de los claims sin llamar a ningún método de `SupabaseClient`
+    - **Valida: Requisito 3.4**
+  - [x]* 4.6 Escribir unit tests para `AuthGuard` y `RolesGuard`
+    - Cubrir: JWT expirado → 401, rol insuficiente → 403, ruta pública sin token → 200, flujo login→JWT→guard→controlador
+    - _Requisitos: 3.3, 4.3_
+
+- [x] 5. Módulo de usuarios y roles en la API
+  - [x] 5.1 Crear migraciones SQL en `apps/api/supabase/migrations/` para las tablas `profiles`, `staff_members`, `roles`, `user_roles`
+    - Incluir datos semilla para los 7 roles y el primer superadmin mediante migración controlada (no desde registro público)
+    - _Requisitos: 4.1, 4.2_
+  - [x] 5.2 Implementar `UsersModule` con endpoints: `GET /api/v1/users`, `POST /api/v1/users`, `PATCH /api/v1/users/:id`, `DELETE /api/v1/users/:id` (desactivar, no eliminar)
+    - Accesible solo para roles `superadmin` y `admin`
+    - _Requisitos: 4.2, 4.8, 4.9_
+  - [x] 5.3 Implementar RLS en Supabase para las tablas de identidad: ningún usuario lee datos de otro fuera de su rol
+    - _Requisitos: 4.7, 17.7_
+  - [x]* 5.4 Escribir unit tests para `UsersModule`
+    - Cubrir: crear usuario con rol válido, crear con rol inválido → 400, listar como admin, listar como kitchen → 403
+    - _Requisitos: 4.2, 4.3, 4.9_
+
+- [x] 6. Health endpoint y versionado de la API
+  - [x] 6.1 Implementar `HealthModule` con `GET /api/v1/health` usando `@nestjs/terminus`
+    - Verificar conectividad real con Supabase (query simple); retornar `{ status, timestamp, version, components }`
+    - _Requisitos: 5.1, 5.2, 5.3_
+  - [x] 6.2 Implementar `GlobalExceptionFilter` que formatee todos los errores con `{ statusCode, message, timestamp }`
+    - _Requisitos: 5.5_
+  - [x] 6.3 Implementar `LoggingInterceptor` que registre cada solicitud con `{ level, method, path, statusCode, durationMs, userId, role, timestamp }` sin loguear tokens ni contraseñas
+    - _Requisitos: 5.6, 17.5_
+  - [x]* 6.4 Escribir property test para el health endpoint (Prop 11)
+    - **Propiedad 11: Health endpoint refleja estado real de Supabase**
+    - Mockear Supabase con conexión OK → esperar HTTP 200 y `status: "ok"`; mockear con error → esperar HTTP 503 y `status: "degraded"`; nunca estado inconsistente
+    - **Valida: Requisitos 5.1, 5.2**
+  - [x]* 6.5 Escribir unit tests para `HealthModule` y `GlobalExceptionFilter`
+    - _Requisitos: 5.1, 5.2, 5.5_
+
+- [x] 7. Checkpoint — Verificar autenticación y health end-to-end
+  - Asegurar que `GET /api/v1/health` responde correctamente, que el guard rechaza JWTs inválidos y que `pnpm test --run` pasa sin errores. Consultar al usuario antes de continuar.
+
+- [x] 8. Web pública (WebApp Angular SSR) — estructura y pantalla de inicio
+  - [x] 8.1 Configurar `apps/web` con `provideServerRendering()`, rutas lazy-loaded y `HttpClient` con interceptor de errores
+    - _Requisitos: 6.1, 6.4_
+  - [x] 8.2 Implementar página de inicio (`/`) con identidad visual del restaurante, datos de contacto en footer y metaetiquetas SEO por página
+    - _Requisitos: 6.2, 6.3, 6.6_
+  - [x] 8.3 Implementar página de carta (`/carta`) que consuma `GET /api/v1/carta` y muestre categorías y productos disponibles; mostrar mensaje informativo si la API falla
+    - _Requisitos: 6.2, 6.7, 8.7_
+  - [x] 8.4 Crear páginas stub con estructura responsiva para: reservas (`/reservas`), pedidos (`/pedidos`) y acceso al club (`/club`)
+    - _Requisitos: 6.2, 6.4_
+
+- [x] 9. Panel administrativo (AdminApp Angular SPA) — autenticación y dashboard
+  - [x] 9.1 Configurar `apps/admin` con `AuthGuard` Angular que redirige a `/login` si no hay JWT válido; implementar `AuthService` usando `@supabase/supabase-js` con `anon_key`
+    - Solo usar `anon_key` en el frontend; nunca `service_role`
+    - _Requisitos: 7.1, 3.6_
+  - [x] 9.2 Implementar pantalla de login con email/contraseña y botón "Continuar con Google" usando PKCE OAuth flow
+    - Registrar `https://admin.restaurantecostamar.cl/auth/callback` en Supabase URL Configuration
+    - _Requisitos: 19.2, 3.1, 3.2_
+  - [x] 9.3 Implementar `RoleGuard` Angular que filtra secciones del menú de navegación según el rol del JWT
+    - _Requisitos: 7.2, 7.3_
+  - [x] 9.4 Implementar dashboard inicial (`/dashboard`) con estructura de tarjetas para métricas del día y modal de sesión expirada
+    - _Requisitos: 7.4, 7.5_
+  - [x] 9.5 Agregar callback route `/auth/callback` para procesar `exchangeCodeForSession()` tras Google OAuth
+    - Usar `isPlatformBrowser()` para evitar ejecución en contexto SSR si aplica
+    - _Requisitos: 3.2, 3.7_
+
+- [x] 10. Carta digital — módulo completo
+  - [x] 10.1 Crear migraciones SQL para tablas `categories`, `products`, `product_variants`, `product_images`
+    - _Requisitos: 8.1_
+  - [x] 10.2 Implementar `CartaModule` en la API con endpoints CRUD para categorías y productos
+    - `GET /api/v1/carta` (público, solo productos disponibles), endpoints de escritura requieren rol `admin` o `superadmin`
+    - _Requisitos: 8.1, 8.2, 8.5, 8.7_
+  - [x] 10.3 Implementar soporte de variantes por producto y almacenamiento de imágenes en Supabase Storage (URLs firmadas con caducidad configurable)
+    - _Requisitos: 8.4, 8.6_
+  - [x] 10.4 Implementar feature `carta` en AdminApp: listado, creación, edición y desactivación de categorías y productos
+    - _Requisitos: 8.3_
+  - [x]* 10.5 Escribir property test para carta pública (Prop 13)
+    - **Propiedad 13: Carta solo retorna productos disponibles en consultas públicas**
+    - Para cualquier conjunto de productos con mezcla de `is_available = true/false`, `GET /api/v1/carta` debe retornar únicamente los que tienen `is_available = true`
+    - **Valida: Requisito 8.7**
+  - [x]* 10.6 Escribir unit tests para `CartaModule`
+    - Cubrir: eliminar categoría con productos → 409, crear producto sin campos requeridos → 400
+    - _Requisitos: 8.2, 8.5_
+
+- [ ] 11. Módulo de inventario — primer CRUD operativo
+  - [ ] 11.1 Crear migraciones SQL para tablas `units`, `unit_conversions`, `ingredients`, `stock_locations`, `stock_lots`, `stock_movements`, `inventory_counts`
+    - Incluir datos semilla para unidades básicas (kg, g, L, mL, unidad)
+    - _Requisitos: 11.1_
+  - [ ] 11.2 Implementar `InventoryModule` en la API con endpoints CRUD para ingredientes (`/api/v1/inventory/ingredients`)
+    - Requiere rol `inventory`, `admin` o `superadmin`
+    - _Requisitos: 11.1, 4.5_
+  - [ ] 11.3 Implementar registro de movimientos de stock con validación de stock negativo
+    - Al registrar salida: verificar `current_stock - cantidad >= 0`; si no, rechazar con HTTP 409
+    - Al registrar entrada de orden de compra: incrementar stock y registrar costo unitario del lote
+    - _Requisitos: 11.3, 11.4, 11.6_
+  - [ ] 11.4 Implementar lógica de alerta de stock bajo: si `current_stock <= reorder_point`, registrar alerta; endpoint `GET /api/v1/inventory/alerts` accesible para roles autorizados
+    - _Requisitos: 11.2, 11.5_
+  - [ ] 11.5 Implementar feature `inventario` en AdminApp: CRUD completo de ingredientes con indicador visual de alerta de stock
+    - _Requisitos: 19.4_
+  - [ ]* 11.6 Escribir property test para stock nunca negativo (Prop 3)
+    - **Propiedad 3: Stock nunca negativo**
+    - Para cualquier par `(stock_actual: float ≥ 0, cantidad_salida: float ≥ 0)` donde `cantidad_salida > stock_actual`, la operación debe ser rechazada con HTTP 409 y el stock debe permanecer inalterado
+    - **Valida: Requisito 11.4**
+  - [ ]* 11.7 Escribir unit tests para `InventoryModule`
+    - Cubrir: CRUD básico, movimiento de entrada, salida exacta en stock = 0 → 409, alerta de stock bajo
+    - _Requisitos: 11.1, 11.2, 11.3, 11.4_
+
+- [ ] 12. Checkpoint — Verificar primer entregable completo (Requisito 19)
+  - Asegurar que: web pública carga en `/`, admin redirige a login, login Google OAuth funciona, CRUD de ingredientes opera correctamente, health endpoint responde, todas las pruebas pasan. Consultar al usuario antes de continuar.
+
+- [ ] 13. Compras y proveedores
+  - [ ] 13.1 Crear migraciones SQL para tablas `suppliers`, `purchase_orders`, `purchase_order_items`, `goods_receipts`
+    - _Requisitos: 12.1, 12.2_
+  - [ ] 13.2 Implementar `SuppliersModule` con CRUD de proveedores (`/api/v1/suppliers`) y órdenes de compra (`/api/v1/purchase-orders`)
+    - Requiere rol `inventory`, `admin` o `superadmin`
+    - _Requisitos: 12.1, 12.2, 12.3_
+  - [ ] 13.3 Implementar recepción parcial y total de órdenes de compra; al recibir totalmente, disparar actualización de stock (integración con `InventoryModule`)
+    - _Requisitos: 12.4, 12.5, 11.6_
+  - [ ] 13.4 Calcular y persistir `total_amount` en cada orden de compra como `Σ (quantity_ordered × unit_price)` al crear o actualizar ítems
+    - _Requisitos: 12.6_
+  - [ ] 13.5 Implementar feature `proveedores` en AdminApp con listado de proveedores y gestión de órdenes de compra
+    - _Requisitos: 12.1, 12.2_
+  - [ ]* 13.6 Escribir property test para total de orden de compra (Prop 8)
+    - **Propiedad 8: Total de orden de compra es consistente**
+    - Para cualquier lista de N ítems con `quantity_ordered_i` y `unit_price_i`, `total_amount` debe ser igual a `Σ (quantity_ordered_i × unit_price_i)` con precisión de 2 decimales
+    - **Valida: Requisito 12.6**
+  - [ ]* 13.7 Escribir unit tests para `SuppliersModule`
+    - Cubrir: crear OC, recepción parcial → estado `recibida_parcial`, recepción total → actualización de stock
+    - _Requisitos: 12.3, 12.4, 12.5_
+
+- [ ] 14. Recetas y costos
+  - [ ] 14.1 Crear migraciones SQL para tablas `recipes`, `recipe_versions`, `recipe_ingredients`
+    - Incluir constraint `UNIQUE` en `recipes.product_id` para unicidad de receta por producto
+    - _Requisitos: 13.1_
+  - [ ] 14.2 Implementar `RecipesModule` con CRUD de recetas y cálculo automático de costo por porción al crear/actualizar
+    - Fórmula: `costo_porcion = Σ (cantidad_i × costo_unitario_ingrediente_i) / rendimiento`
+    - _Requisitos: 13.2, 13.3, 13.5_
+  - [ ] 14.3 Implementar recálculo automático de costo de recetas cuando se actualiza `unit_cost` de un ingrediente (trigger SQL o servicio de eventos)
+    - _Requisitos: 13.4_
+  - [ ] 14.4 Implementar protección de integridad: rechazar eliminación de ingrediente usado en receta con HTTP 409
+    - _Requisitos: 13.6_
+  - [ ] 14.5 Implementar feature `recetas` en AdminApp con visualización de costo por porción y margen bruto
+    - _Requisitos: 13.5_
+  - [ ]* 14.6 Escribir property test para cálculo de costo de receta (Prop 4)
+    - **Propiedad 4: Cálculo de costo de receta es consistente**
+    - Para cualquier receta con N ingredientes con cantidades y costos unitarios arbitrarios y rendimiento > 0, el `costo_porcion` calculado debe ser igual a `Σ (cantidad_i × costo_i) / rendimiento` con tolerancia de ±0.01
+    - **Valida: Requisitos 13.3, 13.4**
+  - [ ]* 14.7 Escribir property test para unicidad de receta por producto (Prop 10)
+    - **Propiedad 10: Unicidad de receta por producto**
+    - Para cualquier `product_id`, crear una segunda receta debe ser rechazado (error de constraint único)
+    - **Valida: Requisito 13.1**
+  - [ ]* 14.8 Escribir unit tests para `RecipesModule`
+    - Cubrir: cálculo de margen bruto, recálculo al actualizar costo de ingrediente, eliminar ingrediente en receta → 409
+    - _Requisitos: 13.3, 13.4, 13.5, 13.6_
+
+- [ ] 15. Sistema de reservas
+  - [ ] 15.1 Crear migraciones SQL para tablas `restaurant_tables`, `reservations`, `reservation_events`
+    - _Requisitos: 9.1_
+  - [ ] 15.2 Implementar `ReservationsModule` con endpoints para crear, consultar, modificar y cancelar reservas
+    - Validar disponibilidad por franja horaria; rechazar con HTTP 409 si no hay mesas disponibles e indicar franjas próximas
+    - _Requisitos: 9.1, 9.2, 9.3, 9.5, 9.6_
+  - [ ] 15.3 Implementar endpoint de configuración de horarios y capacidad para rol `manager`; bloquear reservas fuera de horario
+    - _Requisitos: 9.6, 9.7_
+  - [ ] 15.4 Implementar envío de email de confirmación al crear reserva (integración con servicio de notificaciones)
+    - _Requisitos: 9.4_
+  - [ ] 15.5 Implementar sección de reservas en WebApp (`/reservas`) y feature `reservas` en AdminApp
+    - _Requisitos: 6.2_
+  - [ ]* 15.6 Escribir property test para disponibilidad de reservas (Prop 12)
+    - **Propiedad 12: Reservas respetan disponibilidad**
+    - Para cualquier franja horaria con capacidad agotada, una nueva solicitud de reserva para esa franja debe ser rechazada con HTTP 409 independientemente de los datos del solicitante
+    - **Valida: Requisito 9.3**
+  - [ ]* 15.7 Escribir unit tests para `ReservationsModule`
+    - Cubrir: crear con datos completos, franja llena → 409, cancelar con anticipación → libera mesa
+    - _Requisitos: 9.2, 9.3, 9.5_
+
+- [ ] 16. Pedidos online
+  - [ ] 16.1 Crear migraciones SQL para tablas `orders`, `order_items`, `payments`, `payment_events`
+    - _Requisitos: 10.1_
+  - [ ] 16.2 Implementar `OrdersModule` con creación de pedido, validación de disponibilidad de productos y asignación de estado inicial `recibido`
+    - _Requisitos: 10.2, 10.3, 10.7_
+  - [ ] 16.3 Implementar gestión del ciclo de vida: transiciones de estado con registro de actor y marca de tiempo; rechazar cancelación en estados `en_preparacion` o `listo`
+    - Estados válidos: `recibido → en_preparacion → listo → entregado`; cancelación solo desde `recibido`
+    - _Requisitos: 10.4, 10.5, 10.6_
+  - [ ] 16.4 Implementar endpoint público de consulta de estado por identificador único del pedido (`GET /api/v1/orders/:id/status`) sin requerir autenticación
+    - _Requisitos: 10.8_
+  - [ ] 16.5 Implementar carrito en WebApp (`/pedidos`) y feature `pedidos` en AdminApp con gestión de transiciones de estado
+    - _Requisitos: 10.1_
+  - [ ]* 16.6 Escribir property test para transiciones de estado de pedido (Prop 9)
+    - **Propiedad 9: Transiciones de estado de pedido son válidas**
+    - Para cualquier pedido en estado `en_preparacion` o `listo`, una solicitud de cancelación del cliente debe ser rechazada y el estado debe permanecer inalterado
+    - **Valida: Requisito 10.6**
+  - [ ]* 16.7 Escribir unit tests para `OrdersModule`
+    - Cubrir: crear pedido con producto no disponible → 409, ciclo de vida completo, endpoint público sin auth
+    - _Requisitos: 10.2, 10.3, 10.6, 10.7, 10.8_
+
+- [ ] 17. Checkpoint — Verificar módulos operativos core
+  - Asegurar que carta, inventario, compras, recetas, reservas y pedidos están integrados y las pruebas pasan. Consultar al usuario antes de continuar.
+
+- [ ] 18. Club de fidelización (Club Costa Mar)
+  - [ ] 18.1 Crear migraciones SQL para tablas `loyalty_accounts`, `loyalty_transactions`, `rewards`, `reward_redemptions`
+    - _Requisitos: 14.1, 14.3_
+  - [ ] 18.2 Implementar `LoyaltyModule`: registro automático al primer pedido confirmado, acreditación de puntos al marcar pedido como `entregado`, actualización de nivel al superar umbrales
+    - Regla por defecto: 1 punto por cada 100 pesos chilenos del total del pedido
+    - _Requisitos: 14.1, 14.2, 14.3, 14.4_
+  - [ ] 18.3 Implementar endpoint de canje de puntos con verificación de saldo suficiente antes de aplicar descuento; registrar movimiento en `loyalty_transactions`
+    - _Requisitos: 14.9_
+  - [ ] 18.4 Implementar generación de código QR único por cliente y beneficio de cumpleaños (7 días activo desde la fecha de cumpleaños)
+    - _Requisitos: 14.6, 14.7_
+  - [ ] 18.5 Implementar `apps/club` como PWA Ionic con páginas: saldo/nivel/beneficios, historial, QR del cliente, canje
+    - Configurar `manifest.webmanifest` y service worker para instalación en iOS y Android
+    - _Requisitos: 14.5, 14.8_
+  - [ ]* 18.6 Escribir property test para coherencia de puntos de fidelización (Prop 5)
+    - **Propiedad 5: Puntos de fidelización son coherentes con los movimientos**
+    - Para cualquier cuenta de lealtad con N transacciones, `loyalty_accounts.points` debe ser igual a `Σ loyalty_transactions.points` (positivos para acreditar, negativos para canjear/expirar)
+    - **Valida: Requisitos 14.2, 14.9**
+  - [ ]* 18.7 Escribir property test para canje con saldo suficiente (Prop 6)
+    - **Propiedad 6: Canje de puntos requiere saldo suficiente**
+    - Para cualquier par `(saldo_actual: int ≥ 0, puntos_a_canjear: int > 0)` donde `puntos_a_canjear > saldo_actual`, la operación debe ser rechazada y el saldo debe permanecer inalterado
+    - **Valida: Requisito 14.9**
+  - [ ]* 18.8 Escribir unit tests para `LoyaltyModule`
+    - Cubrir: primer pedido → registro en club, acreditación de puntos, cambio de nivel, cumpleaños activo
+    - _Requisitos: 14.1, 14.2, 14.3, 14.4, 14.7_
+
+- [ ] 19. CRM y cupones
+  - [ ] 19.1 Crear migraciones SQL para `audit_logs`, `notification_events`, `customer_consents` y tabla de cupones (agregar a modelo de datos)
+    - _Requisitos: 15.1, 15.4_
+  - [ ] 19.2 Implementar `CrmModule` con perfil unificado de cliente y endpoints de segmentación filtrable por nivel, último pedido, número de pedidos y monto acumulado
+    - _Requisitos: 15.1, 15.2_
+  - [ ] 19.3 Implementar CRUD de cupones con validaciones: código único, tipo (porcentaje/monto fijo), fecha de vencimiento, límite total y límite por cliente
+    - _Requisitos: 15.4_
+  - [ ] 19.4 Implementar aplicación de cupón en pedido: verificar vigencia, contador de usos y límite por cliente; rechazar con HTTP 422 si no cumple; decrementar contador solo en aplicación exitosa
+    - _Requisitos: 15.5, 15.6_
+  - [ ] 19.5 Implementar feature `crm` en AdminApp con listado de clientes, segmentación y gestión de cupones
+    - _Requisitos: 15.3_
+  - [ ]* 19.6 Escribir property test para restricciones de cupones (Prop 7)
+    - **Propiedad 7: Cupones respetan sus restricciones de uso**
+    - Para cualquier cupón vencido, agotado en usos totales o que haya alcanzado el límite individual del cliente, el intento de aplicación debe ser rechazado con HTTP 422 y el contador de usos no debe cambiar
+    - **Valida: Requisitos 15.5, 15.6**
+  - [ ]* 19.7 Escribir unit tests para `CrmModule`
+    - Cubrir: cupón con 1 uso restante aplicado dos veces, cupón vencido → 422, segmentación por nivel
+    - _Requisitos: 15.4, 15.5, 15.6_
+
+- [ ] 20. Reportes y analítica
+  - [ ] 20.1 Implementar `ReportsModule` con endpoint de reporte de ventas filtrable por rango de fechas (total pedidos, monto, ticket promedio, desglose retiro/delivery)
+    - Requiere rol mínimo `manager`
+    - _Requisitos: 16.1, 16.6_
+  - [ ] 20.2 Implementar endpoints de reporte de inventario (stock actual, movimientos, alertas) y reporte de costos (costo ingredientes, comparación ingresos, margen bruto por producto)
+    - _Requisitos: 16.2, 16.3_
+  - [ ] 20.3 Implementar endpoint de reporte de fidelización (clientes activos por nivel, puntos emitidos/canjeados, tasa de retención)
+    - _Requisitos: 16.4_
+  - [ ] 20.4 Implementar procesamiento asíncrono para rangos > 90 días con notificación al usuario cuando el reporte esté disponible
+    - _Requisitos: 16.5_
+  - [ ] 20.5 Implementar sección `reportes` en AdminApp con filtros de fecha y visualización de métricas
+    - _Requisitos: 16.1, 16.2_
+
+- [ ] 21. Seguridad complementaria
+  - [ ] 21.1 Implementar rate limiting en endpoints públicos usando `@nestjs/throttler` (mínimo 100 req/min por IP)
+    - _Requisitos: 17.2_
+  - [ ] 21.2 Implementar `ValidationPipe` global en NestJS con `class-validator` y `class-transformer` para sanitizar y validar todos los DTOs de entrada
+    - _Requisitos: 17.3_
+  - [ ] 21.3 Verificar y completar RLS en todas las tablas de Supabase con datos de clientes o información financiera
+    - _Requisitos: 17.7, 4.7_
+  - [ ] 21.4 Implementar bloqueo temporal por IP tras 5 intentos fallidos de autenticación en menos de 10 minutos (15 minutos de bloqueo)
+    - _Requisitos: 17.6_
+
+- [ ] 22. CI/CD con GitHub Actions
+  - [ ] 22.1 Crear `.github/workflows/ci.yml` que en cada PR ejecute: `pnpm install`, `pnpm build`, `pnpm test --run` para todas las apps
+    - _Requisitos: 18.1_
+  - [ ] 22.2 Agregar step de análisis estático de seguridad con `trivy` en el workflow de PR
+    - _Requisitos: 17.8_
+  - [ ] 22.3 Crear `.github/workflows/deploy.yml` que al hacer merge a `main` construya imágenes Docker, las despliegue en Lightsail via SSH y verifique que `GET /api/v1/health` responde HTTP 200
+    - Los secretos SSH y tokens se almacenan exclusivamente en GitHub Secrets
+    - _Requisitos: 18.2, 18.3, 18.5_
+  - [ ] 22.4 Implementar rollback automático en el workflow de despliegue si el health check falla; notificar al equipo en caso de rollback
+    - _Requisitos: 18.4_
+
+- [ ] 23. Checkpoint final — Verificar plataforma completa
+  - Ejecutar `pnpm test --run` desde la raíz y verificar que todas las pruebas pasan, incluyendo los property tests con mínimo 100 iteraciones. Verificar que el pipeline CI/CD funciona en un PR de prueba. Consultar al usuario antes de declarar completado.
+
+## Notas
+
+- Las tareas marcadas con `*` son opcionales y pueden omitirse para acelerar el MVP
+- Cada tarea referencia requisitos específicos para trazabilidad
+- Los property tests usan `fast-check` con `{ numRuns: 100 }` mínimo y comentario de trazabilidad `// Feature: costamar-platform, Propiedad N: <nombre>`
+- Los unit tests usan Jest con `@nestjs/testing`; los tests de Angular usan Karma + Jasmine
+- El `service_role` de Supabase nunca debe aparecer en código de frontend ni en logs
+- El primer superadmin se crea por migración SQL, no desde el formulario de registro público
+- Las subdomain DNS `admin.restaurantecostamar.cl` y `api.restaurantecostamar.cl` deben configurarse en Cloudflare antes de ejecutar las tareas de despliegue (Tarea 2)
+- Docker Engine debe instalarse en Lightsail antes de ejecutar las tareas de Docker (Tarea 2)

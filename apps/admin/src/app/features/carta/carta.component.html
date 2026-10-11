@@ -1,0 +1,75 @@
+<h1>Carta</h1>
+
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+
+@if (loading()) {
+  <p>Cargando…</p>
+} @else {
+  <section class="block">
+    <h2>Categorías</h2>
+    <div class="form-row">
+      <input
+        type="text"
+        placeholder="Nueva categoría"
+        [(ngModel)]="newCategoryName"
+      />
+      <button type="button" (click)="addCategory()">Agregar</button>
+    </div>
+    <ul class="list">
+      @for (c of categories(); track c.id) {
+        <li>
+          <span>{{ c.name }}</span>
+          <span class="badge" [class.badge--off]="!c.is_active">
+            {{ c.is_active ? 'Activa' : 'Inactiva' }}
+          </span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2>Productos</h2>
+    <div class="form-row">
+      <select [(ngModel)]="newProduct.categoryId">
+        <option value="">Categoría…</option>
+        @for (c of categories(); track c.id) {
+          <option [value]="c.id">{{ c.name }}</option>
+        }
+      </select>
+      <input type="text" placeholder="Nombre" [(ngModel)]="newProduct.name" />
+      <input
+        type="number"
+        min="0"
+        placeholder="Precio"
+        [(ngModel)]="newProduct.basePrice"
+      />
+      <button type="button" (click)="addProduct()">Agregar</button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Disponible</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of products(); track p.id) {
+          <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.base_price | currency: 'CLP' : 'symbol-narrow' : '1.0-0' }}</td>
+            <td>{{ p.is_available ? 'Sí' : 'No' }}</td>
+            <td>
+              <button type="button" (click)="toggleAvailability(p)">
+                {{ p.is_available ? 'Desactivar' : 'Activar' }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+}

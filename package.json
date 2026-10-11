@@ -1,0 +1,38 @@
+{
+  "name": "costamar-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma digital Costa Mar Barra Cevichera",
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev:api": "pnpm --filter @costamar/api dev",
+    "dev:web": "pnpm --filter @costamar/web dev",
+    "dev:admin": "pnpm --filter @costamar/admin dev",
+    "dev:club": "pnpm --filter @costamar/club dev",
+    "build": "pnpm --filter @costamar/shared build && pnpm --filter './apps/*' build",
+    "build:api": "pnpm --filter @costamar/api build",
+    "build:web": "pnpm --filter @costamar/web build",
+    "build:admin": "pnpm --filter @costamar/admin build",
+    "build:club": "pnpm --filter @costamar/club build",
+    "test": "pnpm --filter './apps/*' --filter './packages/*' test",
+    "test:api": "pnpm --filter @costamar/api test",
+    "lint": "pnpm --filter './apps/*' --filter './packages/*' lint",
+    "install:all": "pnpm install"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "typescript": "~5.8.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "typescript": "~5.8.0"
+    }
+  }
+}

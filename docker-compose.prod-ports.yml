@@ -1,0 +1,23 @@
+# ================================================================
+# COSTA MAR PLATFORM — Publicación de puertos en PRODUCCIÓN
+# Publica los puertos de cada contenedor SOLO en loopback (127.0.0.1)
+# para que el Nginx del host pueda hacer reverse proxy sin exponer
+# los servicios directamente a Internet.
+#
+# Uso en el servidor:
+#   docker compose -f docker-compose.yml -f docker-compose.prod-ports.yml up -d
+# ================================================================
+
+services:
+  api:
+    ports:
+      - "127.0.0.1:3000:3000"
+  web:
+    ports:
+      - "127.0.0.1:4000:4000"
+  admin:
+    ports:
+      - "127.0.0.1:4001:4001"
+  club:
+    ports:
+      - "127.0.0.1:4002:4002"

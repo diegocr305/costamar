@@ -1,0 +1,58 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Builds
+dist/
+build/
+.next/
+.nuxt/
+out/
+
+# Variables de entorno — NUNCA commitear valores reales
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# Certificados y claves privadas
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+/etc/ssl/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+pnpm-debug.log*
+
+# IDEs
+.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Angular
+.angular/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Docker
+.docker/
+
+# Temporales
+tmp/
+temp/

@@ -1,0 +1,63 @@
+# ================================================================
+# COSTA MAR PLATFORM — Despliegue PILOTO (solo web + API)
+# Levanta únicamente la web pública y la API, más ligero para los
+# 4 GB del servidor. admin y club se añaden después.
+#
+# Uso en el servidor:
+#   docker compose -f docker-compose.piloto.yml up -d --build
+# ================================================================
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: costamar/api:latest
+    container_name: costamar-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      SUPABASE_URL: ${SUPABASE_URL:?Falta SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:?Falta SUPABASE_SERVICE_ROLE_KEY}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:?Falta ALLOWED_ORIGINS}
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks:
+      - costamar_net
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    image: costamar/web:latest
+    container_name: costamar-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      SSR_ALLOWED_HOSTS: ${SSR_ALLOWED_HOSTS:-restaurantecostamar.cl,www.restaurantecostamar.cl,localhost}
+      # URL de la API para el render SSR. Debe coincidir con la URL pública
+      # que usa el navegador para que la transfer cache de hidratación
+      # reutilice la respuesta y el cliente no vuelva a pedir.
+      SSR_API_URL: http://host.docker.internal:3000/api/v1
+    ports:
+      - "127.0.0.1:4000:4000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - costamar_net
+    depends_on:
+      - api
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+networks:
+  costamar_net:
+    driver: bridge

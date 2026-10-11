@@ -1,0 +1,111 @@
+<section class="reviews">
+  <span class="cm-eyebrow">Opiniones</span>
+  <h2 class="reviews__title">Lo que dicen nuestros clientes</h2>
+  <hr class="cm-divider" />
+
+  @if (!hasReviews()) {
+    <!-- Estado sin datos reales: invitación a Google Maps (no inventar nada) -->
+    <div class="invite">
+      <div class="invite__stars" aria-hidden="true">
+        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+      </div>
+      <p class="invite__text">
+        Nuestros clientes comparten su experiencia en Google. Lee sus opiniones
+        y déjanos la tuya en nuestra ficha oficial.
+      </p>
+      <a
+        class="invite__btn"
+        [href]="googleMapsUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ⭐ Ver nuestras reseñas en Google
+      </a>
+    </div>
+  } @else {
+    <!-- Resumen -->
+    <div class="summary">
+      @if (averageRating(); as avg) {
+        <span class="summary__avg">{{ avg | number: '1.1-1' }}</span>
+        <span class="summary__stars" aria-hidden="true">
+          @for (on of stars(avg); track $index) {
+            <span [class.on]="on">★</span>
+          }
+        </span>
+      }
+      @if (totalReviews(); as total) {
+        <span class="summary__count">({{ total }} reseñas)</span>
+      }
+    </div>
+
+    <!-- Controles -->
+    <div class="controls">
+      <div class="controls__group">
+        @for (f of ratingFilters; track f) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="ratingFilter() === f"
+            (click)="setRatingFilter(f)"
+          >
+            {{ f === 'all' ? 'Todas' : f + '★' }}
+          </button>
+        }
+      </div>
+      <div class="controls__group">
+        <select
+          class="select"
+          [ngModel]="sortOrder()"
+          (ngModelChange)="setSort($event)"
+        >
+          <option value="recent">Más recientes</option>
+          <option value="best">Mejor calificación</option>
+          <option value="worst">Peor calificación</option>
+        </select>
+        <label class="toggle">
+          <input
+            type="checkbox"
+            [ngModel]="onlyWithText()"
+            (ngModelChange)="toggleOnlyWithText()"
+          />
+          Solo con comentario
+        </label>
+      </div>
+    </div>
+
+    <!-- Tarjetas -->
+    <div class="cards">
+      @for (r of visibleReviews(); track r.id) {
+        <article class="card">
+          <header class="card__head">
+            <span class="card__author">{{ r.authorName }}</span>
+            <span class="card__stars" aria-hidden="true">
+              @for (on of stars(r.rating); track $index) {
+                <span [class.on]="on">★</span>
+              }
+            </span>
+          </header>
+          <time class="card__date">{{ r.publishedAt | date: 'longDate' }}</time>
+          @if (r.text) {
+            <p class="card__text">{{ r.text }}</p>
+          }
+          @if (r.reply) {
+            <div class="card__reply">
+              <strong>Respuesta de Costa Mar:</strong>
+              <p>{{ r.reply.text }}</p>
+            </div>
+          }
+        </article>
+      }
+    </div>
+
+    <a
+      class="reviews__all"
+      [href]="googleMapsUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Ver todas las opiniones en Google Maps
+    </a>
+  }
+</section>

@@ -1,0 +1,86 @@
+# ================================================================
+# COSTA MAR PLATFORM — Orquestación de producción
+# Los servicios se exponen SOLO en la red interna costamar_net.
+# El Nginx del host (fuera de Docker) actúa como reverse proxy.
+# Las variables ${VAR:?...} son obligatorias: si faltan, el
+# arranque se detiene con un mensaje de error descriptivo.
+# ================================================================
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: costamar/api:latest
+    container_name: costamar-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      SUPABASE_URL: ${SUPABASE_URL:?Falta SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:?Falta SUPABASE_SERVICE_ROLE_KEY}
+      SUPABASE_JWT_SECRET: ${SUPABASE_JWT_SECRET:?Falta SUPABASE_JWT_SECRET}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:?Falta ALLOWED_ORIGINS}
+    networks:
+      - costamar_net
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    image: costamar/web:latest
+    container_name: costamar-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      # Hosts permitidos para el render SSR (detrás de Nginx/Cloudflare).
+      SSR_ALLOWED_HOSTS: ${SSR_ALLOWED_HOSTS:-restaurantecostamar.cl,www.restaurantecostamar.cl,localhost}
+    networks:
+      - costamar_net
+    depends_on:
+      - api
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+    image: costamar/admin:latest
+    container_name: costamar-admin
+    restart: unless-stopped
+    networks:
+      - costamar_net
+    depends_on:
+      - api
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+  club:
+    build:
+      context: .
+      dockerfile: apps/club/Dockerfile
+    image: costamar/club:latest
+    container_name: costamar-club
+    restart: unless-stopped
+    networks:
+      - costamar_net
+    depends_on:
+      - api
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+networks:
+  costamar_net:
+    driver: bridge

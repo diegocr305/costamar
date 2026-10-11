@@ -1,0 +1,36 @@
+{
+  "name": "@costamar/club",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Club Costa Mar — PWA de fidelización (Ionic/Angular)",
+  "scripts": {
+    "build": "ng build",
+    "dev": "ng serve --port 4202",
+    "test": "ng test --watch=false --browsers=ChromeHeadless || echo 'no tests'",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@angular/animations": "^20.0.0",
+    "@angular/common": "^20.0.0",
+    "@angular/compiler": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/platform-browser": "^20.0.0",
+    "@angular/platform-browser-dynamic": "^20.0.0",
+    "@angular/router": "^20.0.0",
+    "@angular/service-worker": "^20.0.0",
+    "@costamar/shared": "workspace:*",
+    "@ionic/angular": "^9.0.0",
+    "@supabase/supabase-js": "^2.43.5",
+    "rxjs": "^7.8.1",
+    "tslib": "^2.6.3",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^20.0.0",
+    "@angular/cli": "^20.0.0",
+    "@angular/compiler-cli": "^20.0.0",
+    "@types/node": "^22.0.0",
+    "typescript": "~5.8.0"
+  }
+}

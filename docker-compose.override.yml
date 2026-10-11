@@ -1,0 +1,28 @@
+# ================================================================
+# COSTA MAR PLATFORM — Override de DESARROLLO local
+# Docker Compose aplica este archivo automáticamente sobre
+# docker-compose.yml cuando ejecutas `docker compose up` localmente.
+#
+# Expone los puertos de cada servicio al host para pruebas directas
+# sin pasar por el Nginx del servidor. NO usar en producción:
+# en producción se levanta solo con `docker compose -f docker-compose.yml up`.
+# ================================================================
+
+services:
+  api:
+    ports:
+      - "3000:3000"
+    env_file:
+      - apps/api/.env
+
+  web:
+    ports:
+      - "4000:4000"
+
+  admin:
+    ports:
+      - "4001:4001"
+
+  club:
+    ports:
+      - "4002:4002"
