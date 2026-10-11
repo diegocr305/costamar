@@ -7,6 +7,7 @@ import {
 } from '@supabase/supabase-js';
 import { ROLES, type UserRole } from '@costamar/shared';
 import { environment } from '../../environments/environment';
+import { extractOAuthCode } from './extract-oauth-code';
 
 export interface AdminUser {
   id: string;
@@ -65,9 +66,23 @@ export class AuthService {
     }
   }
 
-  /** Procesa el retorno OAuth: intercambia el código por sesión. */
+  /**
+   * Procesa el retorno OAuth (PKCE): intercambia SOLO el código por sesión.
+   * Pasar la URL completa provoca 404 flow_state_not_found.
+   */
+  private lastExchangedCode: string | null = null;
+
   async handleOAuthCallback(url: string): Promise<void> {
-    const { error } = await this.supabase.auth.exchangeCodeForSession(url);
+    const code = extractOAuthCode(url);
+    if (!code) {
+      throw new Error('Falta el parámetro "code" en la URL de retorno OAuth.');
+    }
+    if (this.lastExchangedCode === code && this.isAuthenticated()) {
+      return;
+    }
+    this.lastExchangedCode = code;
+
+    const { error } = await this.supabase.auth.exchangeCodeForSession(code);
     if (error) {
       throw error;
     }

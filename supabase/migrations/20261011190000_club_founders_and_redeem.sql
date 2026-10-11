@@ -51,7 +51,7 @@ begin
     raise exception 'NO_COUPONS_LEFT';
   end if;
 
-  v_code := 'FND-' || upper(substr(encode(gen_random_bytes(6), 'hex'), 1, 10));
+  v_code := 'FND-' || upper(replace(substr(gen_random_uuid()::text, 1, 10), '-', ''));
 
   insert into public.club_coupons (code, campaign_id, user_id, status, expires_at)
   values (v_code, v_campaign.id, p_user_id, 'issued',
