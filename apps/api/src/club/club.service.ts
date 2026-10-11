@@ -5,7 +5,13 @@ import type {
   ClubMeResponse,
   ClubMemberPreferences,
 } from '@costamar/shared';
-import { CLUB_PRIVACY_VERSION, CLUB_TERMS_VERSION } from '@costamar/shared';
+import {
+  CLUB_MIN_AGE,
+  CLUB_PRIVACY_VERSION,
+  CLUB_TERMS_VERSION,
+  isAdult,
+  parseIsoDate,
+} from '@costamar/shared';
 import { SupabaseService } from '../supabase/supabase.service';
 import type { EnrollDto } from './dto/enroll.dto';
 import type { UpdatePreferencesDto } from './dto/preferences.dto';
@@ -20,12 +26,21 @@ export class ClubService {
     return `CM-${rnd}`;
   }
 
+  /** Normaliza el teléfono: deja un '+' inicial opcional y solo dígitos. */
+  private normalizePhone(phone: string): string {
+    const trimmed = phone.trim();
+    const plus = trimmed.startsWith('+') ? '+' : '';
+    return plus + trimmed.replace(/[^0-9]/g, '');
+  }
+
   private mapMember(row: Record<string, unknown>): ClubMember {
     return {
       userId: row['user_id'] as string,
       memberCode: row['member_code'] as string,
       fullName: row['full_name'] as string,
       phone: (row['phone'] as string | null) ?? undefined,
+      birthDate: (row['birth_date'] as string | null) ?? undefined,
+      phoneVerified: Boolean(row['phone_verified']),
       status: row['status'] as ClubMember['status'],
       level: row['level'] as ClubMember['level'],
       enrolledAt: row['enrolled_at'] as string,
@@ -84,9 +99,21 @@ export class ClubService {
       );
     }
 
+    // Validación de fecha de nacimiento y mayoría de edad (backend, TZ Chile).
+    if (!parseIsoDate(dto.birthDate)) {
+      throw new BadRequestException('Fecha de nacimiento inválida.');
+    }
+    if (!isAdult(dto.birthDate)) {
+      throw new BadRequestException(
+        `Debes tener al menos ${CLUB_MIN_AGE} años para unirte al Club.`,
+      );
+    }
+
+    const phone = this.normalizePhone(dto.phone);
     const now = new Date().toISOString();
 
     // 1) Upsert idempotente del socio (clave: user_id).
+    // NO se toca enrolled_at en update: preserva la antigüedad histórica.
     const { data: existing } = await this.supabase.client
       .from('club_members')
       .select('user_id, member_code')
@@ -99,7 +126,8 @@ export class ClubService {
         .from('club_members')
         .update({
           full_name: dto.fullName,
-          phone: dto.phone ?? null,
+          phone,
+          birth_date: dto.birthDate,
           updated_at: now,
         })
         .eq('user_id', userId);
@@ -112,7 +140,8 @@ export class ClubService {
           user_id: userId,
           member_code: this.generateMemberCode(),
           full_name: dto.fullName,
-          phone: dto.phone ?? null,
+          phone,
+          birth_date: dto.birthDate,
         });
       if (error) throw new BadRequestException(error.message);
     }
@@ -203,5 +232,65 @@ export class ClubService {
     await this.supabase.client
       .from('club_auth_events')
       .insert({ user_id: userId, event: 'login' });
+  }
+
+  // ---------- Campañas (lectura pública de activas) ----------
+
+  /** Lista las campañas activas para mostrar en la PWA. */
+  async listActiveCampaigns() {
+    const { data, error } = await this.supabase.client
+      .from('club_campaigns')
+      .select('id, slug, name, description, image_path, type, status, starts_at, ends_at, max_coupons, rules')
+      .eq('status', 'active')
+      .order('created_at', { ascending: true });
+    if (error) throw new BadRequestException(error.message);
+    return (data ?? []).map((c) => ({
+      id: c.id,
+      slug: c.slug,
+      name: c.name,
+      description: c.description ?? undefined,
+      imagePath: c.image_path ?? undefined,
+      type: c.type,
+      status: c.status,
+      startsAt: c.starts_at ?? undefined,
+      endsAt: c.ends_at ?? undefined,
+      maxCoupons: c.max_coupons ?? null,
+      rules: c.rules ?? {},
+    }));
+  }
+
+  // ---------- Cupones del socio (solo lectura en Fase 1) ----------
+
+  /** Cupones del socio autenticado, con datos de su campaña. */
+  async getMyCoupons(userId: string) {
+    const { data, error } = await this.supabase.client
+      .from('club_coupons')
+      .select(
+        'id, code, campaign_id, status, issued_at, expires_at, redeemed_at, club_campaigns(name, description, image_path, type, slug)',
+      )
+      .eq('user_id', userId)
+      .order('issued_at', { ascending: false });
+    if (error) throw new BadRequestException(error.message);
+    return (data ?? []).map((c) => {
+      const camp = (c as Record<string, unknown>)['club_campaigns'] as
+        | Record<string, unknown>
+        | null;
+      return {
+        id: c.id,
+        code: c.code,
+        campaignId: c.campaign_id,
+        status: c.status,
+        issuedAt: c.issued_at,
+        expiresAt: c.expires_at ?? null,
+        redeemedAt: c.redeemed_at ?? null,
+        campaign: {
+          name: (camp?.['name'] as string) ?? '',
+          description: (camp?.['description'] as string | null) ?? undefined,
+          imagePath: (camp?.['image_path'] as string | null) ?? undefined,
+          type: camp?.['type'] as string,
+          slug: camp?.['slug'] as string,
+        },
+      };
+    });
   }
 }

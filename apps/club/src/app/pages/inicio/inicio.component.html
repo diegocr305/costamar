@@ -1,0 +1,51 @@
+<section class="inicio">
+  <header class="inicio__head">
+    <span class="inicio__eyebrow">Club Costa Mar</span>
+    <h1>
+      @if (firstName()) { Hola, {{ firstName() }} } @else { Bienvenido }
+    </h1>
+    <p>Tus beneficios y campañas, en un solo lugar.</p>
+  </header>
+
+  <h2 class="inicio__title">Campañas y novedades</h2>
+
+  @switch (state()) {
+    @case ('loading') {
+      <div class="state"><div class="spinner" aria-hidden="true"></div></div>
+    }
+    @case ('offline') {
+      <div class="state" role="alert">
+        <p>Sin conexión.</p>
+        <button type="button" class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button>
+      </div>
+    }
+    @case ('error') {
+      <div class="state" role="alert">
+        <p>No pudimos cargar las campañas.</p>
+        <button type="button" class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button>
+      </div>
+    }
+    @case ('loaded') {
+      @if (campaigns().length === 0) {
+        <div class="empty">
+          <p>Pronto anunciaremos nuevas campañas y beneficios.</p>
+        </div>
+      } @else {
+        <ul class="campaigns">
+          @for (c of campaigns(); track c.id) {
+            <li class="campaign">
+              <div class="campaign__body">
+                <strong>{{ c.name }}</strong>
+                @if (c.description) {
+                  <p>{{ c.description }}</p>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    }
+  }
+
+  <a routerLink="/cupones" class="cm-btn cm-btn--gold inicio__cta">Ver mis cupones</a>
+</section>

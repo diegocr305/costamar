@@ -33,9 +33,9 @@ export class LandingComponent implements OnInit {
       }
     }
 
-    // Si ya hay sesión, a la tarjeta.
+    // Si ya hay sesión, a inicio.
     if (this.auth.ready() && this.auth.isAuthenticated()) {
-      await this.router.navigate(['/mi-tarjeta']);
+      await this.router.navigate(['/inicio']);
     }
   }
 

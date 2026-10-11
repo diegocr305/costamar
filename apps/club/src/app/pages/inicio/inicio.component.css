@@ -1,0 +1,94 @@
+.inicio {
+  flex: 1;
+  padding: 2rem 1.25rem 1rem;
+}
+
+.inicio__head {
+  margin-bottom: 1.5rem;
+}
+
+.inicio__eyebrow {
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  color: var(--cm-gold);
+}
+
+.inicio__head h1 {
+  font-size: 1.8rem;
+  margin: 0.25rem 0 0.3rem;
+}
+
+.inicio__head p {
+  color: var(--cm-muted);
+  margin: 0;
+}
+
+.inicio__title {
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem;
+}
+
+.state,
+.empty {
+  text-align: center;
+  color: var(--cm-muted);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(18, 99, 160, 0.15);
+  border-top-color: var(--cm-primary-dark);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.campaigns {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.campaign {
+  background: var(--cm-surface);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  box-shadow: var(--cm-shadow);
+}
+
+.campaign strong {
+  color: var(--cm-ocean);
+  font-family: var(--cm-font-head);
+}
+
+.campaign p {
+  margin: 0.25rem 0 0;
+  font-size: 0.88rem;
+  color: var(--cm-muted);
+}
+
+.inicio__cta {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

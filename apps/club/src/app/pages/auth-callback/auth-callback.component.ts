@@ -85,14 +85,14 @@ export class AuthCallbackComponent implements OnInit {
     try {
       const me = await firstValueFrom(this.club.getMe());
       if (me.member) {
-        await this.router.navigate(['/mi-tarjeta']);
+        await this.router.navigate(['/inicio']);
       } else {
         await this.router.navigate(['/completar-perfil']);
       }
     } catch {
-      // Sesión válida pero no pudimos leer la membresía: a la tarjeta,
+      // Sesión válida pero no pudimos leer la membresía: a inicio,
       // que muestra estado de error/reintento sin perder la sesión.
-      await this.router.navigate(['/mi-tarjeta']);
+      await this.router.navigate(['/inicio']);
     }
   }
 }

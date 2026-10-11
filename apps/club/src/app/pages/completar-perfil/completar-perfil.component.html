@@ -20,7 +20,7 @@
     </label>
 
     <label class="field">
-      <span class="field__label">Teléfono (opcional)</span>
+      <span class="field__label">Teléfono *</span>
       <input
         type="tel"
         name="phone"
@@ -29,7 +29,23 @@
         autocomplete="tel"
         inputmode="tel"
         placeholder="+56 9 ..."
+        required
       />
+    </label>
+
+    <label class="field">
+      <span class="field__label">Fecha de nacimiento *</span>
+      <input
+        type="date"
+        name="birthDate"
+        [ngModel]="birthDate()"
+        (ngModelChange)="birthDate.set($event)"
+        autocomplete="bday"
+        required
+      />
+      @if (birthDate() && !ageValid()) {
+        <span class="field__error">Debes tener al menos {{ minAge }} años.</span>
+      }
     </label>
 
     <fieldset class="consents">

@@ -70,6 +70,8 @@ function buildSupabaseMock(existingMember: boolean) {
 
 const validDto: EnrollDto = {
   fullName: 'Juan Pérez',
+  phone: '+56 9 1234 5678',
+  birthDate: '1990-05-20',
   acceptTerms: true,
   acceptPrivacy: true,
 };
@@ -83,6 +85,31 @@ describe('ClubService.enroll', () => {
       club.enroll('u1', 'u1@mail.com', {
         ...validDto,
         acceptTerms: false,
+      }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('rechaza el alta de un menor de 18 años', async () => {
+    const { service } = buildSupabaseMock(false);
+    const club = new ClubService(service);
+    const minorYear = new Date().getFullYear() - 15;
+
+    await expect(
+      club.enroll('u1', 'u1@mail.com', {
+        ...validDto,
+        birthDate: `${minorYear}-01-01`,
+      }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('rechaza una fecha de nacimiento inválida', async () => {
+    const { service } = buildSupabaseMock(false);
+    const club = new ClubService(service);
+
+    await expect(
+      club.enroll('u1', 'u1@mail.com', {
+        ...validDto,
+        birthDate: 'no-es-fecha',
       }),
     ).rejects.toBeInstanceOf(BadRequestException);
   });

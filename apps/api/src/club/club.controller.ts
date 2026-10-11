@@ -43,4 +43,16 @@ export class ClubController {
   consents(@CurrentUser() user: AuthenticatedUser) {
     return this.club.getConsents(user.userId);
   }
+
+  /** Campañas activas (para mostrar en la PWA). */
+  @Get('campaigns')
+  campaigns() {
+    return this.club.listActiveCampaigns();
+  }
+
+  /** Cupones del socio autenticado (solo lectura en V1). */
+  @Get('coupons')
+  myCoupons(@CurrentUser() user: AuthenticatedUser) {
+    return this.club.getMyCoupons(user.userId);
+  }
 }

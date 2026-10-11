@@ -49,13 +49,21 @@
             <span class="tarjeta__code">{{ m.memberCode }}</span>
           </div>
 
-          <!-- Espacio reservado para el QR. Aún no se genera credencial de
-               canje: se habilitará cuando exista validación segura en el local. -->
-          <div class="tarjeta__qr" aria-label="Código QR disponible próximamente">
-            <div class="tarjeta__qr-box">
-              <span>QR</span>
-              <small>Disponible pronto</small>
-            </div>
+          <!-- QR con el código público de socio (member_code). No contiene
+               datos personales ni credenciales de canje. -->
+          <div class="tarjeta__qr">
+            @if (qrDataUrl(); as qr) {
+              <img
+                class="tarjeta__qr-img"
+                [src]="qr"
+                [alt]="'Código QR del socio ' + m.memberCode"
+                width="160"
+                height="160"
+              />
+              <small class="tarjeta__qr-hint">Muestra este código en el local</small>
+            } @else {
+              <div class="tarjeta__qr-box" aria-hidden="true"><span>QR</span></div>
+            }
           </div>
         </article>
 

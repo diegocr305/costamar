@@ -2,10 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import type {
+  Campaign,
   ClubConsent,
   ClubEnrollRequest,
   ClubMemberPreferences,
   ClubMeResponse,
+  CouponWithCampaign,
 } from '@costamar/shared';
 import { environment } from '../../environments/environment';
 
@@ -34,5 +36,13 @@ export class ClubService {
 
   getConsents(): Observable<ClubConsent[]> {
     return this.http.get<ClubConsent[]>(`${this.base}/consents`);
+  }
+
+  getCampaigns(): Observable<Campaign[]> {
+    return this.http.get<Campaign[]>(`${this.base}/campaigns`);
+  }
+
+  getCoupons(): Observable<CouponWithCampaign[]> {
+    return this.http.get<CouponWithCampaign[]>(`${this.base}/coupons`);
   }
 }

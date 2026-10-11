@@ -28,6 +28,10 @@ export interface ClubMember {
   memberCode: string;
   fullName: string;
   phone?: string;
+  /** Fecha de nacimiento ISO (YYYY-MM-DD). */
+  birthDate?: string;
+  /** Teléfono verificado por OTP (preparado para futuro; hoy siempre false). */
+  phoneVerified: boolean;
   status: MembershipStatus;
   level: LoyaltyLevel;
   enrolledAt: string;
@@ -56,7 +60,10 @@ export interface ClubMeResponse {
 /** Payload de alta/completar perfil (POST /club/enroll). */
 export interface ClubEnrollRequest {
   fullName: string;
-  phone?: string;
+  /** Obligatorio en V1 (cupones). Teléfono normalizado. */
+  phone: string;
+  /** Obligatorio: fecha de nacimiento ISO (YYYY-MM-DD). Valida ≥18 en backend. */
+  birthDate: string;
   /** Debe ser true: aceptación de términos y privacidad (obligatorio). */
   acceptTerms: boolean;
   acceptPrivacy: boolean;

@@ -1,0 +1,74 @@
+<section class="cupones">
+  <header class="cupones__head">
+    <h1>Mis cupones</h1>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Filtrar cupones">
+    @for (t of tabs; track t.key) {
+      <button
+        type="button"
+        role="tab"
+        class="tabs__btn"
+        [class.is-active]="tab() === t.key"
+        [attr.aria-selected]="tab() === t.key"
+        (click)="setTab(t.key)"
+      >
+        {{ t.label }}
+      </button>
+    }
+  </nav>
+
+  @switch (state()) {
+    @case ('loading') {
+      <div class="state"><div class="spinner" aria-hidden="true"></div><p>Cargando…</p></div>
+    }
+    @case ('offline') {
+      <div class="state" role="alert">
+        <p>Sin conexión.</p>
+        <button type="button" class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button>
+      </div>
+    }
+    @case ('error') {
+      <div class="state" role="alert">
+        <p>No pudimos cargar tus cupones.</p>
+        <button type="button" class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button>
+      </div>
+    }
+    @case ('loaded') {
+      @if (visible().length === 0) {
+        <div class="empty">
+          <p>No tienes cupones en esta sección.</p>
+          <small>Las campañas del Club aparecerán aquí cuando estén activas.</small>
+        </div>
+      } @else {
+        <ul class="list">
+          @for (c of visible(); track c.id) {
+            <li class="coupon">
+              <div class="coupon__body">
+                <strong class="coupon__name">{{ c.campaign.name }}</strong>
+                @if (c.campaign.description) {
+                  <p class="coupon__desc">{{ c.campaign.description }}</p>
+                }
+                <div class="coupon__meta">
+                  <span class="coupon__code">{{ c.code }}</span>
+                  @if (c.expiresAt) {
+                    <span class="coupon__exp">
+                      Vence: {{ c.expiresAt | date: 'longDate' }}
+                    </span>
+                  }
+                </div>
+              </div>
+              <span class="coupon__status coupon__status--{{ c.status }}">
+                {{
+                  c.status === 'issued' ? 'Disponible' :
+                  c.status === 'redeemed' ? 'Canjeado' :
+                  c.status === 'expired' ? 'Vencido' : 'Anulado'
+                }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+    }
+  }
+</section>

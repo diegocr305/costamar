@@ -101,4 +101,6 @@ a {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  /* espacio para la navegación inferior fija (56px + safe area) */
+  padding-bottom: calc(64px + env(safe-area-inset-bottom, 0));
 }

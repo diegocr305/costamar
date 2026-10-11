@@ -1,5 +1,7 @@
 import {
   IsBoolean,
+  IsDateString,
+  IsNotEmpty,
   IsOptional,
   IsString,
   Matches,
@@ -8,10 +10,10 @@ import {
 } from 'class-validator';
 
 /**
- * Alta / completar perfil del socio.
+ * Alta / completar perfil del socio (V1 con cupones).
  * La identidad (user_id) NUNCA viene del body: se toma del JWT.
- * acceptTerms y acceptPrivacy son obligatorios (deben ser true).
- * El marketing es opcional e independiente.
+ * phone y birthDate son obligatorios; acceptTerms/acceptPrivacy deben ser true.
+ * La validación de edad (>=18) se hace en el servicio (TZ America/Santiago).
  */
 export class EnrollDto {
   @IsString()
@@ -19,10 +21,16 @@ export class EnrollDto {
   @MaxLength(120)
   fullName!: string;
 
-  @IsOptional()
   @IsString()
+  @IsNotEmpty({ message: 'El teléfono es obligatorio' })
   @Matches(/^\+?[0-9 ]{6,20}$/, { message: 'Teléfono inválido' })
-  phone?: string;
+  phone!: string;
+
+  @IsDateString(
+    {},
+    { message: 'La fecha de nacimiento debe ser una fecha válida (YYYY-MM-DD)' },
+  )
+  birthDate!: string;
 
   @IsBoolean()
   acceptTerms!: boolean;

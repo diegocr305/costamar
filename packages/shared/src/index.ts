@@ -5,6 +5,7 @@ export * from './constants/business';
 
 // Validación
 export * from './validation/roles.validation';
+export * from './validation/age.validation';
 
 // Tipos — Autenticación
 export * from './types/auth';
@@ -26,6 +27,9 @@ export * from './types/loyalty';
 
 // Tipos — Club Costa Mar (membresía)
 export * from './types/club';
+
+// Tipos — Cupones y campañas del Club
+export * from './types/coupons';
 
 // Tipos — Reseñas de Google
 export * from './types/reviews';

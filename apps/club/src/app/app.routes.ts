@@ -39,6 +39,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'cupones',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/cupones/cupones.component').then(
+        (m) => m.CuponesComponent,
+      ),
+  },
+  {
+    path: 'inicio',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/inicio/inicio.component').then((m) => m.InicioComponent),
+  },
+  {
     path: 'beneficios',
     loadComponent: () =>
       import('./pages/beneficios/beneficios.component').then(
