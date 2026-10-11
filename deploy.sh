@@ -18,7 +18,7 @@ set -euo pipefail
 COMPOSE="docker compose -f docker-compose.piloto.yml --env-file .env"
 SERVICES=("$@")
 if [ ${#SERVICES[@]} -eq 0 ]; then
-  SERVICES=("web" "api" "club")
+  SERVICES=("web" "api" "club" "admin")
 fi
 
 echo "==> 1/4 Trayendo cambios de GitHub (git pull --ff-only)"
@@ -48,6 +48,13 @@ if printf '%s\n' "${SERVICES[@]}" | grep -qx "club"; then
   curl -fsS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:4002 || echo "FALLO"
   echo -n "Club healthcheck: "
   docker inspect --format='{{.State.Health.Status}}' costamar-club 2>/dev/null || echo "n/a"
+fi
+# Admin
+if printf '%s\n' "${SERVICES[@]}" | grep -qx "admin"; then
+  echo -n "Admin: "
+  curl -fsS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:4001 || echo "FALLO"
+  echo -n "Admin healthcheck: "
+  docker inspect --format='{{.State.Health.Status}}' costamar-admin 2>/dev/null || echo "n/a"
 fi
 
 echo ""

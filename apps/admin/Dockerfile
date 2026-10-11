@@ -31,7 +31,8 @@ COPY --from=build /app/apps/admin/dist/admin/browser /usr/share/nginx/html
 
 EXPOSE 4001
 
+# 127.0.0.1 (IPv4): "localhost" puede resolver a ::1 (IPv6) y fallar el chequeo.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:4001/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:4001/ || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]

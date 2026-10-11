@@ -58,6 +58,30 @@ services:
         limits:
           memory: 512M
 
+  # Panel Admin (SPA estática servida por Nginx). No usa secretos:
+  # clave publishable y apiUrl van en el build (públicas).
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+    image: costamar/admin:latest
+    container_name: costamar-admin
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4001:4001"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:4001/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - costamar_net
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
   # Club Costa Mar (PWA estática servida por Nginx). No usa secretos:
   # la clave publishable y la URL de API son públicas y van en el build.
   club:
