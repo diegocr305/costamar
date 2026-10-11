@@ -69,6 +69,14 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:4002:4002"
+    # Nginx interno escucha en 4002. Usar 127.0.0.1 (IPv4): "localhost"
+    # puede resolver a ::1 (IPv6) dentro del contenedor y fallar el chequeo.
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:4002/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     networks:
       - costamar_net
     deploy:

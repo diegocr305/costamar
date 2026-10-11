@@ -30,7 +30,9 @@ COPY --from=build /app/apps/club/dist/club/browser /usr/share/nginx/html
 
 EXPOSE 4002
 
+# Healthcheck: usar 127.0.0.1 (IPv4 explícito). "localhost" puede resolver a
+# ::1 (IPv6) dentro del contenedor y fallar aunque Nginx escuche en 4002.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:4002/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:4002/ || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
