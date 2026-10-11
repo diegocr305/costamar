@@ -19,6 +19,13 @@
 
   --cm-maxw: 1120px;
   --cm-shadow: 0 10px 30px rgba(18, 99, 160, 0.08);
+
+  /* Superficies oscuras premium (hero/bloques destacados).
+     Tonos marinos profundos coherentes con la marca. */
+  --cm-deep: #0e2a38;
+  --cm-deep-2: #15415a;
+  --cm-ivory: #f5ebdd;
+  --cm-coral: #f07a45;
 }
 
 * {

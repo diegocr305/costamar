@@ -15,6 +15,9 @@ export const BUSINESS = {
   whatsapp: 'https://api.whatsapp.com/send?phone=56962838538',
   instagram: 'https://www.instagram.com/costamarbarracevichera/',
   facebook: 'https://www.facebook.com/Costamar',
+  // Subdominio del Club Costa Mar (PWA). URL centralizada para evitar
+  // enlaces internos incorrectos a /club.
+  clubUrl: 'https://club.restaurantecostamar.cl',
   // Horario anunciado; verificar vigencia antes del lanzamiento.
   hours: [
     { days: 'Lunes a Jueves', open: '12:00', close: '19:00' },

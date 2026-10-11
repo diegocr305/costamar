@@ -15,6 +15,10 @@ export class HomeComponent implements OnInit {
   private readonly seo = inject(SeoService);
   protected readonly business = BUSINESS;
 
+  /** Foto de ceviche en alta resolución (Supabase Storage) para el hero. */
+  protected readonly heroImage =
+    'https://pebdhasajkvsjttclbhf.supabase.co/storage/v1/object/public/media/brand/background.jpg';
+
   ngOnInit(): void {
     this.seo.update({
       title: 'Costa Mar Barra Cevichera — Cevichería peruana en Quillota',

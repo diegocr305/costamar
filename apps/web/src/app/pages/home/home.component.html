@@ -1,38 +1,23 @@
 <section class="hero">
-  <div class="hero__grid">
-    <div class="hero__content">
-      <span class="cm-eyebrow">Cocina Peruana · Quillota</span>
-      <h1 class="hero__title">El sabor del Perú<br />en Quillota</h1>
-      <p class="hero__intro">
-        Ceviches, cocina criolla y especialidades marinas para disfrutar y
-        compartir. Descubre la carta de Costa Mar y encuentra tu próximo
-        favorito.
-      </p>
-      <div class="hero__cta">
-        <a routerLink="/carta" class="btn btn--primary">Ver la carta</a>
-        <a
-          [href]="business.whatsapp"
-          target="_blank"
-          rel="noopener"
-          class="btn btn--whatsapp"
-          >Escríbenos por WhatsApp</a
-        >
-      </div>
-    </div>
+  <picture class="hero__bg">
+    <img
+      [src]="heroImage"
+      alt="Ceviche Costa Mar — pescado fresco, cebolla morada y limón"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
+  <div class="hero__overlay"></div>
 
-    <!-- Zona reservada para la fotografía gastronómica principal.
-         Mientras no exista imagen real, se muestra un fondo decorativo
-         marino con el logo, sin placeholder técnico visible. -->
-    <div class="hero__media" role="img" aria-label="Costa Mar Barra Cevichera">
-      <div class="hero__media-inner">
-        <img
-          class="hero__logo"
-          src="assets/brand/costamar-logo.png"
-          alt=""
-          width="150"
-          height="150"
-        />
-      </div>
+  <div class="hero__content">
+    <span class="cm-eyebrow hero__eyebrow">Cocina Peruana · Quillota</span>
+    <h1 class="hero__title">Costa Mar<br />Barra Cevichera</h1>
+    <p class="hero__tagline">Sabores del mar, experiencias para recordar.</p>
+    <div class="hero__cta">
+      <a routerLink="/carta" class="btn btn--primary">Ver nuestra carta</a>
+      <a [href]="business.clubUrl" rel="noopener" class="btn btn--outline">
+        Descubre Costa Mar Club
+      </a>
     </div>
   </div>
 </section>

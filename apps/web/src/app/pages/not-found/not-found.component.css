@@ -1,0 +1,70 @@
+.nf {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(18, 167, 194, 0.12), transparent 60%),
+    linear-gradient(180deg, var(--cm-surface), var(--cm-background));
+}
+
+.nf__code {
+  font-size: clamp(4rem, 18vw, 9rem);
+  margin: 0.25rem 0 0.5rem;
+  color: var(--cm-ocean);
+  line-height: 1;
+}
+
+.nf__msg {
+  color: var(--cm-muted);
+  max-width: 420px;
+  margin: 0 0 2rem;
+}
+
+.nf__cta {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.9rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn--primary {
+  background: var(--cm-primary-dark);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  background: var(--cm-ocean);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--cm-ocean);
+  border: 1.5px solid var(--cm-ocean);
+}
+
+.btn--ghost:hover {
+  background: rgba(18, 99, 160, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}

@@ -36,7 +36,7 @@
       <a routerLink="/carta" routerLinkActive="is-active" (click)="closeMenu()">Carta</a>
       <a routerLink="/reservas" routerLinkActive="is-active" (click)="closeMenu()">Reservas</a>
       <a routerLink="/pedidos" routerLinkActive="is-active" (click)="closeMenu()">Pedidos</a>
-      <a routerLink="/club" routerLinkActive="is-active" (click)="closeMenu()">Club</a>
+      <a [href]="business.clubUrl" rel="noopener" (click)="closeMenu()">Club</a>
       <a
         [href]="business.whatsapp"
         target="_blank"
@@ -69,7 +69,7 @@
         <li><a routerLink="/carta">Carta</a></li>
         <li><a routerLink="/reservas">Reservas</a></li>
         <li><a routerLink="/pedidos">Pedidos</a></li>
-        <li><a routerLink="/club">Club Costa Mar</a></li>
+        <li><a [href]="business.clubUrl" rel="noopener">Club Costa Mar</a></li>
       </ul>
     </nav>
 
