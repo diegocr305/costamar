@@ -58,6 +58,24 @@ services:
         limits:
           memory: 512M
 
+  # Club Costa Mar (PWA estática servida por Nginx). No usa secretos:
+  # la clave publishable y la URL de API son públicas y van en el build.
+  club:
+    build:
+      context: .
+      dockerfile: apps/club/Dockerfile
+    image: costamar/club:latest
+    container_name: costamar-club
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4002:4002"
+    networks:
+      - costamar_net
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
 networks:
   costamar_net:
     driver: bridge

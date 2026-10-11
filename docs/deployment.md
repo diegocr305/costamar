@@ -179,3 +179,78 @@ sudo nginx -t && sudo systemctl reload nginx
 - Certificados de origen de Cloudflare en `/etc/ssl/cloudflare/`, nunca en git.
 - Cloudflare en **Full (strict)**.
 - Puertos 3000/4000 solo en loopback; el acceso público entra por Nginx.
+
+---
+
+## 7. Actualizar producción con los cambios actuales (seguro, sin romper nada)
+
+> Regla de oro: tu `.env` real vive solo en el servidor y está en `.gitignore`.
+> `git pull` NO lo toca. Reconstruir contenedores NO borra sus variables.
+
+### Parte A — Fix de los chips de la carta (solo rebuild de la web)
+
+```bash
+cd costamar
+git pull --ff-only
+docker compose -f docker-compose.piloto.yml --env-file .env up -d --build web
+curl -I http://127.0.0.1:4000           # 200 OK
+```
+Nada más cambia: api y (si existe) club siguen intactos.
+
+### Parte B — Publicar el Club (club.restaurantecostamar.cl)
+
+Requisitos previos (una vez):
+- DNS en Cloudflare: `A` `club` → IP del servidor, **Proxied**. (ya hecho)
+- Google OAuth + Supabase Auth configurados (ver `docs/club-oauth-setup.md`).
+
+1) Permitir el origen del club en CORS de la API. Edita SOLO el `.env` del
+   servidor (no se sube al repo) y añade el club a `ALLOWED_ORIGINS`:
+
+```bash
+cd costamar
+nano .env
+#   ALLOWED_ORIGINS=https://restaurantecostamar.cl,https://www.restaurantecostamar.cl,https://admin.restaurantecostamar.cl,https://club.restaurantecostamar.cl
+```
+
+2) Levantar el contenedor del club y recrear la API para aplicar el nuevo CORS
+   (web no se toca):
+
+```bash
+docker compose -f docker-compose.piloto.yml --env-file .env up -d --build club
+docker compose -f docker-compose.piloto.yml --env-file .env up -d --force-recreate api
+docker compose -f docker-compose.piloto.yml ps
+curl -I http://127.0.0.1:4002           # club: 200 OK
+```
+
+3) Instalar el vhost de Nginx del club (git NO toca /etc/nginx):
+
+```bash
+# Respaldo defensivo si ya existiera
+sudo cp /etc/nginx/sites-available/club.restaurantecostamar.cl \
+        /etc/nginx/sites-available/club.restaurantecostamar.cl.bak.$(date +%F) 2>/dev/null || true
+
+sudo cp nginx/club.restaurantecostamar.cl.conf /etc/nginx/sites-available/club.restaurantecostamar.cl
+sudo ln -sf /etc/nginx/sites-available/club.restaurantecostamar.cl /etc/nginx/sites-enabled/
+
+sudo nginx -t                           # DEBE decir "test is successful"
+sudo systemctl reload nginx
+```
+
+4) Verificar:
+
+```bash
+curl -I https://club.restaurantecostamar.cl/        # 200 (vía Cloudflare)
+curl -s https://api.restaurantecostamar.cl/api/v1/health
+```
+
+### Rollback del club (si algo falla)
+
+```bash
+# Quitar el vhost sin tocar web/api
+sudo rm /etc/nginx/sites-enabled/club.restaurantecostamar.cl
+sudo nginx -t && sudo systemctl reload nginx
+
+# Detener solo el contenedor del club
+docker stop costamar-club
+```
+La web y la API siguen funcionando: el club es independiente.
