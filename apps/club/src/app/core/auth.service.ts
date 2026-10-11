@@ -5,6 +5,7 @@ import {
   type Session,
 } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { extractOAuthCode } from './extract-oauth-code';
 
 export interface ClubAuthUser {
   id: string;
@@ -56,9 +57,31 @@ export class AuthService {
     if (error) throw error;
   }
 
-  /** Procesa el retorno OAuth: intercambia el código por sesión (PKCE). */
+  /**
+   * Procesa el retorno OAuth (PKCE).
+   *
+   * exchangeCodeForSession espera ÚNICAMENTE el valor del parámetro `code`,
+   * NO la URL completa. Pasar la URL entera hace que Supabase la use como
+   * auth_code y falle con 404 flow_state_not_found.
+   *
+   * Extrae el `code` de la query. Como un código PKCE es de un solo uso,
+   * se evita ejecutar el intercambio dos veces para el mismo código.
+   */
+  private lastExchangedCode: string | null = null;
+
   async handleOAuthCallback(url: string): Promise<void> {
-    const { error } = await this.supabase.auth.exchangeCodeForSession(url);
+    const code = extractOAuthCode(url);
+    if (!code) {
+      throw new Error('Falta el parámetro "code" en la URL de retorno OAuth.');
+    }
+
+    // Evitar reintercambiar el mismo código (one-time use).
+    if (this.lastExchangedCode === code && this.isAuthenticated()) {
+      return;
+    }
+    this.lastExchangedCode = code;
+
+    const { error } = await this.supabase.auth.exchangeCodeForSession(code);
     if (error) throw error;
     const { data } = await this.supabase.auth.getSession();
     this.applySession(data.session);
