@@ -40,7 +40,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
-      SSR_ALLOWED_HOSTS: ${SSR_ALLOWED_HOSTS:-restaurantecostamar.cl,www.restaurantecostamar.cl,localhost}
+      SSR_ALLOWED_HOSTS: ${SSR_ALLOWED_HOSTS:-restaurantecostamar.cl,www.restaurantecostamar.cl,localhost,127.0.0.1}
       # URL de la API para el render SSR. Debe coincidir con la URL pública
       # que usa el navegador para que la transfer cache de hidratación
       # reutilice la respuesta y el cliente no vuelva a pedir.

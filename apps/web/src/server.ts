@@ -15,7 +15,7 @@ const app = express();
 // origen tras el proxy incluimos localhost y el dominio del restaurante.
 const ALLOWED_HOSTS = (
   process.env['SSR_ALLOWED_HOSTS'] ??
-  'localhost,restaurantecostamar.cl,www.restaurantecostamar.cl'
+  'localhost,127.0.0.1,restaurantecostamar.cl,www.restaurantecostamar.cl'
 )
   .split(',')
   .map((h) => h.trim())
