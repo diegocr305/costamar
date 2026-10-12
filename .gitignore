@@ -56,3 +56,9 @@ coverage/
 # Temporales
 tmp/
 temp/
+
+# Informes privados del negocio y exportación entregada por el dueño
+private-reports/
+docs/ai-context/Untitled spreadsheet - Ventas.csv
+__pycache__/
+*.py[cod]

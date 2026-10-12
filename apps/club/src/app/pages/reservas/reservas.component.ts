@@ -15,7 +15,7 @@ export class ReservasComponent implements OnInit {
  private readonly club=inject(ClubService);
  protected readonly isClub=true;
  protected config=signal<ReservationConfig|null>(null);protected busy=signal(false);protected loading=signal(true);protected error=signal('');protected feedback=signal('');
- protected result=signal<Reservation|null>(null);protected mine=signal<ReservationPage>({items:[],total:0,page:1,pageSize:20});
+ protected privateAccess=signal(false);protected mineLoading=signal(false);private mineRequest=0;protected result=signal<Reservation|null>(null);protected mine=signal<ReservationPage>({items:[],total:0,page:1,pageSize:20});
  protected website='';protected name='';protected phone='';protected party=2;protected date=chileLocalDateTime(new Date().toISOString()).slice(0,10);protected time='';protected area:ReservationArea='any';protected notes='';
  protected readonly labels=RESERVATION_LABELS;protected readonly areas=RESERVATION_AREAS;protected readonly business=BUSINESS;
  protected readonly today=this.date;protected privateLink='';protected cancelId='';private token='';private requestId='';
@@ -24,21 +24,25 @@ export class ReservasComponent implements OnInit {
  protected timestamp(value:string){return new Date(value).toLocaleString('es-CL',{timeZone:'America/Santiago',dateStyle:'medium',timeStyle:'short'});}
  protected canCancel(r:Reservation){return ['pending','confirmed'].includes(r.status)&&Date.parse(r.reservedAt)>Date.now();}
  async ngOnInit(){
+  this.loading.set(true);this.error.set('');
   try{
    this.config.set(await firstValueFrom(this.http.get<ReservationConfig>(this.base+'/config').pipe(timeout(10000))));
    if(!this.times().length){const d=new Date(this.date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+1);this.date=d.toISOString().slice(0,10);}
    try{const me=await firstValueFrom(this.club.getMe());this.name=me.member?.fullName??'';const digits=(me.member?.phone??'').replace(/\D/g,'');this.phone=digits.startsWith('569')&&digits.length===11?digits.slice(3):'';}catch{}await this.loadMine();
-   if(this.browser&&!this.isClub){const p=new URLSearchParams(this.route.snapshot.fragment??'');if(p.get('id')&&p.get('token')){this.requestId=p.get('id')!;this.token=p.get('token')!;await this.refreshPrivate();}}
+   if(this.browser&&!this.isClub){const p=new URLSearchParams(this.route.snapshot.fragment??'');if(p.get('id')&&p.get('token')){this.privateAccess.set(true);this.requestId=p.get('id')!;this.token=p.get('token')!;await this.refreshPrivate();}}
   }catch{this.error.set('No pudimos cargar las reservas. Puedes reintentar.');}
   finally{this.loading.set(false);}
  }
  protected async loadMine(page=1){
-  try{this.mine.set(await firstValueFrom(this.http.get<ReservationPage>(this.base+'/mine',{params:{page}}).pipe(timeout(10000))));}
-  catch{this.error.set('No pudimos consultar tus reservas. Inténtalo de nuevo.');}
+  const request=++this.mineRequest;this.mineLoading.set(true);
+  try{const result=await firstValueFrom(this.http.get<ReservationPage>(this.base+'/mine',{params:{page}}).pipe(timeout(10000)));if(request===this.mineRequest)this.mine.set(result);}
+  catch{if(request===this.mineRequest)this.error.set('No pudimos consultar tus reservas. Inténtalo de nuevo.');}
+  finally{if(request===this.mineRequest)this.mineLoading.set(false);}
  }
  protected async submit(){
   const at=chileLocalToIso(this.date+'T'+this.time);
-  if(this.busy()||!at||!this.name.trim()||!/^\d{8}$/.test(this.phone)||!this.times().includes(this.time))return;
+  if(this.busy()||!at||!this.name.trim()||!/^\d{8}$/.test(this.phone))return;
+  if(!this.times().includes(this.time)){this.time='';this.error.set('Ese horario ya no cumple la anticipación mínima. Elige otra hora.');return;}
   if(!this.requestId){this.requestId=crypto.randomUUID();this.token=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(n=>n.toString(16).padStart(2,'0')).join('');}
   this.busy.set(true);this.error.set('');
   if(!this.isClub)this.privateLink=window.location.origin+'/reservas#'+new URLSearchParams({id:this.requestId,token:this.token});
@@ -53,10 +57,17 @@ export class ReservasComponent implements OnInit {
  }
  protected async refreshPrivate(){
   if(!this.token||!this.requestId)return;
-  try{const r=await firstValueFrom(this.http.post<Reservation>(this.base+'/public/access',{id:this.requestId,accessToken:this.token}).pipe(timeout(10000)));this.result.set(r);if(this.browser)this.privateLink=window.location.origin+'/reservas#'+new URLSearchParams({id:r.id,token:this.token});}
+  try{const r=await firstValueFrom(this.http.post<Reservation>(this.base+'/public/access',{id:this.requestId,accessToken:this.token}).pipe(timeout(10000)));this.result.set(r);this.privateAccess.set(true);if(this.browser)this.privateLink=window.location.origin+'/reservas#'+new URLSearchParams({id:r.id,token:this.token});}
   catch{this.error.set('No pudimos consultar esa solicitud. Revisa el enlace o contacta al restaurante.');}
  }
- protected async refresh(){this.error.set('');this.busy.set(true);if(this.isClub)await this.loadMine();else await this.refreshPrivate();this.busy.set(false);}
+ protected async refresh(){
+  if(this.busy())return;this.error.set('');this.busy.set(true);
+  try{
+   if(this.isClub){const current=this.result();if(current)this.result.set(await firstValueFrom(this.http.get<Reservation>(this.base+'/mine/'+current.id).pipe(timeout(10000))));await this.loadMine(this.mine().page);}
+   else await this.refreshPrivate();
+  }catch{this.error.set('No pudimos consultar el estado. Inténtalo de nuevo.');}
+  finally{this.busy.set(false);}
+ }
  protected async cancel(r:Reservation){
   if(this.busy())return;if(this.cancelId!==r.id){this.cancelId=r.id;return;}
   this.busy.set(true);this.error.set('');
@@ -64,6 +75,6 @@ export class ReservasComponent implements OnInit {
   catch(e:unknown){this.error.set((e as {error?:{message?:string}}).error?.message??'No pudimos cancelar. Contacta al restaurante.');}
   finally{this.busy.set(false);}
  }
- protected newRequest(){this.result.set(null);this.requestId='';this.token='';this.privateLink='';this.feedback.set('');this.cancelId='';if(!this.isClub)void this.router.navigate([],{fragment:undefined,replaceUrl:true});}
+ protected newRequest(){this.privateAccess.set(false);this.error.set('');this.changed();this.result.set(null);this.requestId='';this.token='';this.privateLink='';this.feedback.set('');this.cancelId='';if(!this.isClub)void this.router.navigate([],{fragment:undefined,replaceUrl:true});}
  protected async copy(){try{await navigator.clipboard.writeText(this.privateLink);this.feedback.set('Enlace copiado. Guárdalo para consultar tu solicitud.');}catch{this.feedback.set('Selecciona y copia el enlace que aparece abajo.');}}
 }

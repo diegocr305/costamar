@@ -13,6 +13,14 @@ describe('HTTP reservas: DTO, roles y protección pública',()=>{
  afterAll(async()=>{await app.close();});
  const payload={requestId:'f9abb8b1-dd7b-4509-8328-cea33357e4e8',accessToken:'a'.repeat(64),customerName:'Cliente',customerPhone:'+56912345678',partySize:2,reservedAt:'2027-10-14T16:00:00Z'};
  const headers={'Content-Type':'application/json'};
+ it('consulta individual usa identidad del token y no acepta UUID inválido',async()=>{
+  rpc.mockClear();
+  expect((await fetch(url+'/reservations/mine/'+payload.requestId)).status).toBe(200);
+  expect(rpc).toHaveBeenCalledWith('reservation_customer_access',{p_id:payload.requestId,p_user:'actor-del-token',p_hash:null,p_cancel:false});
+  rpc.mockClear();
+  expect((await fetch(url+'/reservations/mine/id-invalido')).status).toBe(400);
+  expect(rpc).not.toHaveBeenCalled();
+ });
  it('rechaza asignación pública y restringe agenda/configuración',async()=>{
   expect((await fetch(url+'/reservations/public',{method:'POST',headers,body:JSON.stringify({...payload,status:'confirmed'})})).status).toBe(400);
   expect((await fetch(url+'/reservations/admin')).status).toBe(403);

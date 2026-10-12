@@ -1,6 +1,9 @@
-> Estado 12-10-2026: reservas ya implementadas en web/Club/admin con confirmaci?n manual por caja y atenci?n, asignaci?n de mesas, historial y configuraci?n de superadmin. Ver [reservas-primera-version.md](../reservas-primera-version.md) para el comportamiento vigente; las especificaciones anteriores de reservas son hist?ricas.
-
 # Costa Mar — Contexto del proyecto (para IA de desarrollo)
+
+Estado actualizado el 12-10-2026: Club, atención, campañas y reservas están
+implementados. Leer [estado actual](../estado-actual-y-proximos-pasos.md) y
+[pendientes vigentes](05-pendientes-y-reglas.md) antes de tomar trabajo de una
+bitácora antigua. Fudo sigue como POS; el análisis CSV es local y privado.
 
 > Este documento y los demás en `docs/ai-context/` son el **brief maestro**
 > para una IA que continuará el desarrollo. Léelos todos antes de codear.
@@ -23,15 +26,15 @@ Quillota, Chile). Monorepo pnpm + TypeScript.
   URL: `https://pebdhasajkvsjttclbhf.supabase.co`.
 - **AWS Lightsail** Ubuntu 24.04 (4GB), Docker Compose + Nginx 1.24 (nativo).
 - **Cloudflare** DNS + HTTPS (Full strict). Proxied.
-- Compose piloto: `docker-compose.piloto.yml` (servicios: api, web, club).
+- Compose piloto: `docker-compose.piloto.yml` (servicios: api, web, club, admin).
 - Script de despliegue: `deploy.sh` (ver `docs/deployment.md`).
 
 ## Autenticación
 - **Supabase Auth con Google OAuth, flujo PKCE**. No hay contraseñas propias.
 - Clave **publishable** (`sb_publishable_...`) en los frontends (pública, segura con RLS).
 - Clave **secret** (`sb_secret_...`) SOLO en la API (`apps/api/.env`, gitignored).
-- JWT validado en la API con **JWKS ES256** (no HS256). El rol de app va en
-  `app_metadata.role` del JWT.
+- JWT validado en la API con **JWKS ES256**. Los claims aportan identidad; la
+  API consulta el rol vigente en BD por petición. No autoriza con claims viejos.
 - **Gotcha PKCE conocido**: `exchangeCodeForSession()` recibe SOLO el valor del
   parámetro `code`, NUNCA la URL completa (si no, da 404 `flow_state_not_found`).
   Ver `apps/*/src/app/core/extract-oauth-code.ts`.

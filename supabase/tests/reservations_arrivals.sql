@@ -1,7 +1,7 @@
 begin;
 set local plpgsql.check_asserts=on;
 do $$
-declare v_staff uuid:=gen_random_uuid();v_a uuid:=gen_random_uuid();v_b uuid:=gen_random_uuid();v_c uuid:=gen_random_uuid();v_d uuid:=gen_random_uuid();
+declare v_staff uuid:=gen_random_uuid();v_a uuid:=gen_random_uuid();v_b uuid:=gen_random_uuid();v_c uuid:=gen_random_uuid();v_d uuid:=gen_random_uuid();v_e uuid:=gen_random_uuid();
 begin
  insert into auth.users(id,email) values(v_staff,'arrival-staff-'||v_staff||'@example.invalid');
  insert into public.user_roles(user_id,role_id) select v_staff,id from public.roles where name='cashier';
@@ -18,6 +18,16 @@ begin
  begin perform public.reservation_update(v_staff,v_c,'{"status":"seated"}');raise exception 'TEST_FAILED: mesa aún ocupada';exception when raise_exception then if sqlerrm<>'RESERVATION_STILL_SEATED' then raise;end if;end;
  perform public.reservation_update(v_staff,v_a,'{"status":"completed"}');
  assert (select released_at is not null from public.reservations where id=v_a),'libera al finalizar';
+ begin perform public.reservation_update(v_staff,v_c,'{"status":"seated"}');raise exception 'TEST_FAILED: omite preparacion real';exception when raise_exception then if sqlerrm<>'RESERVATION_PREPARING' then raise;end if;end;
+ -- Confirmar exactamente al finalizar preparación sí es válido.
+ update public.reservations set status='pending' where id=v_c;
+ insert into public.reservations(id,request_key,access_hash,customer_name,customer_phone,party_size,reserved_at,duration_minutes,buffer_minutes,tolerance_minutes,status,table_numbers,confirmed_capacity,source) values
+ (v_e,v_e,repeat('e',64),'Después de preparar','+56912345672',2,now()+interval '15 minutes',90,15,15,'pending',array[15],3,'admin');
+ perform public.reservation_update(v_staff,v_e,'{"status":"confirmed"}');
+ perform public.reservation_update(v_staff,v_e,'{"status":"cancelled"}');
+ update public.reservations set status='confirmed' where id=v_c;
+ -- Cumplido el margen real, la llegada es válida aunque la hora prevista sea pasada.
+ update public.reservations set released_at=now()-interval '15 minutes' where id=v_a;
  perform public.reservation_update(v_staff,v_c,'{"status":"seated"}');
  assert (select seated_at is not null from public.reservations where id=v_c),'llegada real';
  -- Un grupo previamente aprobado puede ser recibido y finalizado por caja.

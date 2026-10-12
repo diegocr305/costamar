@@ -1,128 +1,91 @@
-> Estado 12-10-2026: reservas ya implementadas en web/Club/admin con confirmaci?n manual por caja y atenci?n, asignaci?n de mesas, historial y configuraci?n de superadmin. Ver [reservas-primera-version.md](../reservas-primera-version.md) para el comportamiento vigente; las especificaciones anteriores de reservas son hist?ricas.
+# Pendientes y reglas vigentes — Costa Mar
 
-# Pendientes, reglas de negocio y decisiones
+Actualizado el 12-10-2026. Ver [estado general](../estado-actual-y-proximos-pasos.md).
+Esta lista reemplaza los pendientes históricos anteriores.
 
-> UX de cupones ajustado: Disponibles/Utilizados/Vencidos con cantidades;
-> Próximos oculto mientras no haya beneficios futuros reales. Estados vacíos
-> específicos, historial compacto con redeemedAt, un solo enlace desde Inicio.
-> Cupones abre Disponibles salvo enlace explícito `estado=utilizados`.
-> Solo presentación del Club: emisión, canje, vigencia y cupos sin cambios.
+## Terminado
 
-> Resumen del Club implementado en Inicio del admin, exclusivo superadmin/admin:
-> `docs/club-resumen-admin.md`. Altas, encuestas, cumpleaños, cupones y canjes;
-> días calendario de Chile, consulta manual y acceso a filtros. No cuenta visitas.
-> Próximo paso propuesto: registro de visitas reales; aún no implementado.
+- Admin operativo con Google, roles vigentes, navegación por permisos y equipo.
+- Carta pública/administrativa, Club, QR, emisión/canje de bienvenida y cumpleaños.
+- Cumpleaños automático durante el mes chileno, un cupón por socio/año.
+- Protección del cambio de fecha de nacimiento tras emitir beneficio.
+- Campañas configurables, catálogo, cupos, vigencias, resultados y cupones paginados.
+- Mesa obligatoria para canje; pedido/boleta/nota opcionales; folio e historial.
+- Encuesta opcional y estados visto/omitido/respondido; preferencias y consentimientos.
+- Socios y resumen del Club para superadmin/admin.
+- Reservas web sin registro, Club con cuenta, agenda para atención, ingreso manual,
+  mesas/uniones, confirmación, llegada/salida, tolerancia y auditoría.
+- Correcciones de revisión: estado individual Club, recuperación de enlace,
+  hora caducada, reintento de mapa y preparación posterior a salida real.
+- Guía del equipo y análisis privado reproducible del CSV, sin importación en BD.
 
-> Encuesta de bienvenida implementada: `docs/club-encuesta-bienvenida.md`.
-> Tras registro y al próximo ingreso a Inicio de socios sin encuesta. Opcional,
-> omisión visible, estado/fechas en admin, no repetición y preferencias editables.
-> Incluye “Aún no he visitado Costa Mar”. No condiciona regalos ni consentimientos.
+## Reglas confirmadas que se conservan
 
-> Equipo y accesos y preferencias opcionales implementados: ver
-> `docs/club-equipo-preferencias.md`. Solo superadmin gestiona meseros (cashier).
-> Roles vigentes comprobados en BD por petición; contactos promocionales por
-> consentimiento de canal. Socios y filtros listos; envío de promociones y
-> clasificación por frecuencia/inactividad pendientes de integraciones reales.
+### Club
 
-> Actualización 12-10-2026: leer `docs/club-lanzamiento-2026-10-12.md` primero.
-> Admin ya accesible; healthcheck y Compose corregidos. Cumpleaños automático
-> ya activado en Supabase (dos cupones de octubre + cron). Nueva portada,
-> beneficios e ingreso directo a Google preparados; pendiente desplegar API/Club.
-> La lista inferior conserva el contexto histórico; el punto de cumpleaños y
-> protección de fecha de nacimiento ya está implementado.
-> También se implementó el historial de canjes en `/club/historial`, se renovó
-> la interfaz del admin y se asignó rol cashier a la cuenta del restaurante.
-> Desplegar `api club admin` para publicar todo este cambio.
-> Gestión de campañas implementada: ver `docs/club-campanas-admin.md`.
-> Crear/editar, catálogo, cupos, vigencia, resultados y cupones paginados listos.
-> Reservas es el siguiente módulo. Cumpleaños sigue sin límite de socios.
-> Orden de atención acordado: mesa obligatoria; pedido/boleta/observación
-> opcionales. Ya implementados campos separados, folio de canje y últimos seis
-> canjes de hoy debajo del escáner, con filtro exacto por mesa.
-> Ver `docs/club-orden-canjes.md`. Supabase actualizado; desplegar `api admin`.
+- Bienvenida: un bebestible personal entre jugo/bebida/schop, con consumo asociado.
+  Personal, no jarra, no acumulable ni canjeable por dinero; alcohol requiere
+  mayoría de edad y verificación presencial.
+- La campaña se presenta comercialmente como primeros 50 fundadores. Se verificó
+  que su configuración técnica todavía tiene 60 cupos para pruebas. No ajustar
+  sin resolver conciliación y aprobación comercial.
+- Cumpleaños: un bebestible y un postre personal, con consumo asociado, perfil
+  completo y socio adulto activo. Vigencia en mes calendario America/Santiago,
+  un cupón/año, sin cupos de socios. 29 de febrero cuenta como febrero.
+- Encuesta y preferencias opcionales; omitir no afecta regalos. El consentimiento
+  promocional se decide por canal y no se presupone por responder o reservar.
+- Registros históricos y canjes no se borran para recuperar cupos.
 
-## Estado actual (qué funciona)
-- Web pública en vivo (hero con foto de ceviche, carta real con fotos, favicon).
-- Club en vivo: login Google, perfil (nombre/teléfono/fecha nac. ≥18), tarjeta
-  con QR real (member_code), Inicio, Cupones (4 pestañas), navegación inferior,
-  tema oscuro, PWA instalable.
-- API: endpoints de carta, club socio y club staff. 36 tests.
-- Campaña fundadores (`fundadores-50`) **active**, 60 cupos, emisión y canje
-  transaccionales funcionando (verificado end-to-end).
-- Panel garzón (`/club/validar` en admin): validar/canjear por QR o código manual.
-  Admin aún NO desplegado.
+### Reservas
 
-## Reglas de negocio CONFIRMADAS
+Mapa y reglas completas: [primera versión](../reservas-primera-version.md).
 
-### Regalo de Bienvenida — 50 Socios Fundadores (campaña `fundadores-50`)
-- Premio: 1 **bebestible personal** a elección entre jugo / bebida / schop de cerveza.
-- Para una sola persona, con **consumo asociado** en el local.
-- NO es jarra, NO es para compartir, NO ilimitado.
-- Alcohol (schop) solo mayores de 18 con verificación presencial; el personal
-  puede negar alcohol según normas.
-- Un solo canje por socio. No acumulable. No canjeable por dinero.
-- Máximo 50 socios elegibles (hoy la BD tiene max_coupons=60 para incluir pruebas;
-  **ajustar a 50 antes del lanzamiento real**).
-- Inicio comercial: 11 de octubre de 2026.
-- Imagen: `media/club/jugo.png` (ilustrativa; el premio es personal).
-- Mostrar claramente "1 BEBESTIBLE PERSONAL DE REGALO".
+- Salón 1–8/10/12/15: 2 cómodos, máximo 3. Salón 9/11/13/14/16/17/18/19: 4.
+- Terraza 20–23 y barra 30–32: 2 por mesa; sin uniones aprobadas.
+- 1+2, 3+4, 5+6, 7+8 permiten 6. Uniones vecinas de cada fila grande requieren
+  validar capacidad conjunta. Mesa 15 independiente; no unir filas distintas.
+- Más de dos mesas: confirmación/cambios especiales por manager/admin/superadmin.
+  Atención puede registrar llegada/finalización una vez aprobado el grupo.
+- Lunes–jueves 12–19, viernes/sábado 12–22, domingo 12–18.
+- Inicialmente 90 min para 1–4; 120 para 5+; preparación 15; tolerancia 15;
+  mínimo público 120 min y slots de media hora. Superadmin modifica configuración.
+- La solicitud es pendiente hasta confirmación manual. No envía mensajes, no
+  concede regalos por reservar y no sincroniza la ocupación de Fudo.
+- Una visita sigue ocupando la mesa hasta finalizar; después de la salida real
+  se respeta también el margen de preparación.
 
-### Barco Cumpleañero — Personal (campaña type `birthday`) — NO IMPLEMENTADO
-- Premio: 1 bebestible + 1 postre personal (con/sin alcohol según catálogo).
-- Consumo asociado obligatorio.
-- Solo socios con perfil completo y ≥18.
-- Activo automáticamente durante el **mes calendario** del cumpleaños (TZ America/Santiago).
-- 1 cupón y 1 canje por socio por año.
-- Vence al terminar el mes. 29-feb cuenta como febrero.
-- No depende de que el socio abra la app. Si se inscribe en su mes, puede recibirlo.
-- Año siguiente: nuevo cupón. Usar `period_key = y-{año}` para unicidad anual.
-- Helpers ya listos en `packages/shared/src/validation/age.validation.ts`:
-  `isAdult`, `isBirthdayMonth`, `birthdayPeriodKey`, `ageOn` (todos TZ Santiago, cubren 29-feb).
+## Decisiones del dueño pendientes
 
-## DECISIONES PENDIENTES DEL DUEÑO (no inventar)
-1. **Vigencia de cupones de fundadores**: `rules.validityDays = null` → hoy se
-   emiten SIN expiración. Definir días o fecha límite.
-2. **max_coupons fundadores**: hoy 60 (para pruebas). ¿Dejar en 50 para el real?
-3. **Conciliación de socios**: hay cuentas de prueba/internas que no deben gastar
-   cupos. Ver `docs/club-fundadores-conciliacion.md`. Socios actuales:
-   - CM-RBVR70 DIEGO CABRERA, CM-U99OW2 Diego Alonso Cabrera Rios,
-     CM-Q77UBE DIEGO ALONSO CABRERA RIOS (3 cuentas del dueño/pruebas),
-     CM-Z0L7TN Costa Mar (marca), CM-SK6B3B Naysha Amones.
-   - Decidir cuáles excluir antes de abrir al público.
-4. **Reservas**: aforo/mesas, horarios, duración, anticipación mínima, política de
-   cancelación, confirmación automática o manual. Ver `03-panel-admin-spec.md`.
-5. **Productos permitidos** de cada campaña: cargar en `club_campaign_products`
-   (jugo/bebida/schop para fundadores; bebestible+postre para cumpleaños).
-6. **Horarios del negocio**: verificar vigencia (hoy en `packages/shared/.../business.ts`).
+1. Vigencia de bienvenida, cuentas de prueba y ajuste comercial de cupos.
+2. Catálogo concreto de productos autorizados para cada beneficio.
+3. Eventual descuento/cortesía por reservar: condiciones, presupuesto y límites.
+4. Gastos: responsable, categorías, documentos, pagos parciales y correcciones.
+5. Inventario: compras, unidades, conteos, recetas y mermas antes de descontar stock.
+6. OTP, WhatsApp/email y otras integraciones: proveedor, costo y alcance.
 
-## PENDIENTES TÉCNICOS (orden sugerido)
-1. **Desplegar admin** a producción → `04-despliegue-admin.md`. (Prioridad: habilita QR con HTTPS.)
-2. **Módulo Campañas admin** (API `/club/admin/*` + vistas) → `03-panel-admin-spec.md`.
-3. **Módulo Reservas** (migración + API + vistas admin + form en web) → `03-panel-admin-spec.md`.
-4. **Cumpleaños automático**: endpoint que, al consultar cupones del socio,
-   emita (idempotente, period_key anual) el cupón de cumpleaños si está en su mes
-   y cumple requisitos; y marque expired los de meses pasados. Crear función RPC
-   `issue_birthday_coupon` análoga a `issue_founder_coupon`.
-5. **Reportes básicos** por campaña.
-6. **Cargar club_campaign_products** del regalo y cumpleaños.
-7. **Protección cambio de fecha de nacimiento**: hoy el enroll permite actualizarla.
-   Añadir política: una vez verificada/usada para un beneficio, el cambio requiere
-   acción administrativa auditada (no self-service libre).
-8. **Inventario**: fase posterior.
-9. **OTP de teléfono**: diferido. `phone_verified` queda en false. Preparar sin implementar.
+No introducir estas reglas a partir de una propuesta antigua: requieren decisión
+o datos que todavía no están disponibles.
 
-## Fixes históricos ya resueltos (no reintroducir)
-- Nginx 1.24 NO soporta `http2 on;` → eliminado de todos los vhosts.
-- SSR_ALLOWED_HOSTS debe incluir `127.0.0.1`.
-- OAuth PKCE: pasar SOLO el `code` a `exchangeCodeForSession` (no la URL).
-- Emisión de cupones: usar `gen_random_uuid()` (pgcrypto `gen_random_bytes` no está).
-- Healthcheck de contenedores nginx: usar `127.0.0.1`, no `localhost` (IPv6).
-- Admin Dockerfile aún tiene el bug de healthcheck con localhost → corregir al desplegar.
+## Validaciones prácticas pendientes
 
-## Seguridad (checklist permanente)
-- `service_role` solo en API. Publishable key en front. `.env` gitignored.
-- RLS activo; socio ve solo lo suyo; staff/mutaciones solo backend.
-- QR del socio = member_code (público), NO autoriza canje por sí solo; el canje
-  se valida y registra en backend con rol autorizado.
-- No guardar fotos de documentos de identidad.
-- Cámara QR requiere HTTPS (por eso el admin debe ir por dominio con SSL).
+- Google real de cada empleado, cámara QR y PWA en sus teléfonos.
+- Ensayo de reservas y canjes con el equipo, siguiendo la [guía](../guia-equipo-atencion.md).
+- Desplegar cada nueva corrección cuando el dueño la publique; el admin y
+  reservas ya están accesibles, no volver a crear infraestructura existente.
+
+## Próximos módulos propuestos, aún no implementados
+
+1. Gastos/cuentas por pagar con entrada manual e importación.
+2. Reportes de ventas CSV en admin con detección de duplicados.
+3. Recetas/costos y luego inventario.
+4. Registro integral de visitas del Club, puntos, niveles y segmentación de
+   frecuencia. Las llegadas de reservas no identifican todas las visitas del Club.
+
+## Reglas técnicas
+
+- service_role sólo backend; secretos y datos privados fuera de Git.
+- JWT aporta identidad; autorización consulta el rol vigente en BD por petición.
+- RLS y RPC cerradas al cliente para operaciones de atención.
+- Backend/BD manda en emisión, canje, elegibilidad, cupos y conflictos de mesas.
+- Sin clientes ni importes reales del CSV en código, fixtures o documentación pública.
+- El dueño despliega. `./deploy.sh api web club admin` conserva `.env` y Nginx.

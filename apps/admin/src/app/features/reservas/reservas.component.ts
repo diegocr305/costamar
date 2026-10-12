@@ -23,9 +23,12 @@ export class ReservasAdminComponent implements OnInit {
  protected isCashier(){return this.auth.user()?.role==='cashier';}
  protected timestamp(value:string){return new Date(value).toLocaleString('es-CL',{timeZone:'America/Santiago',dateStyle:'short',timeStyle:'short'});}
  protected late(r:Reservation){return r.status==='confirmed'&&Date.now()>Date.parse(r.reservedAt)+r.toleranceMinutes*60000;}
+ protected preparing(r:Reservation){return r.status==='completed'&&!!r.releasedAt&&Date.now()<Date.parse(r.releasedAt)+r.bufferMinutes*60000;}
+ protected readyAt(r:Reservation){return this.timestamp(new Date(Date.parse(r.releasedAt!)+r.bufferMinutes*60000).toISOString());}
  protected final(r:Reservation){return ['completed','cancelled','no_show'].includes(r.status);}
  protected transitions(r:Reservation){const allowed:Record<string,string[]>={pending:['pending','confirmed','cancelled'],confirmed:['confirmed','seated','cancelled','no_show'],seated:['seated','completed']};return this.statuses.filter(s=>(allowed[r.status]??[r.status]).includes(s.value));}
- async ngOnInit(){try{this.config.set(await firstValueFrom(this.http.get<ReservationConfig>(this.base+'/config')));}catch{this.error.set('No pudimos cargar el mapa de mesas.');}await this.load();}
+ async ngOnInit(){await this.loadConfig();await this.load();}
+ protected async loadConfig(){this.error.set('');try{this.config.set(await firstValueFrom(this.http.get<ReservationConfig>(this.base+'/config').pipe(timeout(10000))));}catch{this.error.set('No pudimos cargar el mapa de mesas. Reintenta antes de asignar una mesa.');}}
  @HostListener('document:visibilitychange') protected onVisible(){if(document.visibilityState==='visible'&&!this.saving())void this.load(this.result().page);}
  protected async load(page=1){
   const request=++this.request;this.loading.set(true);this.error.set('');let params=new HttpParams().set('page',page).set('status',this.status).set('q',this.query.trim());if(this.date)params=params.set('date',this.date);
@@ -40,18 +43,18 @@ export class ReservasAdminComponent implements OnInit {
  protected async save(){
   const r=this.selected(),at=chileLocalToIso(this.editAt);if(!r||!at||this.saving())return;this.saving.set(true);this.error.set('');this.success.set('');
   const payload={status:this.editStatus,...(r.status==='seated'?{}:{partySize:this.editParty,reservedAt:at,tableNumbers:this.editTables}),staffNote:this.staffNote,...(this.capacity?{confirmedCapacity:this.capacity}:{})};
-  try{const updated=await firstValueFrom(this.http.patch<Reservation>(this.base+'/'+r.id,payload));this.open(updated);await this.load(this.result().page);this.success.set('Reserva actualizada. El cambio y su responsable quedaron registrados.');}
+  try{const updated=await firstValueFrom(this.http.patch<Reservation>(this.base+'/'+r.id,payload).pipe(timeout(15000)));this.open(updated);await this.load(this.result().page);this.success.set('Reserva actualizada. El cambio y su responsable quedaron registrados.');}
   catch(e:unknown){this.error.set(this.message(e));}finally{this.saving.set(false);}
  }
  protected async create(){
   const at=chileLocalToIso(this.newAt);if(!at||!this.newName.trim()||!/^\d{8}$/.test(this.newPhone)||this.saving())return;
   if(!this.newKey){this.newKey=crypto.randomUUID();this.newToken=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(n=>n.toString(16).padStart(2,'0')).join('');}
   this.saving.set(true);this.error.set('');
-  try{const r=await firstValueFrom(this.http.post<Reservation>(this.base,{requestId:this.newKey,accessToken:this.newToken,customerName:this.newName.trim(),customerPhone:'+569'+this.newPhone,partySize:this.newParty,reservedAt:at,notes:this.newNotes,areaPreference:'any'}));this.newForm=false;this.newKey='';this.newToken='';this.date=chileLocalDateTime(at).slice(0,10);this.status='';this.query='';await this.load();this.open(r);this.success.set('Solicitud creada. Asigna las mesas y confirma cuando verifiques la disponibilidad.');}
+  try{const r=await firstValueFrom(this.http.post<Reservation>(this.base,{requestId:this.newKey,accessToken:this.newToken,customerName:this.newName.trim(),customerPhone:'+569'+this.newPhone,partySize:this.newParty,reservedAt:at,notes:this.newNotes,areaPreference:'any'}).pipe(timeout(15000)));this.newForm=false;this.newKey='';this.newToken='';this.date=chileLocalDateTime(at).slice(0,10);this.status='';this.query='';await this.load();this.open(r);this.success.set('Solicitud creada. Asigna las mesas y confirma cuando verifiques la disponibilidad.');}
   catch(e:unknown){this.error.set(this.message(e));}finally{this.saving.set(false);}
  }
  protected editSettings(){const c=this.config();if(c)this.settingsDraft.set(JSON.parse(JSON.stringify(c)));}
- protected async saveSettings(){const c=this.settingsDraft();if(!c||this.saving())return;this.saving.set(true);this.error.set('');try{this.config.set(await firstValueFrom(this.http.patch<ReservationConfig>(this.base+'/config',c)));this.settingsDraft.set(null);this.success.set('Configuración guardada. Las reservas existentes conservan sus tiempos previstos.');}catch(e:unknown){this.error.set(this.message(e));}finally{this.saving.set(false);}}
+ protected async saveSettings(){const c=this.settingsDraft();if(!c||this.saving())return;this.saving.set(true);this.error.set('');try{this.config.set(await firstValueFrom(this.http.patch<ReservationConfig>(this.base+'/config',c).pipe(timeout(15000))));this.settingsDraft.set(null);this.success.set('Configuración guardada. Las reservas existentes conservan sus tiempos previstos.');}catch(e:unknown){this.error.set(this.message(e));}finally{this.saving.set(false);}}
  protected eventLabel(value:string){return ({created:'Solicitud creada',staff_update:'Cambio del equipo',customer_cancel:'Cancelación del cliente'} as Record<string,string>)[value]??value;}
  private message(e:unknown){return (e as {error?:{message?:string}}).error?.message??'No pudimos guardar. Revisa los datos y reintenta.';}
 }

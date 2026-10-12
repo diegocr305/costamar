@@ -1,5 +1,11 @@
 # Reservas — primera versión, 12 de octubre de 2026
 
+Actualización de revisión del mismo día: consultar el estado desde Club renueva
+también el detalle individual; enlaces privados se atienden al cambiar fragmento,
+con protección contra respuestas de consultas anteriores. Se mejoraron reintentos
+y errores de mapa/horarios. La salida real inicia también el margen de preparación.
+Guía operativa: [equipo de atención](guia-equipo-atencion.md).
+
 Implementado en web `/reservas`, Club `/reservas` y admin `/reservas`.
 Fudo mantiene pedidos, ocupación de clientes sin reserva y arqueo de caja.
 Esta versión no sincroniza Fudo ni envía mensajes automáticos. El equipo contacta
@@ -9,8 +15,8 @@ al cliente por su celular para confirmar. No concede descuentos ni cortesías.
 
 1. El cliente solicita sin registro desde la web. En Club se precargan nombre y celular y se consultan las reservas propias.
 2. La solicitud queda **pendiente**; todavía no ocupa mesas ni promete disponibilidad.
-3. Caja o atención consulta la agenda por fecha chilena, verifica también Fudo, asigna mesas y confirma. Puede ingresar solicitudes recibidas por teléfono o presencialmente.
-4. Al recibir al cliente registra **En visita**. Cuando se desocupan las mesas registra **Finalizada**. El sistema conserva quién realizó cada cambio.
+3. Caja o atención consulta la agenda por fecha chilena, verifica también Fudo, asigna mesas y confirma. Puede ingresar solicitudes recibidas por teléfono o presencialmente. El contacto de confirmación es manual.
+4. Al recibir al cliente registra **En visita**. Cuando se desocupan las mesas registra **Finalizada** e inicia el margen de preparación desde la salida real. El sistema conserva quién realizó cada cambio.
 5. Después de la tolerancia se puede marcar **No asistió**. No se cancela automáticamente.
 
 Los roles `cashier`, `manager`, `admin` y `superadmin` gestionan la agenda.
@@ -42,6 +48,7 @@ Terraza y barra no tienen uniones aprobadas; no se agregan sillas automáticamen
 
 - Visita prevista: 90 minutos para 1–4 personas; 120 para 5 o más.
 - Preparación entre visitas: 15 minutos. El final de la visita debe quedar dentro del horario; el margen de preparación puede extenderse después del cierre.
+- Una visita finalizada conserva el margen hasta `released_at + buffer_minutes`. Después puede recibirse otra reserva; una cancelación sin visita no inicia preparación.
 - Tolerancia: 15 minutos. Llegadas desde 15 minutos antes, el día de la visita.
 - Solicitudes públicas: al menos 120 minutos antes, horas de llegada cada 30 minutos.
 - Ingreso manual: permite solicitudes cercanas dentro del horario, hasta 15 minutos después de la hora prevista.
@@ -78,7 +85,7 @@ una asignación. No se cancelan reservas existentes al editar la configuración.
 
 ## Verificación y despliegue
 
-Pasaron 72 pruebas API, builds de shared/API/admin/Club/web SSR y dos pruebas SQL
+Pasaron 74 pruebas API, builds de shared/API/admin/Club/web SSR y dos pruebas SQL
 transaccionales con rollback. Cubren privacidad, roles, reintentos, uniones,
 capacidad, conflictos, cancelación, ocupación real y llegada de grupos aprobados.
 Revisión de navegador sobre bundles reales con API simulada: SSR/hidratación,
@@ -86,7 +93,8 @@ solicitud/reintento/enlace privado/cancelación, precarga Club, agenda de caja,
 confirmación y configuración de propietario, sin desbordes a 320/390/1280 px.
 No se enviaron mensajes ni se crearon reservas reales durante esta revisión.
 
-Las tres migraciones de reservas están aplicadas en Supabase. Para publicar aplicaciones:
+Las cuatro migraciones de reservas están aplicadas en Supabase, incluida
+`20261012193029_reservation_actual_preparation.sql`. Para publicar aplicaciones:
 
 ```bash
 ./deploy.sh api web club admin

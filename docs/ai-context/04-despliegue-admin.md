@@ -1,105 +1,41 @@
-# Desplegar el panel Admin a producción (admin.restaurantecostamar.cl)
+# Actualizar Admin y las aplicaciones existentes
 
-Estado: el admin **NO está desplegado** todavía. DNS `admin` ya creado en Cloudflare.
-Esta guía deja el admin en vivo con HTTPS (necesario para el escáner QR por cámara).
+Actualizado el 12-10-2026. Admin, Club, API y web ya están accesibles.
+No volver a crear el servicio, DNS ni vhost del admin a partir de instrucciones
+históricas. Dockerfile y healthcheck usan 127.0.0.1, evitando el problema IPv6.
 
-> No modifica los servicios operativos (web/api/club). Solo AÑADE el admin.
+## Actualizar en el servidor
 
-## 0. Fix previo en el código (hacer antes de desplegar)
-El `apps/admin/Dockerfile` tiene el mismo bug de healthcheck que ya se corrigió
-en web/club: usa `localhost` (puede resolver a ::1 IPv6 y fallar). Cambiar:
-```dockerfile
-# ANTES
-CMD wget --no-verbose --tries=1 --spider http://localhost:4001/ || exit 1
-# DESPUÉS
-CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:4001/ || exit 1
-```
-El nginx interno del admin escucha en **4001** (`apps/admin/nginx-spa.conf`).
+El dueño realiza el despliegue desde la carpeta del repositorio:
 
-## 1. Añadir el servicio admin a docker-compose.piloto.yml
-Agregar junto a web/api/club (loopback, igual patrón que club):
-```yaml
-  admin:
-    build:
-      context: .
-      dockerfile: apps/admin/Dockerfile
-    image: costamar/admin:latest
-    container_name: costamar-admin
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:4001:4001"
-    healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:4001/ || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-    networks:
-      - costamar_net
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-```
-> El admin es estático (no usa secretos). La `supabaseAnonKey` publishable y la
-> `apiUrl` de producción ya están en `apps/admin/src/environments/environment.prod.ts`.
-> Verificar que apunte a `https://api.restaurantecostamar.cl/api/v1`.
-
-## 2. Vhost de Nginx (ya existe el archivo)
-`nginx/admin.restaurantecostamar.cl.conf` ya está en el repo (proxy a 127.0.0.1:4001,
-sin `http2 on`, con noindex). Instalarlo en el servidor:
 ```bash
-cd costamar
-git pull --ff-only
-sudo cp nginx/admin.restaurantecostamar.cl.conf /etc/nginx/sites-available/admin.restaurantecostamar.cl
-sudo ln -sf /etc/nginx/sites-available/admin.restaurantecostamar.cl /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
+./deploy.sh api web club admin
 ```
 
-## 3. CORS de la API
-Añadir el origen del admin a `ALLOWED_ORIGINS` en el `.env` del servidor y
-recrear la api:
-```
-ALLOWED_ORIGINS=https://restaurantecostamar.cl,https://www.restaurantecostamar.cl,https://admin.restaurantecostamar.cl,https://club.restaurantecostamar.cl
-```
+El script ejecuta git pull --ff-only, recompila servicios y revisa su estado.
+No modifica `.env` ni `/etc/nginx`. Las migraciones entregadas por MCP ya están
+aplicadas en Supabase: no ejecutarlas de nuevo.
+
+## Comprobación
+
 ```bash
-docker compose -f docker-compose.piloto.yml --env-file .env up -d --force-recreate api
+curl -fsS https://api.restaurantecostamar.cl/api/v1/health
+curl -fsS https://api.restaurantecostamar.cl/api/v1/reservations/config
+curl -I https://restaurantecostamar.cl/reservas
+curl -I https://club.restaurantecostamar.cl/
+curl -I https://admin.restaurantecostamar.cl/
+docker inspect --format='{{.State.Health.Status}}' costamar-admin
+docker inspect --format='{{.State.Health.Status}}' costamar-club
 ```
 
-## 4. Supabase Auth — Redirect URLs
-En Supabase → Authentication → URL Configuration → Redirect URLs, añadir:
-```
-https://admin.restaurantecostamar.cl/auth/callback
-https://admin.restaurantecostamar.cl
-```
+Con Google real del empleado: Reservas y Validar cupón deben estar disponibles;
+campañas/accesos se restringen según rol. Verificar cámara bajo HTTPS.
+Con la cuenta del dueño: comprobar configuración y Equipo y accesos.
 
-## 5. Levantar el admin
-```bash
-cd costamar
-docker compose -f docker-compose.piloto.yml --env-file .env up -d --build admin
-docker inspect --format='{{.State.Health.Status}}' costamar-admin   # healthy
-curl -I http://127.0.0.1:4001                 # 200
-```
-Actualizar `deploy.sh` para incluir `admin` en la lista por defecto y en las
-verificaciones (opcional pero recomendado).
+Una respuesta HTTP 200 no verifica permisos ni operación completa. Las pruebas
+locales usan datos/identidades simulados; la prueba de turno necesita dispositivos
+y cuentas reales. Al actualizar una PWA instalada, cerrarla y abrirla con conexión
+para permitir que descargue la nueva versión.
 
-## 6. Cloudflare SSL
-Modo Full (strict). El cert de origen de Cloudflare ya está en `/etc/ssl/cloudflare/`
-(reutilizado por los otros vhosts).
-
-## 7. Verificación final
-- `https://admin.restaurantecostamar.cl` → login Google (ya corregido PKCE).
-- Entrar como superadmin (`diegocr305@gmail.com`).
-- Menú muestra Validar cupón; probar escáner QR (requiere HTTPS → funciona).
-
-## Rollback
-```bash
-sudo rm /etc/nginx/sites-enabled/admin.restaurantecostamar.cl
-sudo nginx -t && sudo systemctl reload nginx
-docker stop costamar-admin
-```
-La web/api/club siguen intactas (el admin es independiente).
-
-## Nota sobre recursos (Lightsail 4GB)
-Con api+web+club+admin corriendo, vigilar memoria. El admin es liviano (nginx
-estático, 256M). Si hay presión de RAM, el límite del compose la contiene.
+Guía: [atención](../guia-equipo-atencion.md).
+Infraestructura y recuperación: [despliegue general](../deployment.md).

@@ -13,7 +13,7 @@
    <div class="actions"><button class="button" (click)="refresh()" [disabled]="busy()">Consultar estado ↻</button>@if(canCancel(r)){<button class="button" (click)="cancel(r)" [disabled]="busy()">{{cancelId===r.id?'Confirmar cancelación':'Cancelar reserva'}}</button>}<button class="button" (click)="newRequest()" [disabled]="busy()">Solicitar otra reserva</button></div>
    @if(cancelId===r.id){<p>Confirma para cancelar esta reserva y liberar su asignación.</p>}
   </article>
- }@else{
+ }@else if(privateAccess()){<article class="result"><h2>Consulta de reserva</h2><div class="actions"><button class="button" (click)="refresh()" [disabled]="busy()">Consultar nuevamente</button><button class="button" (click)="newRequest()" [disabled]="busy()">Solicitar nueva reserva</button></div></article>}@else{
   <form #form="ngForm" (ngSubmit)="submit()" class="booking-form"><div class="honeypot" aria-hidden="true"><label>Sitio web<input name="website" [(ngModel)]="website" tabindex="-1" autocomplete="off"/></label></div><fieldset [disabled]="busy()"><legend>Tu próxima visita</legend>
    <label>Nombre<input name="name" [(ngModel)]="name" required maxlength="120" autocomplete="name"/></label>
    <label>Celular de contacto<span class="phone"><span>+56 9</span><input name="phone" [(ngModel)]="phone" required pattern="[0-9]{8}" minlength="8" maxlength="8" inputmode="numeric" autocomplete="tel-local" placeholder="82155189"/></span><small>Escribe los ocho dígitos restantes. Lo usaremos para gestionar tu reserva.</small></label>
@@ -32,8 +32,8 @@
  @else{<button class="button" (click)="ngOnInit()">Reintentar</button>}
  @if(isClub){<section class="mine"><div class="actions"><h2>Mis reservas</h2><button class="button" (click)="refresh()" [disabled]="busy()">Actualizar ↻</button></div>
   @for(r of mine().items;track r.id){<article class="mine-row"><span class="status">{{labels[r.status]}}</span><strong>{{r.reference}} · {{timestamp(r.reservedAt)}}</strong><span>{{r.partySize}} personas · {{areas[r.areaPreference]}}</span>@if(r.tableNumbers.length){<small>Mesas: {{r.tableNumbers.join(' + ')}}</small>}@if(canCancel(r)){<button class="button" (click)="cancel(r)" [disabled]="busy()">{{cancelId===r.id?'Confirmar cancelación':'Cancelar reserva'}}</button>}</article>}@empty{<p class="hint">Aquí aparecerán las solicitudes que hagas desde tu cuenta.</p>}
-  @if(mine().total>20){<div class="actions"><button class="button" (click)="loadMine(mine().page-1)" [disabled]="mine().page===1||busy()">Anterior</button><span>Página {{mine().page}}</span><button class="button" (click)="loadMine(mine().page+1)" [disabled]="mine().page*20>=mine().total||busy()">Siguiente</button></div>}
+  @if(mine().total>20){<div class="actions"><button class="button" (click)="loadMine(mine().page-1)" [disabled]="mine().page===1||busy()||mineLoading()">Anterior</button><span>Página {{mine().page}}</span><button class="button" (click)="loadMine(mine().page+1)" [disabled]="mine().page*20>=mine().total||busy()||mineLoading()">Siguiente</button></div>}
  </section>}
 </section>
 
-@if(error()&&!isClub&&privateLink&&!result()){<p><a [href]="privateLink" (click)="$event.preventDefault();refresh()">Consultar si mi solicitud fue recibida ?</a></p>}
+@if(error()&&!isClub&&privateLink&&!result()){<p><a [href]="privateLink" (click)="$event.preventDefault();refresh()">Consultar si mi solicitud fue recibida</a></p>}

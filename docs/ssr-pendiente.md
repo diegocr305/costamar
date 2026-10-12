@@ -17,7 +17,9 @@ Cambios aplicados durante la actualización 18 → 20:
 ## Verificación (local, build de producción)
 - `GET /` → 200, HTML con hero, footer, JSON-LD y logo renderizados en servidor.
 - `GET /carta` → 200, página renderizada en servidor.
-- `GET /reservas` → 200, stub con WhatsApp renderizado.
+- `GET /reservas` → 200, formulario de solicitudes renderizado e hidratado.
+  La consulta por enlace privado ocurre sólo en navegador; datos y tokens no
+  se incorporan al HTML SSR. Ver `docs/reservas-primera-version.md`.
 
 ## Configuración de producción
 El server SSR lee `SSR_ALLOWED_HOSTS` (coma-separado). Por defecto incluye

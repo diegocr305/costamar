@@ -28,4 +28,6 @@ git pull origin main
 ./deploy.sh api admin
 ```
 
-Siguiente módulo propuesto: reservas, pendiente de definir horarios, capacidad, duración y forma de confirmación con el dueño.
+Reservas ya implementado con el mapa y reglas del dueño: ver
+`docs/reservas-primera-version.md`. Operación del turno en
+`docs/guia-equipo-atencion.md`.

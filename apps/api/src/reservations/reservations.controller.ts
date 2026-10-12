@@ -18,6 +18,7 @@ export class ReservationsController {
  publicCancel(@Body() dto:BookingAccessDto){return this.reservations.access(dto.id,null,dto.accessToken,true);}
  @Post('mine') create(@CurrentUser() user:AuthenticatedUser,@Body() dto:CreateBookingDto){return this.reservations.create(user.userId,false,dto);}
  @Get('mine') mine(@CurrentUser() user:AuthenticatedUser,@Query() dto:BookingQueryDto){return this.reservations.list(user.userId,false,dto);}
+ @Get('mine/:id') mineDetail(@CurrentUser() user:AuthenticatedUser,@Param('id',ParseUUIDPipe) id:string){return this.reservations.access(id,user.userId,null);}
  @Post('mine/:id/cancel') cancel(@CurrentUser() user:AuthenticatedUser,@Param('id',ParseUUIDPipe) id:string){return this.reservations.access(id,user.userId,null,true);}
 }
 @Controller('reservations/admin') @Roles('superadmin','admin','manager','cashier')

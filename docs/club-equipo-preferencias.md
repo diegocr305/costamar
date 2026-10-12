@@ -4,7 +4,7 @@ Implementado el 12-10-2026. Base de datos actualizada con la migración `2026101
 
 ## Equipo y accesos
 
-El superadministrador entra en **Equipo y accesos** (`/usuarios`), escribe nombre y correo de Google, y guarda. Puede editar el nombre o suspender/reactivar el acceso. El rol asignado es `cashier`, mostrado como Atención / mesero. Permite validar cupones y consultar canjes; no gestionar campañas, socios ni accesos.
+El superadministrador entra en **Equipo y accesos** (`/usuarios`), escribe nombre y correo de Google, y guarda. Puede editar el nombre o suspender/reactivar el acceso. El rol asignado es `cashier`, mostrado como Atención / mesero. Permite validar cupones, consultar canjes y operar la agenda de reservas; no gestionar campañas, socios ni accesos. Los cambios de reservas de más de dos mesas requieren manager/admin/superadmin; atención puede recibir y finalizar grupos ya aprobados.
 
 No crea contraseñas ni envía correos. El dueño comparte `https://admin.restaurantecostamar.cl` con el integrante; este ingresa con Google usando el correo autorizado. Si aún no existe su cuenta, queda pendiente y se asigna el rol cuando Supabase confirma su correo. Incluye automáticamente al personal cashier que ya existía.
 

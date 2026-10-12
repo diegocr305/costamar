@@ -20,6 +20,11 @@ describe('reservas',()=>{
  it('conflicto de mesas devuelve 409 y mensaje útil',async()=>{
   const rpc=jest.fn().mockResolvedValue({data:null,error:{message:'RESERVATION_OVERLAP'}});const s=new ReservationsService({client:{rpc}} as unknown as SupabaseService);await expect(s.update('staff','id',{status:'confirmed',tableNumbers:[1,2]})).rejects.toBeInstanceOf(ConflictException);
  });
+ it('preparación posterior a salida real devuelve conflicto, sin permitir llegada',async()=>{
+  const rpc=jest.fn().mockResolvedValue({data:null,error:{message:'RESERVATION_PREPARING'}});
+  const s=new ReservationsService({client:{rpc}} as unknown as SupabaseService);
+  await expect(s.update('staff','id',{status:'seated'})).rejects.toBeInstanceOf(ConflictException);
+ });
  it('rechaza tablas duplicadas o notas demasiado largas',async()=>{
   for(const patch of [{tableNumbers:[1,1]},{staffNote:'a'.repeat(501)}])await expect(pipe.transform(patch,{type:'body',metatype:UpdateBookingDto})).rejects.toThrow();
  });

@@ -62,4 +62,5 @@ Prueba con cuenta superadmin/admin/manager: abrir Campañas y beneficios, crear 
 - Edge local con datos simulados: editor, creación, activación, cupones, historial filtrado, rechazo de cashier en campañas y layout de 320/390/1280 px.
 - Security Advisor: avisos informativos esperados para tablas backend sin políticas; ninguna nueva advertencia de seguridad.
 
-Reservas quedan como siguiente módulo; requieren definir capacidad, horarios y reglas de confirmación.
+Reservas ya implementado: `docs/reservas-primera-version.md`.
+Pendientes vigentes: `docs/estado-actual-y-proximos-pasos.md`.

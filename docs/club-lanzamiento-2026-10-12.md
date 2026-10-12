@@ -1,5 +1,9 @@
 # Club Costa Mar — actualización del lanzamiento, 12 de octubre de 2026
 
+> Bitácora histórica de la entrega inicial del día. Campañas, atención, equipo,
+> encuesta, resumen y reservas se implementaron después de esta entrega. Para
+> pendientes y despliegue actuales leer [estado vigente](estado-actual-y-proximos-pasos.md).
+
 ## Estado real
 
 - Supabase: migración `20261012125543_club_automatic_benefits` aplicada por MCP.
