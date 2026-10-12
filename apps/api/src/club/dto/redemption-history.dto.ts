@@ -25,3 +25,7 @@ export class RedemptionHistoryDto {
   @Max(100)
   pageSize = 20;
 }
+
+export class RecentRedemptionsDto {
+  @IsOptional() @IsString() @MaxLength(40) tableLabel?: string;
+}

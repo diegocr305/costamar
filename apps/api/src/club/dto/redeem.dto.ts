@@ -12,6 +12,12 @@ import { CampaignProductDto } from './campaign.dto';
 
 /** Confirmación de canje por el personal. */
 export class RedeemDto {
+  @IsOptional() @IsString() @MaxLength(40)
+  tableLabel?: string;
+  @IsOptional() @IsString() @MaxLength(80)
+  orderRef?: string;
+  @IsOptional() @IsString() @MaxLength(300)
+  note?: string;
   @IsString()
   @MinLength(3)
   @MaxLength(40)

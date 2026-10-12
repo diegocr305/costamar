@@ -7,6 +7,14 @@ import type { RedemptionHistoryDto } from './dto/redemption-history.dto';
 export class ClubStaffService {
   constructor(private readonly supabase: SupabaseService) {}
 
+  async recentRedemptions(tableLabel?: string) {
+    const raw = tableLabel?.trim().replace(/\s+/g, ' ');
+    const table = raw && /^\d+$/.test(raw) ? `Mesa ${raw}` : raw;
+    const { data, error } = await this.supabase.client.rpc('club_recent_redemptions', { p_table_label: table || null });
+    if (error) throw new BadRequestException('No pudimos cargar los últimos canjes. Inténtalo de nuevo.');
+    return data;
+  }
+
   async redemptionHistory(filters: RedemptionHistoryDto) {
     const { data, error } = await this.supabase.client.rpc(filters.campaignId ? 'club_staff_redemption_history_filtered' : 'club_staff_redemption_history', {
       p_date: filters.date ?? null,
@@ -68,14 +76,19 @@ export class ClubStaffService {
 
   /** Canje transaccional (evita doble canje). Registra al funcionario. */
   async redeem(staffUserId: string, dto: RedeemDto) {
-    if (!dto.consumptionRef?.trim()) {
+    const structured = dto.tableLabel !== undefined || dto.orderRef !== undefined || dto.note !== undefined;
+    let table = dto.tableLabel?.trim().replace(/\s+/g, ' ');
+    if (table && /^\d+$/.test(table)) table = `Mesa ${table}`;
+    if (structured && (!table || table.length > 40)) throw new BadRequestException('Indica la mesa (hasta 40 caracteres) para registrar el canje.');
+    if (!structured && !dto.consumptionRef?.trim()) {
       throw new BadRequestException('Indica la mesa, pedido o boleta para dejar registro del canje.');
     }
-    const { data, error } = await this.supabase.client.rpc('redeem_coupon', {
+    const { data, error } = await this.supabase.client.rpc(structured ? 'redeem_coupon_at_table' : 'redeem_coupon', {
       p_code: dto.code,
       p_staff_user_id: staffUserId,
       p_products: dto.products ?? [],
-      p_consumption_ref: dto.consumptionRef.trim(),
+      ...(structured ? { p_table_label: table, p_order_ref: dto.orderRef?.trim() || null, p_note: dto.note?.trim() || null }
+        : { p_consumption_ref: dto.consumptionRef!.trim() }),
     });
     if (error) {
       const map: Record<string, string> = {
@@ -86,6 +99,8 @@ export class ClubStaffService {
         MEMBER_NOT_ACTIVE: 'La membresía del socio no está activa.',
         STAFF_NOT_AUTHORIZED: 'Tu cuenta no está autorizada para confirmar canjes.',
         CONSUMPTION_REQUIRED: 'Indica la mesa, pedido o boleta para registrar el canje.',
+        TABLE_REQUIRED: 'Indica la mesa para registrar el canje.',
+        REDEMPTION_DETAILS_INVALID: 'Revisa la mesa y las referencias: alguno de los campos es demasiado largo.',
         CAMPAIGN_PRODUCTS_INVALID: 'Selecciona un producto permitido y disponible para cada parte del regalo.',
       };
       throw new BadRequestException(map[error.message] ?? error.message);

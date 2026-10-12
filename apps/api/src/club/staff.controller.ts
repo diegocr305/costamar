@@ -4,7 +4,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
 import { ClubStaffService } from './staff.service';
 import { RedeemDto } from './dto/redeem.dto';
-import { RedemptionHistoryDto } from './dto/redemption-history.dto';
+import { RecentRedemptionsDto, RedemptionHistoryDto } from './dto/redemption-history.dto';
 
 /**
  * API del personal (garzón/cajero/manager/admin) para validar y canjear
@@ -20,6 +20,9 @@ export class ClubStaffController {
   history(@Query() filters: RedemptionHistoryDto) {
     return this.staff.redemptionHistory(filters);
   }
+
+  @Get('redemptions/recent')
+  recent(@Query() filters: RecentRedemptionsDto) { return this.staff.recentRedemptions(filters.tableLabel); }
 
   /** Al escanear el QR (member_code): datos mínimos del socio + sus cupones. */
   @Get('lookup/:memberCode')

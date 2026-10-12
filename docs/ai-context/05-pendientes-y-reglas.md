@@ -13,8 +13,9 @@
 > Crear/editar, catálogo, cupos, vigencia, resultados y cupones paginados listos.
 > Reservas es el siguiente módulo. Cumpleaños sigue sin límite de socios.
 > Orden de atención acordado: mesa obligatoria; pedido/boleta/observación
-> opcionales. Proponer antes de programar campos separados, folio de canje
-> y últimos canjes de hoy debajo del escáner. Esta mejora aún no se implementó.
+> opcionales. Ya implementados campos separados, folio de canje y últimos seis
+> canjes de hoy debajo del escáner, con filtro exacto por mesa.
+> Ver `docs/club-orden-canjes.md`. Supabase actualizado; desplegar `api admin`.
 
 ## Estado actual (qué funciona)
 - Web pública en vivo (hero con foto de ceviche, carta real con fotos, favicon).

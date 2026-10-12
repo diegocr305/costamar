@@ -3,6 +3,8 @@ import {
   ChangeDetectorRef,
   ElementRef,
   OnDestroy,
+  OnInit,
+  HostListener,
   signal,
   computed,
   inject,
@@ -16,6 +18,8 @@ import { firstValueFrom } from 'rxjs';
 import {
   ClubStaffService,
   type StaffLookup,
+  type RedemptionConfirmation,
+  type RedemptionHistory,
 } from './club-staff.service';
 
 type Step = 'scan' | 'review' | 'done';
@@ -34,7 +38,7 @@ declare const BarcodeDetector: {
   templateUrl: './club-validar.component.html',
   styleUrl: './club-validar.component.css',
 })
-export class ClubValidarComponent implements OnDestroy {
+export class ClubValidarComponent implements OnInit, OnDestroy {
   private readonly staff = inject(ClubStaffService);
   private readonly changeDetector = inject(ChangeDetectorRef);
 
@@ -45,7 +49,28 @@ export class ClubValidarComponent implements OnDestroy {
   protected memberCodeInput = signal('');
   protected readonly lookup = signal<StaffLookup | null>(null);
   protected selectedCoupon = signal<string | null>(null);
-  protected consumptionRef = signal('');
+  protected tableLabel = signal('');
+  protected orderRef = signal('');
+  protected note = signal('');
+  protected readonly confirmation = signal<RedemptionConfirmation | null>(null);
+  protected readonly recent = signal<RedemptionHistory>({ items: [], total: 0, page: 1, pageSize: 6 });
+  protected readonly recentLoading = signal(false);
+  protected readonly recentError = signal(false);
+  protected recentTable = '';
+  private recentRequest = 0;
+
+  ngOnInit(): void { void this.loadRecent(); }
+  @HostListener('document:visibilitychange')
+  protected onVisibility(): void { if (document.visibilityState === 'visible') void this.loadRecent(); }
+  protected async loadRecent(): Promise<void> {
+    const request = ++this.recentRequest;
+    this.recentLoading.set(true); this.recentError.set(false);
+    try { const result = await firstValueFrom(this.staff.recent(this.recentTable)); if (request === this.recentRequest) this.recent.set(result); }
+    catch { if (request === this.recentRequest) this.recentError.set(true); }
+    finally { if (request === this.recentRequest) this.recentLoading.set(false); }
+  }
+  protected clearRecent(): void { this.recentTable = ''; void this.loadRecent(); }
+  protected time(iso: string): string { return new Intl.DateTimeFormat('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit' }).format(new Date(iso)); }
   protected readonly selectedProducts = signal<Record<string, string>>({});
   protected readonly productRoles = computed(() => [...new Set(this.lookup()?.coupons.find(c => c.code === this.selectedCoupon())?.allowedProducts?.map(p => p.role) ?? [])]);
   protected readonly productsReady = computed(() => this.productRoles().every(role => !!this.selectedProducts()[role]));
@@ -65,6 +90,7 @@ export class ClubValidarComponent implements OnDestroy {
   private rafId: number | null = null;
 
   ngOnDestroy(): void {
+    this.recentRequest++;
     this.stopScan();
   }
 
@@ -192,18 +218,20 @@ export class ClubValidarComponent implements OnDestroy {
   async confirmRedeem(): Promise<void> {
     const code = this.selectedCoupon();
     if (!code || this.loading()) return;
-    if (!this.consumptionRef().trim()) {
-      this.error.set('Indica la mesa, pedido o boleta para poder consultar este canje después.');
+    if (!this.tableLabel().trim()) {
+      this.error.set('Indica la mesa para registrar el canje.');
       return;
     }
     if (!this.productsReady()) { this.error.set('Selecciona los productos que entregarás al socio.'); return; }
     this.loading.set(true);
     this.error.set(null);
     try {
-      await firstValueFrom(
-        this.staff.redeem(code, this.consumptionRef().trim(), this.productRoles().map(role => ({ productId: this.selectedProducts()[role], role }))),
+      const result = await firstValueFrom(
+        this.staff.redeem(code, this.tableLabel().trim(), this.productRoles().map(role => ({ productId: this.selectedProducts()[role], role })), this.orderRef(), this.note()),
       );
+      this.confirmation.set(result.redemption);
       this.step.set('done');
+      void this.loadRecent();
     } catch (e: unknown) {
       this.error.set(this.msg(e, 'No se pudo canjear el cupón.'));
     } finally {
@@ -218,7 +246,10 @@ export class ClubValidarComponent implements OnDestroy {
     this.lookup.set(null);
     this.selectedCoupon.set(null);
     this.selectedProducts.set({});
-    this.consumptionRef.set('');
+    this.tableLabel.set('');
+    this.orderRef.set('');
+    this.note.set('');
+    this.confirmation.set(null);
     this.error.set(null);
   }
 

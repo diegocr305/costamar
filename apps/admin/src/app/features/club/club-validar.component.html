@@ -105,16 +105,17 @@
             </ul>
 
             <label class="field">
-              <span>Mesa / pedido / boleta *</span>
+              <span>Mesa *</span>
               <input
                 type="text"
-                [ngModel]="consumptionRef()"
-                (ngModelChange)="consumptionRef.set($event)"
-                placeholder="Ej: Mesa 5 / Boleta 1234"
-                maxlength="120"
+                [ngModel]="tableLabel()"
+                (ngModelChange)="tableLabel.set($event)"
+                placeholder="Ej.: 5 o Mesa 5"
+                maxlength="40"
                 required
               />
             </label>
+            <details class="optional-details"><summary>Agregar pedido, boleta u observación (opcional)</summary><label class="field"><span>Pedido o boleta</span><input type="text" [ngModel]="orderRef()" (ngModelChange)="orderRef.set($event)" maxlength="80" placeholder="Ej.: Boleta 1234" /></label><label class="field"><span>Observación</span><textarea [ngModel]="note()" (ngModelChange)="note.set($event)" rows="2" maxlength="300" placeholder="Una aclaración para el equipo"></textarea></label></details>
             @for (role of productRoles(); track role) {
               <label class="field"><span>{{ roleLabel(role) }} que entregarás *</span><select [ngModel]="selectedProducts()[role] || ''" (ngModelChange)="setProduct(role, $event)"><option value="">Elige un producto</option>@for (product of options(role); track product.productId) { <option [value]="product.productId" [disabled]="!product.isAvailable">{{ product.name }}{{ product.isAvailable ? '' : ' — No disponible' }}</option> }</select></label>
             }
@@ -127,7 +128,7 @@
               <button
                 type="button"
                 class="btn btn--primary"
-                [disabled]="loading() || !selectedCoupon() || !consumptionRef().trim() || !productsReady() || l.member.status !== 'active'"
+                [disabled]="loading() || !selectedCoupon() || !tableLabel().trim() || !productsReady() || l.member.status !== 'active'"
                 (click)="confirmRedeem()"
               >
                 {{ loading() ? 'Canjeando…' : 'Confirmar canje' }}
@@ -143,7 +144,7 @@
         <div class="check" aria-hidden="true">✓</div>
         <h2>Canje confirmado</h2>
         <p>El beneficio fue registrado correctamente.</p>
-        <div class="confirmation"><strong>{{ lookup()?.member?.fullName }}</strong><span>{{ consumptionRef() }}</span><small>{{ selectedCoupon() }}</small></div>
+        <div class="confirmation"><strong class="confirmation__folio">{{ confirmation()?.folio }}</strong><strong>{{ lookup()?.member?.fullName }}</strong><span>{{ confirmation()?.tableLabel }}</span>@if (confirmation()?.orderRef) { <small>{{ confirmation()?.orderRef }}</small> }<small>{{ selectedCoupon() }}</small></div>
         <button type="button" class="btn btn--primary" (click)="reset()">
           Validar otro cupón
         </button>
@@ -151,4 +152,12 @@
       </div>
     }
   }
+  <section class="recent-canjes" aria-labelledby="recent-title"><header class="recent-head"><div><h2 id="recent-title">Últimos canjes de hoy</h2><p>Comprueba rápido qué regalo se entregó en cada mesa.</p></div><button type="button" class="cm-button" (click)="loadRecent()" [disabled]="recentLoading()">Actualizar ↻</button></header>
+    <form class="recent-filter" (ngSubmit)="loadRecent()"><label class="field"><span>Buscar mesa</span><input type="search" name="recentTable" [(ngModel)]="recentTable" maxlength="40" placeholder="Ej.: 5 o Mesa 5" /></label><button class="cm-button cm-button--primary" [disabled]="recentLoading()">Buscar mesa</button>@if (recentTable) { <button type="button" class="cm-button" (click)="clearRecent()">Ver todas</button> }</form>
+    @if (recentLoading()) { <p class="hint" role="status">Actualizando canjes…</p> }
+    @else if (recentError()) { <p class="alert--error" role="alert">No pudimos cargar los últimos canjes. <button class="cm-button" (click)="loadRecent()">Reintentar</button></p> }
+    @else {
+      <p class="hint">{{ recent().total }} canjes encontrados hoy · hora de Chile</p><ul class="recent-list">@for (entry of recent().items; track entry.id) { <li><div class="recent-top"><strong>{{ entry.folio }}</strong><time [attr.datetime]="entry.createdAt">{{ time(entry.createdAt) }}</time></div><strong class="recent-table">{{ entry.tableLabel || 'Referencia anterior: ' + (entry.consumptionRef || 'Sin referencia') }}</strong><strong>{{ entry.memberName }}</strong><span>{{ entry.campaignName }}</span><small>Confirmó: {{ entry.staffName }}</small>@if (entry.orderRef) { <small>Pedido/boleta: {{ entry.orderRef }}</small> }</li> } @empty { <li class="hint">No hay canjes de hoy{{ recentTable ? ' para esta mesa' : '' }}.</li> }</ul><p class="hint">Los registros antiguos sin mesa separada se pueden buscar por su referencia en el historial.</p><a routerLink="/club/historial" class="history-link">Ver historial completo y buscar por folio →</a>
+    }
+  </section>
 </section>

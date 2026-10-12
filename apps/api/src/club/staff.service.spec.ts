@@ -18,6 +18,26 @@ describe('canjes del personal', () => {
     await staff.redeem('staff-del-token', { code: 'FND-TEST', consumptionRef: ' Mesa 5 ' });
     expect(rpc).toHaveBeenCalledWith('redeem_coupon', expect.objectContaining({ p_staff_user_id: 'staff-del-token', p_consumption_ref: 'Mesa 5' }));
   });
+  it('registra solo mesa cuando no se agregan referencias opcionales', async () => {
+    const { rpc, staff } = setup();
+    await staff.redeem('staff-del-token', { code: 'FND-TEST', tableLabel: ' 5 ' });
+    expect(rpc).toHaveBeenCalledWith('redeem_coupon_at_table', expect.objectContaining({ p_staff_user_id: 'staff-del-token', p_table_label: 'Mesa 5', p_order_ref: null, p_note: null }));
+  });
+  it('rechaza mesa vacía aunque exista boleta u observación', async () => {
+    const { rpc, staff } = setup();
+    await expect(staff.redeem('staff', { code: 'FND-TEST', tableLabel: ' ', orderRef: 'Boleta 123' })).rejects.toBeInstanceOf(BadRequestException);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+  it('guarda pedido y observación por separado', async () => {
+    const { rpc, staff } = setup();
+    await staff.redeem('staff', { code: 'FND-TEST', tableLabel: 'Mesa 5', orderRef: ' Boleta 123 ', note: ' Entregado ' });
+    expect(rpc).toHaveBeenCalledWith('redeem_coupon_at_table', expect.objectContaining({ p_order_ref: 'Boleta 123', p_note: 'Entregado' }));
+  });
+  it('buscar mesa 5 no envía una búsqueda genérica que coincida con mesa 50', async () => {
+    const { rpc, staff } = setup();
+    await staff.recentRedemptions('5');
+    expect(rpc).toHaveBeenCalledWith('club_recent_redemptions', { p_table_label: 'Mesa 5' });
+  });
   it('envía filtros y paginación al historial sin exponer errores internos', async () => {
     const { rpc, staff } = setup();
     await staff.redemptionHistory({ date: '2026-10-12', q: ' Mesa 5 ', page: 2, pageSize: 20 });

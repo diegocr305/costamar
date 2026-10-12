@@ -3,7 +3,7 @@
   <nav class="club-tabs" aria-label="Atención del Club"><a routerLink="/club/validar">Escanear y validar</a><a routerLink="/club/historial" class="active" aria-current="page">Historial de canjes</a></nav>
   <form class="filters" (ngSubmit)="load()">
     <label>Fecha de atención<input type="date" name="date" [(ngModel)]="date" /></label>
-    <label class="search">Buscar socio, código, mesa o funcionario<input type="search" name="query" [(ngModel)]="query" maxlength="100" placeholder="Ej.: Mesa 5, Diego, FND…" /></label>
+    <label class="search">Buscar folio, socio, código, mesa o funcionario<input type="search" name="query" [(ngModel)]="query" maxlength="100" placeholder="Ej.: CAN-000004, Mesa 5, Diego…" /></label>
     <button class="cm-button cm-button--primary" type="submit" [disabled]="loading()">Buscar</button>
     <div class="quick-filters"><button type="button" class="cm-button" (click)="showToday()" [disabled]="loading()">Hoy</button><button type="button" class="cm-button" (click)="showAll()" [disabled]="loading()">Todas las fechas</button><button type="button" class="cm-button" (click)="load(result().page)" [disabled]="loading()">Actualizar ↻</button></div>
   </form>
@@ -15,7 +15,7 @@
     @if (result().items.length === 0) { <div class="empty"><span aria-hidden="true">✓</span><h2>No hay canjes para esta búsqueda</h2><p>Prueba con otra fecha o con el nombre, código o mesa.</p></div> }
     <div class="entries">
       @for (entry of result().items; track entry.id) {
-        <article class="entry"><div class="entry__top"><span class="confirmed">✓ Canje confirmado</span><time [attr.datetime]="entry.createdAt">{{ timestamp(entry.createdAt) }}</time></div><h2>{{ entry.memberName }}</h2><p class="campaign">{{ entry.campaignName }}</p><dl><div class="table"><dt>Mesa / pedido / boleta</dt><dd>{{ entry.consumptionRef || 'Sin referencia registrada' }}</dd></div><div><dt>Confirmó</dt><dd>{{ entry.staffName }}</dd></div><div><dt>Código del cupón</dt><dd class="code">{{ entry.couponCode }}</dd></div><div><dt>Código del socio</dt><dd class="code">{{ entry.memberCode || 'No disponible' }}</dd></div>@if (productsLabel(entry.products)) { <div><dt>Productos entregados</dt><dd>{{ productsLabel(entry.products) }}</dd></div> }</dl></article>
+        <article class="entry"><div class="entry__top"><span class="confirmed">✓ {{ entry.folio }}</span><time [attr.datetime]="entry.createdAt">{{ timestamp(entry.createdAt) }}</time></div><h2>{{ entry.memberName }}</h2><p class="campaign">{{ entry.campaignName }}</p><dl><div class="table"><dt>{{ entry.tableLabel ? 'Mesa' : 'Referencia anterior' }}</dt><dd>{{ entry.tableLabel || entry.consumptionRef || 'Sin referencia registrada' }}</dd></div>@if (entry.orderRef) { <div><dt>Pedido / boleta</dt><dd>{{ entry.orderRef }}</dd></div> } @if (entry.note) { <div><dt>Observación</dt><dd>{{ entry.note }}</dd></div> }<div><dt>Confirmó</dt><dd>{{ entry.staffName }}</dd></div><div><dt>Código del cupón</dt><dd class="code">{{ entry.couponCode }}</dd></div><div><dt>Código del socio</dt><dd class="code">{{ entry.memberCode || 'No disponible' }}</dd></div>@if (productsLabel(entry.products)) { <div><dt>Productos entregados</dt><dd>{{ productsLabel(entry.products) }}</dd></div> }</dl></article>
       }
     </div>
     @if (result().total > result().pageSize) {

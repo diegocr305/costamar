@@ -36,7 +36,13 @@ export interface RedemptionEntry {
   staffName: string;
   consumptionRef: string | null;
   products: unknown[];
+  folio: string;
+  tableLabel: string | null;
+  orderRef: string | null;
+  note: string | null;
 }
+
+export interface RedemptionConfirmation { id: string; folio: string; tableLabel: string; orderRef: string | null; note: string | null; createdAt: string; }
 
 export interface RedemptionHistory {
   items: RedemptionEntry[];
@@ -50,6 +56,12 @@ export interface RedemptionHistory {
 export class ClubStaffService {
   private readonly http = inject(HttpClient);
   private readonly base = `${environment.apiUrl}/club/staff`;
+
+  recent(tableLabel: string): Observable<RedemptionHistory> {
+    let params = new HttpParams();
+    if (tableLabel.trim()) params = params.set('tableLabel', tableLabel.trim());
+    return this.http.get<RedemptionHistory>(`${this.base}/redemptions/recent`, { params });
+  }
 
   history(date: string, query: string, page = 1, campaignId = ''): Observable<RedemptionHistory> {
     let params = new HttpParams().set('page', page).set('pageSize', 20);
@@ -67,13 +79,17 @@ export class ClubStaffService {
 
   redeem(
     code: string,
-    consumptionRef?: string,
+    tableLabel: string,
     products: unknown[] = [],
-  ): Observable<{ redeemed: boolean }> {
-    return this.http.post<{ redeemed: boolean }>(`${this.base}/redeem`, {
+    orderRef = '',
+    note = '',
+  ): Observable<{ redeemed: boolean; redemption: RedemptionConfirmation }> {
+    return this.http.post<{ redeemed: boolean; redemption: RedemptionConfirmation }>(`${this.base}/redeem`, {
       code,
-      consumptionRef,
+      tableLabel,
       products,
+      orderRef: orderRef.trim() || undefined,
+      note: note.trim() || undefined,
     });
   }
 }

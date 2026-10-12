@@ -3,6 +3,10 @@
 > Actualización 12-10-2026: endpoints `/club/admin/*` implementados.
 > Contratos y reglas actuales en `docs/club-campanas-admin.md`.
 > Historial staff acepta `campaignId` y canje acepta productos `{productId,role}`.
+> Canje ahora usa `tableLabel` obligatorio y `orderRef`/`note` opcionales;
+> devuelve confirmación con folio. `GET /club/staff/redemptions/recent` lista
+> los últimos seis canjes del día con filtro exacto `tableLabel`.
+> Detalles y compatibilidad de despliegue en `docs/club-orden-canjes.md`.
 
 Base URL: `https://api.restaurantecostamar.cl/api/v1` (local: `http://localhost:3000/api/v1`).
 Prefijo global: `api/v1`. CORS controlado por `ALLOWED_ORIGINS` (env).
