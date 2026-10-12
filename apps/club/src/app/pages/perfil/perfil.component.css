@@ -65,6 +65,8 @@ h2 {
   font-size: 0.9rem;
 }
 
+.experience{margin-top:2rem;border:1px solid var(--cm-border);border-radius:16px;padding:1rem;background:var(--cm-surface-2)}.experience h2{margin-top:0}.experience fieldset{border:0;padding:0;margin:0;min-width:0}.experience legend{font-weight:700;margin-bottom:.75rem}.experience .foods{margin:1.25rem 0}.field{display:grid;gap:.4rem;font-size:.9rem}.field input,.field select{min-width:0;width:100%;min-height:48px;padding:.6rem;border:1px solid var(--cm-border);border-radius:10px;color:var(--cm-text);background:var(--cm-surface-2);font:inherit}.prefs-error{color:#ffb6a5}
+
 .cm-btn--primary {
   width: 100%;
   margin-top: 0.75rem;

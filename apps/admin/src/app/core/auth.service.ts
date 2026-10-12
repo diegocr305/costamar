@@ -88,6 +88,21 @@ export class AuthService {
     }
     const { data } = await this.supabase.auth.getSession();
     this.applySession(data.session);
+    await this.refreshRole();
+  }
+
+  async refreshRole(): Promise<void> {
+    const current = this.user();
+    if (!current) return;
+    try {
+      const token = await this.getAccessToken();
+      const response = await fetch(`${environment.apiUrl}/team/access`, { headers: { Authorization: `Bearer ${token}` } });
+      if (!response.ok) throw new Error('Acceso no disponible');
+      const { role } = await response.json();
+      if (this.user()?.id === current.id) this.user.set({ ...current, role: (ROLES as readonly string[]).includes(role) ? role : 'customer' });
+    } catch {
+      if (this.user()?.id === current.id) this.user.set({ ...current, role: 'customer' });
+    }
   }
 
   async logout(): Promise<void> {
@@ -107,6 +122,7 @@ export class AuthService {
   private async restoreSession(): Promise<void> {
     const { data } = await this.supabase.auth.getSession();
     this.applySession(data.session);
+    await this.refreshRole();
     this.ready.set(true);
   }
 

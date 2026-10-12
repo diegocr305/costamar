@@ -57,6 +57,9 @@ export class ClubService {
     return {
       marketingEmail: Boolean(row['marketing_email']),
       marketingWhatsapp: Boolean(row['marketing_whatsapp']),
+      commune: (row['commune'] as string) ?? '',
+      foodPreferences: (row['food_preferences'] as string[]) ?? [],
+      visitType: (row['visit_type'] as string) ?? '',
     };
   }
 
@@ -199,17 +202,15 @@ export class ClubService {
     userId: string,
     dto: UpdatePreferencesDto,
   ): Promise<ClubMemberPreferences> {
-    const now = new Date().toISOString();
-    const patch: Record<string, unknown> = { updated_at: now, user_id: userId };
+    const patch: Record<string, unknown> = {};
+    if (dto.commune !== undefined) patch['commune'] = dto.commune.trim();
+    if (dto.foodPreferences !== undefined) patch['food_preferences'] = dto.foodPreferences;
+    if (dto.visitType !== undefined) patch['visit_type'] = dto.visitType;
     if (dto.marketingEmail !== undefined) patch['marketing_email'] = dto.marketingEmail;
     if (dto.marketingWhatsapp !== undefined)
       patch['marketing_whatsapp'] = dto.marketingWhatsapp;
 
-    const { data, error } = await this.supabase.client
-      .from('club_member_preferences')
-      .upsert(patch, { onConflict: 'user_id' })
-      .select('*')
-      .single();
+    const { data, error } = await this.supabase.client.rpc('club_save_preferences', {p_user_id:userId,p_patch:patch});
     if (error) throw new BadRequestException(error.message);
 
     return this.mapPreferences(data) as ClubMemberPreferences;

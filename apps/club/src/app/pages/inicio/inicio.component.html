@@ -30,6 +30,7 @@
         <ul class="campaigns">@for (c of news(); track c.id) { <li class="campaign"><strong>{{ c.type === 'birthday' ? '🎂 Un regalo en tu mes de cumpleaños' : c.type === 'founders' ? '🎁 Bienvenida para socios fundadores' : c.name }}</strong><p>{{ c.type === 'birthday' ? 'Tu bebestible y postre aparecerán automáticamente durante tu mes, con tu perfil completo.' : c.type === 'founders' ? 'Bebestible personal con consumo en el local, sujeto a cupos y condiciones.' : c.description }}</p></li> }</ul>
       }
       <a routerLink="/beneficios" class="benefits-link">Conoce los beneficios y sus condiciones →</a>
+      <a routerLink="/perfil" class="benefits-link">🌊 Personaliza tu experiencia · opcional →</a>
     }
   }
 </section>

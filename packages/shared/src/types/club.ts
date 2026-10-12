@@ -48,6 +48,9 @@ export interface ClubConsent {
 export interface ClubMemberPreferences {
   marketingEmail: boolean;
   marketingWhatsapp: boolean;
+  commune?: string;
+  foodPreferences?: string[];
+  visitType?: string;
 }
 
 /** Respuesta de GET /club/me cuando el usuario está autenticado. */

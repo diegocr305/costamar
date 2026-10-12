@@ -8,9 +8,10 @@ import { AuthService } from './auth.service';
  * Uso: canActivate: [authGuard, roleGuard(['superadmin', 'admin'])]
  */
 export function roleGuard(allowed: UserRole[]): CanActivateFn {
-  return () => {
+  return async () => {
     const auth = inject(AuthService);
     const router = inject(Router);
+    await auth.refreshRole();
     const user = auth.user();
 
     if (user && allowed.includes(user.role)) {

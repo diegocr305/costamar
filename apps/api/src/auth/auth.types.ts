@@ -2,7 +2,7 @@ import type { UserRole } from '@costamar/shared';
 
 /**
  * Usuario autenticado que la JwtStrategy adjunta a request.user.
- * El rol se extrae de los claims del JWT, sin consultar la base de datos.
+ * El rol vigente se comprueba en user_roles; los claims no conservan accesos revocados.
  */
 export interface AuthenticatedUser {
   userId: string;

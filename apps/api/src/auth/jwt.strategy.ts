@@ -4,7 +4,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { passportJwtSecret } from 'jwks-rsa';
 import type { AuthenticatedUser, SupabaseJwtPayload } from './auth.types';
-import { resolveRoleFromClaims } from './resolve-role';
+import { isValidRole } from '@costamar/shared';
+import { SupabaseService } from '../supabase/supabase.service';
 
 /**
  * Estrategia JWT que valida los tokens emitidos por Supabase Auth.
@@ -13,12 +14,12 @@ import { resolveRoleFromClaims } from './resolve-role';
  * JWKS. La validación de firma usa la clave pública descargada y cacheada
  * desde el endpoint JWKS; la API no necesita ningún secreto para validar.
  *
- * El rol de la aplicación se extrae de los claims (app_metadata.role)
- * SIN realizar ninguna consulta a la base de datos.
+ * El rol vigente se consulta en user_roles para que las suspensiones de
+ * acceso tengan efecto incluso si el JWT todavía no ha expirado.
  */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(config: ConfigService) {
+  constructor(config: ConfigService, private readonly supabase: SupabaseService) {
     const supabaseUrl = config.get<string>('SUPABASE_URL');
     if (!supabaseUrl) {
       throw new Error('Falta SUPABASE_URL en el entorno');
@@ -43,16 +44,18 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
    * Transforma el payload validado en el usuario autenticado.
    * Se ejecuta solo si la firma y expiración del token son válidas.
    */
-  validate(payload: SupabaseJwtPayload): AuthenticatedUser {
+  async validate(payload: SupabaseJwtPayload): Promise<AuthenticatedUser> {
     if (!payload.sub) {
       throw new UnauthorizedException('Token sin identificador de usuario');
     }
 
+    const {data:role,error}=await this.supabase.client.rpc('club_effective_role',{p_user_id:payload.sub});
+    if(error) throw new UnauthorizedException('No pudimos verificar tu acceso.');
     return {
       userId: payload.sub,
       email: payload.email ?? '',
       // Nunca se asume un rol privilegiado desde el token.
-      role: resolveRoleFromClaims(payload),
+      role: isValidRole(role) ? role : 'customer',
     };
   }
 }

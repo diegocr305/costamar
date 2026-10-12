@@ -6,11 +6,20 @@ import { ClubAdminService } from './admin.service';
 import { CampaignCouponsQueryDto, CampaignProductsDto, CreateCampaignDto, UpdateCampaignDto } from './dto/campaign.dto';
 import { RedemptionHistoryDto } from './dto/redemption-history.dto';
 import { ClubStaffService } from './staff.service';
+import { SupabaseService } from '../supabase/supabase.service';
+import { SegmentDto } from './dto/segment.dto';
+import { BadRequestException } from '@nestjs/common';
 
 @Controller('club/admin')
 @Roles('superadmin', 'admin', 'manager')
 export class ClubAdminController {
-  constructor(private readonly admin: ClubAdminService, private readonly staff: ClubStaffService) {}
+  constructor(private readonly admin: ClubAdminService, private readonly staff: ClubStaffService, private readonly supabase:SupabaseService) {}
+  @Get('members') @Roles('superadmin','admin')
+  async members(@Query() dto:SegmentDto) {
+    const {data,error}=await this.supabase.client.rpc('club_segment_members',{p_birthday:dto.birthday==='true',p_food:dto.food??'',p_visit:dto.visit??'',p_commune:dto.commune??'',p_channel:dto.channel??'all',p_q:dto.q??'',p_page:dto.page});
+    if(error) throw new BadRequestException('No pudimos cargar los socios.');
+    return data;
+  }
   @Get('campaigns') campaigns() { return this.admin.listCampaigns(); }
   @Get('stats') stats() { return this.admin.listCampaigns(); }
   @Post('campaigns') create(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateCampaignDto) { return this.admin.saveCampaign(user.userId, null, dto); }

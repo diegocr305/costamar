@@ -13,7 +13,24 @@
     </dl>
   }
 
-  <h2>Comunicaciones</h2>
+  <section class="experience" aria-labelledby="experience-title">
+   <h2 id="experience-title">🌊 Conozcámonos mejor</h2>
+   <p class="hint">Cuéntanos qué te gusta para ofrecerte novedades más relevantes. Todas estas respuestas son opcionales y no afectan tus regalos.</p>
+   <form (ngSubmit)="saveExperience()">
+    <fieldset [disabled]="savingPrefs()"><legend>Personaliza tu experiencia</legend>
+     <label class="field">¿En qué comuna vives? <span class="hint">Opcional</span><input name="commune" [(ngModel)]="commune" maxlength="80" autocomplete="address-level3" placeholder="Tu comuna" /></label>
+     <fieldset class="foods"><legend>¿Qué disfrutas más de Costa Mar?</legend>
+      @for(option of foodOptions;track option.value) {<label class="switch"><input type="checkbox" [checked]="foods.includes(option.value)" (change)="toggleFood(option.value,$any($event.target).checked)"/><span>{{option.label}}</span></label>}
+     </fieldset>
+     <label class="field">¿Cómo sueles visitarnos?<select name="visitType" [(ngModel)]="visitType"><option value="">Sin responder</option><option value="family">En familia</option><option value="couple">En pareja</option><option value="friends">Con amigos</option><option value="alone">Por mi cuenta</option><option value="prefer_not_to_say">Prefiero no responder</option></select></label>
+     <button class="cm-btn cm-btn--primary" [disabled]="savingPrefs()">{{savingPrefs()?'Guardando…':'Guardar mis preferencias'}}</button>
+    </fieldset>
+   </form>
+  </section>
+  @if(prefsError()) {<p class="prefs-error" role="alert">{{prefsError()}}</p>}
+  @if(prefsSuccess()) {<p class="hint" role="status">{{prefsSuccess()}}</p>}
+  <h2>Novedades, eventos y promociones</h2>
+  <p class="hint">Elige cómo quieres recibirlos. Puedes desactivar estas opciones cuando quieras.</p>
   @if (store.preferences(); as p) {
     <label class="switch">
       <input

@@ -14,10 +14,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 /**
  * Gestión de usuarios y roles.
- * Todos los endpoints exigen rol superadmin o admin (RolesGuard global).
+ * Todos los endpoints exigen rol superadmin (RolesGuard global).
  */
 @Controller('users')
-@Roles('superadmin', 'admin')
+@Roles('superadmin')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

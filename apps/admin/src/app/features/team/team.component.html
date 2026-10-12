@@ -1,0 +1,25 @@
+<section>
+ <header class="page-head"><div><span class="eyebrow">Costa Mar · Tu equipo</span><h1>Equipo y accesos</h1><p>Agrega a quienes atienden en el local para que validen los regalos de tus socios.</p></div></header>
+ @if(error()) {<p class="notice notice--error" role="alert">{{error()}}</p>}
+ @if(success()) {<p class="notice" role="status">{{success()}}</p>}
+ <div class="team-grid">
+  <form class="card" #form="ngForm" (ngSubmit)="save()">
+   <h2>{{editing?'Editar integrante':'Agregar al equipo'}}</h2>
+   <label>Nombre<input name="fullName" [(ngModel)]="fullName" required maxlength="120" autocomplete="name" /></label>
+   <label>Correo de Google<input name="email" [(ngModel)]="email" type="email" required email maxlength="254" [readonly]="editing" autocomplete="email" placeholder="nombre@gmail.com" /></label>
+   <div class="role-note"><strong>Atención / mesero</strong><p>Puede escanear tarjetas, validar cupones y consultar el historial de canjes.</p><small>Solo el superadministrador puede gestionar los accesos del equipo.</small></div>
+   <p class="hint">Comparte admin.restaurantecostamar.cl con tu equipo. Cada integrante usará “Continuar con Google” con el correo que autorices aquí.</p>
+   <button class="cm-button cm-button--primary" [disabled]="form.invalid||!fullName.trim()||saving()">{{saving()?'Guardando…':'Guardar acceso'}}</button>
+   @if(editing) {<button type="button" class="cm-button" (click)="reset()">Cancelar edición</button>}
+  </form>
+  <div class="card"><div class="toolbar"><h2>Integrantes · {{members().length}}</h2><button class="cm-button" (click)="load()" [disabled]="loading()">Actualizar ↻</button></div>
+   <label>Buscar integrante<input [(ngModel)]="query" placeholder="Nombre o correo" /></label>
+   @if(loading()) {<p role="status">Cargando equipo…</p>}
+   @for(m of filtered();track m.email) {
+    <article class="member"><div><strong>{{m.fullName}}</strong><span>{{m.email}}</span><small>{{m.isActive?(m.hasAccount?'Acceso activo':'Autorizado · pendiente de ingresar con Google'):'Acceso suspendido'}}</small></div>
+     <div class="actions"><button class="cm-button" (click)="edit(m)" [disabled]="saving()">Editar</button><button class="cm-button" (click)="toggle(m)" [disabled]="saving()">{{m.isActive?'Suspender acceso':'Reactivar acceso'}}</button></div>
+    </article>
+   } @empty { @if(!loading()) {<p class="hint">No hay integrantes para mostrar.</p>} }
+  </div>
+ </div>
+</section>

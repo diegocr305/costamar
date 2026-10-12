@@ -1,5 +1,11 @@
 # API — Endpoints (NestJS)
 
+> Equipo: `/team` solo superadmin y `/team/access` para el rol propio vigente.
+> `/users` restringido a superadmin. JWT valida identidad; autorización consulta
+> `user_roles` por petición para revocar accesos sin esperar renovación del token.
+> Preferencias ampliadas y `/club/admin/members` para superadmin/admin:
+> consultar `docs/club-equipo-preferencias.md` (58 pruebas de API).
+
 > Actualización 12-10-2026: endpoints `/club/admin/*` implementados.
 > Contratos y reglas actuales en `docs/club-campanas-admin.md`.
 > Historial staff acepta `campaignId` y canje acepta productos `{productId,role}`.

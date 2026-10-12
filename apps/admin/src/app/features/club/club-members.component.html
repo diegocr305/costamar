@@ -1,0 +1,19 @@
+<section>
+ <header class="page-head"><div><span class="eyebrow">Club Costa Mar · Conoce a tus socios</span><h1>Socios y preferencias</h1><p>Consulta sus intereses declarados y sus opciones de comunicación.</p></div></header>
+ <div class="presets"><button class="cm-button" (click)="preset('all')">Todos los socios</button><button class="cm-button" (click)="preset('birthday')">🎂 Cumpleañeros del mes</button><button class="cm-button" (click)="preset('seafood')">🐟 Ceviches y mariscos</button><button class="cm-button" (click)="preset('family')">🌊 Visitas en familia</button></div>
+ <form class="filters" (ngSubmit)="load()">
+  <label>Socio<input name="q" [(ngModel)]="q" maxlength="100" placeholder="Nombre o código" /></label>
+  <label>Comuna<input name="commune" [(ngModel)]="commune" maxlength="80" placeholder="Comuna exacta" /></label>
+  <label>Gustos<select name="food" [(ngModel)]="food" (ngModelChange)="load()"><option value="">Todos</option><option value="seafood">Ceviches y mariscos</option><option value="hot_dishes">Carnes y platos calientes</option><option value="drinks">Jugos y cócteles</option><option value="desserts">Postres</option></select></label>
+  <label>Tipo de visita<select name="visit" [(ngModel)]="visit" (ngModelChange)="load()"><option value="">Todos</option><option value="family">En familia</option><option value="couple">En pareja</option><option value="friends">Con amigos</option><option value="alone">Por mi cuenta</option><option value="prefer_not_to_say">Prefiero no responder</option></select></label>
+  <label>Permiso para promociones<select name="channel" [(ngModel)]="channel" (ngModelChange)="load()"><option value="all">Todos · con y sin permiso</option><option value="any">Aceptaron algún canal</option><option value="email">Aceptaron correo</option><option value="whatsapp">Aceptaron WhatsApp</option></select></label>
+  <label class="birthday"><input type="checkbox" name="birthday" [(ngModel)]="birthday" (ngModelChange)="load()"/> Cumpleaños este mes</label>
+  <button class="cm-button cm-button--primary" [disabled]="loading()">Buscar</button>
+ </form>
+ <p class="hint">Estas preferencias son opcionales. “En familia” refleja lo declarado por el socio. La frecuencia y la inactividad necesitan visitas o pedidos reales. El envío de promociones aún no está habilitado.</p>
+ @if(error()){<p role="alert">{{error()}}</p>}
+ @if(loading()){<p role="status">Cargando socios…</p>}
+ <p class="hint">{{result().total}} socios encontrados · cumpleaños según el mes de Chile</p>
+ <div class="members">@for(m of result().items;track m.memberCode){<article><div class="identity"><strong>{{m.fullName}}</strong><small>{{m.memberCode}}</small>@if(m.birthdayMonth){<span class="badge">🎂 Cumpleaños este mes</span>}</div><div><span>{{m.commune||'Comuna sin responder'}}</span><span>{{visitLabel(m.visitType)}}</span><small>{{m.foodPreferences.length?m.foodPreferences.map(foodLabel).join(' · '):'Gustos sin responder'}}</small></div><div><strong>Promociones</strong><small>Correo: {{m.marketingEmail?'Sí':'No'}} · WhatsApp: {{m.marketingWhatsapp?'Sí':'No'}}</small>@if(m.email){<span>{{m.email}}</span>}@if(m.phone){<span>{{m.phone}}</span>}</div></article>}@empty{@if(!loading()&&!error()){<p>No hay socios con estos filtros.</p>}}</div>
+ <div class="pagination"><button class="cm-button" (click)="load(result().page-1)" [disabled]="loading()||result().page===1">Anterior</button><span>Página {{result().page}}</span><button class="cm-button" (click)="load(result().page+1)" [disabled]="loading()||result().page*20>=result().total">Siguiente</button></div>
+</section>

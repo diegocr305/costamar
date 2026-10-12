@@ -1,5 +1,11 @@
 # Pendientes, reglas de negocio y decisiones
 
+> Equipo y accesos y preferencias opcionales implementados: ver
+> `docs/club-equipo-preferencias.md`. Solo superadmin gestiona meseros (cashier).
+> Roles vigentes comprobados en BD por petición; contactos promocionales por
+> consentimiento de canal. Socios y filtros listos; envío de promociones y
+> clasificación por frecuencia/inactividad pendientes de integraciones reales.
+
 > Actualización 12-10-2026: leer `docs/club-lanzamiento-2026-10-12.md` primero.
 > Admin ya accesible; healthcheck y Compose corregidos. Cumpleaños automático
 > ya activado en Supabase (dos cupones de octubre + cron). Nueva portada,

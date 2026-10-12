@@ -13,6 +13,7 @@ export interface NavSection {
  * con roleGuard para que ocultar no sea la única defensa.
  */
 export const NAV_SECTIONS: NavSection[] = [
+  { label: 'Socios y preferencias', path: '/club/socios', roles: ['superadmin','admin'] },
   { label: 'Campañas y beneficios', path: '/club/campanas', roles: ['superadmin', 'admin', 'manager'] },
   {
     label: 'Inicio',
@@ -35,9 +36,9 @@ export const NAV_SECTIONS: NavSection[] = [
     roles: ['superadmin', 'admin', 'manager', 'kitchen', 'cashier'],
   },
   {
-    label: 'Usuarios',
+    label: 'Equipo y accesos',
     path: '/usuarios',
-    roles: ['superadmin', 'admin'],
+    roles: ['superadmin'],
   },
   {
     label: 'Validar cupón',
@@ -52,6 +53,6 @@ export const NAV_SECTIONS: NavSection[] = [
 ];
 
 export function sectionsForRole(role: UserRole): NavSection[] {
-  const order = ['/dashboard', '/club/validar', '/club/historial', '/club/campanas', '/carta', '/pedidos', '/inventario', '/usuarios'];
+  const order = ['/dashboard', '/club/validar', '/club/historial', '/club/campanas', '/club/socios', '/carta', '/pedidos', '/inventario', '/usuarios'];
   return NAV_SECTIONS.filter((s) => s.roles.includes(role)).sort((a, b) => order.indexOf(a.path) - order.indexOf(b.path));
 }

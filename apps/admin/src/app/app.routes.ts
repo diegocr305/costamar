@@ -58,6 +58,7 @@ export const routes: Routes = [
         canActivate: [roleGuard(['superadmin', 'admin', 'manager'])],
         loadComponent: () => import('./features/club/club-campaigns.component').then(m => m.ClubCampaignsComponent),
       },
+      {path:'club/socios',canActivate:[roleGuard(['superadmin','admin'])],loadComponent:()=>import('./features/club/club-members.component').then(m=>m.ClubMembersComponent)},
       {
         path: 'club/historial',
         canActivate: [roleGuard(['superadmin', 'admin', 'manager', 'cashier'])],
@@ -73,12 +74,9 @@ export const routes: Routes = [
       },
       {
         path: 'usuarios',
-        canActivate: [roleGuard(['superadmin', 'admin'])],
+        canActivate: [roleGuard(['superadmin'])],
         loadComponent: () =>
-          import('./pages/placeholder/placeholder.component').then(
-            (m) => m.PlaceholderComponent,
-          ),
-        data: { title: 'Usuarios' },
+          import('./features/team/team.component').then(m => m.TeamComponent),
       },
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
     ],
