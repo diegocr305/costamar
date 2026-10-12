@@ -9,6 +9,7 @@ Implementado el 12 de octubre de 2026. Ruta: `/club/campanas` en el admin existe
 - Editor de nombre, premio personal, descripción, imagen existente, fechas en hora de Chile, cupos, días de uso y productos permitidos de la carta.
 - Creación de nuevas campañas de tipo `promotion`; cumpleaños y fundadores conservan su tipo e identificador.
 - Cupones paginados, filtrados por estado y nombre/código de socio o cupón. Acceso al historial filtrado por campaña.
+- Cambiar el estado del cupón actualiza la lista inmediatamente y vuelve a la primera página; Buscar aplica el nombre o código ingresado. Corregido el 12-10-2026 tras la prueba del dueño.
 - El Club muestra título, descripción y premio de cada promoción; ya no presenta toda promoción como regalo de fundadores.
 
 ## Reglas

@@ -12,6 +12,9 @@
 > Gestión de campañas implementada: ver `docs/club-campanas-admin.md`.
 > Crear/editar, catálogo, cupos, vigencia, resultados y cupones paginados listos.
 > Reservas es el siguiente módulo. Cumpleaños sigue sin límite de socios.
+> Orden de atención acordado: mesa obligatoria; pedido/boleta/observación
+> opcionales. Proponer antes de programar campos separados, folio de canje
+> y últimos canjes de hoy debajo del escáner. Esta mejora aún no se implementó.
 
 ## Estado actual (qué funciona)
 - Web pública en vivo (hero con foto de ceviche, carta real con fotos, favicon).

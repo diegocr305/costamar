@@ -96,6 +96,10 @@ export class ClubCampaignsComponent implements OnInit {
     finally { this.saving.set(false); }
   }
   protected openCoupons(c: CampaignAdmin): void { this.selected.set(c); this.couponStatus = ''; this.couponSearch = ''; this.view.set('coupons'); window.scrollTo(0, 0); void this.loadCoupons(); }
+  protected setCouponStatus(status: string): void {
+    this.couponStatus = status;
+    void this.loadCoupons(1);
+  }
   protected async loadCoupons(page = 1): Promise<void> {
     const c = this.selected(); if (!c) return;
     const request = ++this.couponRequest; this.couponLoading.set(true); this.couponError.set(null);
