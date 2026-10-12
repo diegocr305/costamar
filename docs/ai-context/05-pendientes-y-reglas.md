@@ -1,5 +1,11 @@
 # Pendientes, reglas de negocio y decisiones
 
+> UX de cupones ajustado: Disponibles/Utilizados/Vencidos con cantidades;
+> Próximos oculto mientras no haya beneficios futuros reales. Estados vacíos
+> específicos, historial compacto con redeemedAt, un solo enlace desde Inicio.
+> Cupones abre Disponibles salvo enlace explícito `estado=utilizados`.
+> Solo presentación del Club: emisión, canje, vigencia y cupos sin cambios.
+
 > Resumen del Club implementado en Inicio del admin, exclusivo superadmin/admin:
 > `docs/club-resumen-admin.md`. Altas, encuestas, cumpleaños, cupones y canjes;
 > días calendario de Chile, consulta manual y acceso a filtros. No cuenta visitas.

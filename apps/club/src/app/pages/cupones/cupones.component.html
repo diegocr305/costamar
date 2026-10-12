@@ -4,17 +4,16 @@
     <p>Tus regalos se asignan automáticamente. Para usarlos, muestra tu tarjeta al personal.</p>
   </header>
 
-  <nav class="tabs" role="tablist" aria-label="Filtrar cupones">
+  <nav class="tabs" aria-label="Filtrar cupones">
     @for (t of tabs; track t.key) {
       <button
         type="button"
-        role="tab"
         class="tabs__btn"
         [class.is-active]="tab() === t.key"
-        [attr.aria-selected]="tab() === t.key"
+        [attr.aria-pressed]="tab() === t.key"
         (click)="setTab(t.key)"
       >
-        {{ t.label }}
+        {{ t.label }}@if (state() === 'loaded') { ({{ count(t.key) }}) }
       </button>
     }
   </nav>
@@ -38,13 +37,17 @@
     @case ('loaded') {
       @if (visible().length === 0) {
         <div class="empty">
-          <p>No tienes cupones en esta sección.</p>
-          <small>Las campañas del Club aparecerán aquí cuando estén activas.</small>
+          <span class="empty__icon" aria-hidden="true">{{ tab() === 'disponibles' ? '🎁' : tab() === 'canjeados' ? '✓' : '🗓️' }}</span>
+          <strong>{{ tab() === 'disponibles' ? 'Por ahora no tienes regalos disponibles' : tab() === 'canjeados' ? 'Todavía no has utilizado tus regalos' : 'No tienes cupones vencidos o anulados' }}</strong>
+          <p>{{ tab() === 'disponibles' ? 'Aquí encontrarás tus regalos cuando tengas un beneficio disponible.' : tab() === 'canjeados' ? 'Después de usar un regalo, podrás consultar aquí cuándo lo disfrutaste.' : 'Aquí podrás consultar los beneficios que ya no se pueden usar.' }}</p>
+          @if (tab() === 'disponibles' && count('canjeados') > 0) { <button class="cm-btn cm-btn--primary" (click)="setTab('canjeados')">Ver mis regalos utilizados</button> }
+          @if (tab() === 'canjeados' && count('disponibles') > 0) { <button class="cm-btn cm-btn--primary" (click)="setTab('disponibles')">Ver mis regalos disponibles</button> }
+          <a routerLink="/beneficios">Conoce los beneficios del Club →</a>
         </div>
       } @else {
         <ul class="list">
           @for (c of visible(); track c.id) {
-            <li class="coupon">
+            <li class="coupon" [class.coupon--used]="c.status === 'redeemed'">
               @if (c.campaign.imagePath) {
                 <img
                   class="coupon__thumb"
@@ -53,8 +56,11 @@
                   loading="lazy"
                 />
               }
+              @else { <span class="coupon__icon" aria-hidden="true">{{ c.campaign.type === 'birthday' ? '🎂' : '🎁' }}</span> }
               <div class="coupon__body">
                 <strong class="coupon__name">{{ c.campaign.name }}</strong>
+                @if (c.status === 'redeemed') { <p class="coupon__used-date">{{ usedLabel(c) }}</p> }
+                @else {
                 @if (c.campaign.description) {
                   <p class="coupon__desc">{{ c.campaign.description }}</p>
                 }
@@ -66,6 +72,7 @@
                     </span>
                   }
                 </div>
+                }
                 @if (isAvailable(c)) {
                   <a routerLink="/mi-tarjeta" class="cm-btn cm-btn--gold coupon__use">Mostrar mi tarjeta →</a>
                 }
@@ -73,7 +80,7 @@
               <span class="coupon__status coupon__status--{{ c.status }}">
                 {{
                   c.status === 'issued' ? (isAvailable(c) ? 'Disponible' : 'Vencido') :
-                  c.status === 'redeemed' ? 'Canjeado' :
+                  c.status === 'redeemed' ? 'Utilizado' :
                   c.status === 'expired' ? 'Vencido' : 'Anulado'
                 }}
               </span>

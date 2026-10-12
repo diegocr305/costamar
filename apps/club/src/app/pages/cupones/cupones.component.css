@@ -10,6 +10,7 @@
 
 .tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.4rem;
   overflow-x: auto;
   padding-bottom: 0.5rem;
@@ -53,6 +54,16 @@
 .empty small {
   font-size: 0.82rem;
 }
+.empty { background:var(--cm-surface);border-radius:16px;padding:1.5rem 1rem;gap:1rem; }
+.empty strong { color:var(--cm-heading);font-size:1.05rem; }
+.empty p { margin:0;font-size:.88rem;line-height:1.6; }
+.empty a { color:var(--cm-muted);font-size:.82rem; }
+.empty__icon { font-size:2rem; }
+.coupon__icon { width:64px;min-height:60px;display:grid;place-items:center;font-size:1.8rem; }
+.coupon--used { grid-template-columns:48px minmax(0,1fr); }
+.coupon--used .coupon__thumb { width:48px;height:60px; }
+.coupon--used .coupon__icon { width:48px; }
+.coupon__used-date { color:var(--cm-muted);font-size:.85rem;margin:.6rem 0 0; }
 
 .spinner {
   width: 32px;

@@ -1,5 +1,5 @@
 ﻿<section class="inicio">
-  <header class="inicio__head"><span class="inicio__eyebrow">Club Costa Mar</span><h1>@if (firstName()) { Hola, {{ firstName() }} } @else { Bienvenido }</h1><p>Qué bueno verte. Estos son tus regalos.</p></header>
+  <header class="inicio__head"><span class="inicio__eyebrow">Club Costa Mar</span><h1>@if (firstName()) { Hola, {{ firstName() }} } @else { Bienvenido }</h1><p>Tus beneficios, en un solo lugar.</p></header>
   @switch (state()) {
     @case ('loading') { <div class="state" role="status"><div class="spinner" aria-hidden="true"></div><p>Buscando tus beneficios…</p></div> }
     @case ('offline') { <div class="state" role="alert"><p>Necesitamos conexión para ver tus regalos.</p><button class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button></div> }
@@ -22,9 +22,9 @@
           </article>
         }
       } @else {
-        <div class="empty empty--soft"><p>No tienes regalos disponibles en este momento.</p><a routerLink="/cupones">Ver mis cupones y regalos utilizados →</a></div>
+        <div class="empty empty--soft"><p>Por ahora no tienes regalos disponibles.</p>@if (hasUsed()) {<small>Puedes consultar los regalos que ya disfrutaste en Mis cupones.</small>}</div>
       }
-      <a routerLink="/cupones" class="cm-btn cm-btn--primary inicio__cta">Ver mis cupones</a>
+      <a routerLink="/cupones" [queryParams]="availableCoupons().length === 0 && hasUsed() ? {estado:'utilizados'} : {}" class="cm-btn cm-btn--primary inicio__cta">{{availableCoupons().length === 0 && hasUsed() ? 'Ver mis regalos utilizados' : 'Ver mis cupones'}}</a>
       @if (news().length > 0) {
         <h2 class="inicio__title news-title">Beneficios del Club</h2>
         <ul class="campaigns">@for (c of news(); track c.id) { <li class="campaign"><strong>{{ c.type === 'birthday' ? '🎂 Un regalo en tu mes de cumpleaños' : c.type === 'founders' ? '🎁 Bienvenida para socios fundadores' : c.name }}</strong><p>{{ c.type === 'birthday' ? 'Tu bebestible y postre aparecerán automáticamente durante tu mes, con tu perfil completo.' : c.type === 'founders' ? 'Bebestible personal con consumo en el local, sujeto a cupos y condiciones.' : c.description }}</p></li> }</ul>

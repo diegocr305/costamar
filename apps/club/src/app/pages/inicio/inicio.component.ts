@@ -16,6 +16,7 @@ export class InicioComponent implements OnInit {
   protected readonly coupons = signal<CouponWithCampaign[]>([]);
   protected readonly firstName = signal('');
   protected readonly profileComplete = signal(true);
+  protected readonly hasUsed = computed(() => this.coupons().some(c => c.status === 'redeemed'));
   protected readonly availableCoupons = computed(() => this.coupons().filter(c => c.status === 'issued' && (!c.expiresAt || new Date(c.expiresAt).getTime() > Date.now())));
   protected readonly news = computed(() => this.campaigns().filter(c => !this.coupons().some(coupon => coupon.campaignId === c.id)));
   protected image(path?: string): string { return mediaUrl(path); }
