@@ -38,7 +38,8 @@ export class CompletarPerfilComponent implements OnInit {
       next: ({ member }) => {
         if (!member) return;
         this.fullName.set(member.fullName);
-        this.phone.set(member.phone ?? '');
+        const digits = (member.phone ?? '').replace(/\D/g, '');
+        this.phone.set(digits.length === 11 && digits.startsWith('569') ? digits.slice(3) : digits.length === 9 && digits.startsWith('9') ? digits.slice(1) : digits);
         this.birthDate.set(member.birthDate ?? '');
       },
       error: () => { /* El formulario sigue disponible para reintentar el alta. */ },
@@ -54,7 +55,7 @@ export class CompletarPerfilComponent implements OnInit {
   protected canSubmit(): boolean {
     return (
       this.fullName().trim().length > 0 &&
-      this.phone().trim().length > 0 &&
+      /^[0-9]{8}$/.test(this.phone()) &&
       this.ageValid() &&
       this.acceptTerms() &&
       this.acceptPrivacy() &&
@@ -75,7 +76,7 @@ export class CompletarPerfilComponent implements OnInit {
       await firstValueFrom(
         this.club.enroll({
           fullName: this.fullName().trim(),
-          phone: this.phone().trim(),
+          phone: '+569' + this.phone(),
           birthDate: this.birthDate(),
           acceptTerms: this.acceptTerms(),
           acceptPrivacy: this.acceptPrivacy(),

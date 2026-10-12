@@ -55,6 +55,11 @@
   color: var(--cm-muted);
 }
 
+.phone-field { display: flex; align-items: center; gap: 0.7rem; }
+.phone-field__prefix { flex-shrink: 0; font-weight: 700; color: var(--cm-text); }
+.phone-field input { flex: 1; min-width: 0; width: 100%; }
+.field__help { color: var(--cm-muted); font-size: 0.85rem; }
+
 /* El selector de fecha nativo en oscuro */
 .field input[type='date'] {
   color-scheme: dark;

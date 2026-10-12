@@ -26,11 +26,13 @@ export class ClubService {
     return `CM-${rnd}`;
   }
 
-  /** Normaliza el teléfono: deja un '+' inicial opcional y solo dígitos. */
+  /** Guarda celulares chilenos en formato +569XXXXXXXX. */
   private normalizePhone(phone: string): string {
-    const trimmed = phone.trim();
-    const plus = trimmed.startsWith('+') ? '+' : '';
-    return plus + trimmed.replace(/[^0-9]/g, '');
+    const digits = phone.replace(/[^0-9]/g, '');
+    if (/^[0-9]{8}$/.test(digits)) return '+569' + digits;
+    if (/^9[0-9]{8}$/.test(digits)) return '+56' + digits;
+    if (/^569[0-9]{8}$/.test(digits)) return '+' + digits;
+    throw new BadRequestException('Ingresa los 8 dígitos de tu celular después de +56 9.');
   }
 
   private mapMember(row: Record<string, unknown>): ClubMember {

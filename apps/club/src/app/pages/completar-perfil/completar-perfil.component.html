@@ -21,16 +21,24 @@
 
     <label class="field">
       <span class="field__label">Teléfono *</span>
+      <span class="phone-field">
+      <span class="phone-field__prefix">+56 9</span>
       <input
         type="tel"
         name="phone"
         [ngModel]="phone()"
         (ngModelChange)="phone.set($event)"
-        autocomplete="tel"
-        inputmode="tel"
-        placeholder="+56 9 ..."
+        autocomplete="tel-local"
+        inputmode="numeric"
+        minlength="8"
+        maxlength="8"
+        pattern="[0-9]{8}"
+        aria-describedby="phone-help"
+        placeholder="82155189"
         required
       />
+      </span>
+      <span id="phone-help" class="field__help">Escribe los 8 dígitos de tu celular.</span>
     </label>
 
     <label class="field">
