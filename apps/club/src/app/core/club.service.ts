@@ -37,6 +37,9 @@ export class ClubService {
   getConsents(): Observable<ClubConsent[]> {
     return this.http.get<ClubConsent[]>(`${this.base}/consents`);
   }
+  surveyEvent(action:'viewed'|'skipped'|'responded',preferences?:Partial<ClubMemberPreferences>):Observable<ClubMemberPreferences> {
+    return this.http.post<ClubMemberPreferences>(`${this.base}/survey`,{action,preferences});
+  }
 
   getCampaigns(): Observable<Campaign[]> {
     return this.http.get<Campaign[]>(`${this.base}/campaigns`);

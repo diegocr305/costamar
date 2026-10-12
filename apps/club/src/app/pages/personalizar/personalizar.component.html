@@ -1,0 +1,15 @@
+<section class="survey">
+ @if(loading()){<p role="status">Preparando tu bienvenida…</p>}
+ @else {
+  <header><span class="eyebrow">Club Costa Mar · Bienvenido</span><span class="wave" aria-hidden="true">🌊</span><h1>Conozcámonos mejor</h1><p>Cuéntanos qué disfrutas para ofrecerte novedades más relevantes. Responde lo que quieras; tus beneficios ya están disponibles.</p><span class="optional">Todas las respuestas son opcionales</span><button type="button" class="clear" (click)="skip()" [disabled]="saving()">Ahora no · Entrar al Club</button></header>
+  <form (ngSubmit)="submit()">
+   <fieldset [disabled]="saving()"><legend>¿Qué te gustaría disfrutar en Costa Mar?</legend><p class="hint">Puedes elegir varias opciones.</p><div class="choices">@for(option of foodOptions;track option.value){<label class="choice" [class.choice--selected]="foods.includes(option.value)"><input type="checkbox" [checked]="foods.includes(option.value)" (change)="toggleFood(option.value,$any($event.target).checked)"/><span>{{option.label}}</span></label>}</div></fieldset>
+   <fieldset [disabled]="saving()"><legend>¿Con quién sueles visitarnos?</legend><p class="hint">Elige una opción.</p><div class="choices">@for(option of visitOptions;track option.value){<label class="choice" [class.choice--selected]="visitType===option.value"><input type="radio" name="visitType" [value]="option.value" [(ngModel)]="visitType"/><span>{{option.label}}</span></label>}</div>@if(visitType){<button type="button" class="clear" (click)="visitType=''" [disabled]="saving()">Quitar respuesta</button>}</fieldset>
+   <label class="commune">¿En qué comuna vives? <span class="hint">Opcional</span><input name="commune" [(ngModel)]="commune" maxlength="80" autocomplete="address-level3" placeholder="Tu comuna" [disabled]="saving()"/></label>
+   <fieldset class="communications" [disabled]="saving()"><legend>¿Quieres recibir novedades, eventos y promociones?</legend><label class="consent"><input type="checkbox" name="email" [(ngModel)]="marketingEmail"/><span>Por correo</span></label><label class="consent"><input type="checkbox" name="whatsapp" [(ngModel)]="marketingWhatsapp"/><span>Por WhatsApp</span></label><p class="hint">Puedes cambiar estas opciones en tu perfil cuando quieras.</p></fieldset>
+   @if(error()){<p class="error" role="alert">{{error()}}</p>}
+   <button class="cm-btn cm-btn--gold" [disabled]="saving()||!hasAnswers()">{{saving()?'Un momento…':'Guardar y entrar al Club'}}</button>
+  </form>
+  <button type="button" class="skip" (click)="skip()" [disabled]="saving()">Ahora no · Entrar al Club</button><p class="later">También puedes responder después en Mi perfil.</p>
+ }
+</section>

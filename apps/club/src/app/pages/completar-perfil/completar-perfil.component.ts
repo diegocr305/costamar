@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { CLUB_MIN_AGE, isAdult } from '@costamar/shared';
 import { AuthService } from '../../core/auth.service';
 import { ClubService } from '../../core/club.service';
+import { shouldOfferSurvey } from '../../core/survey-flow.service';
 
 @Component({
   selector: 'cm-completar-perfil',
@@ -73,7 +74,7 @@ export class CompletarPerfilComponent implements OnInit {
     this.saving.set(true);
     this.error.set(null);
     try {
-      await firstValueFrom(
+      const me = await firstValueFrom(
         this.club.enroll({
           fullName: this.fullName().trim(),
           phone: '+569' + this.phone(),
@@ -84,7 +85,7 @@ export class CompletarPerfilComponent implements OnInit {
           marketingWhatsapp: this.marketingWhatsapp(),
         }),
       );
-      await this.router.navigate(['/inicio']);
+      await this.router.navigate([shouldOfferSurvey(me) ? '/personalizar' : '/inicio']);
     } catch {
       this.error.set('No pudimos completar tu registro. Inténtalo de nuevo.');
       this.saving.set(false);

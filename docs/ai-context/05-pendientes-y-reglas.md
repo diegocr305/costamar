@@ -1,5 +1,10 @@
 # Pendientes, reglas de negocio y decisiones
 
+> Encuesta de bienvenida implementada: `docs/club-encuesta-bienvenida.md`.
+> Tras registro y al próximo ingreso a Inicio de socios sin encuesta. Opcional,
+> omisión visible, estado/fechas en admin, no repetición y preferencias editables.
+> Incluye “Aún no he visitado Costa Mar”. No condiciona regalos ni consentimientos.
+
 > Equipo y accesos y preferencias opcionales implementados: ver
 > `docs/club-equipo-preferencias.md`. Solo superadmin gestiona meseros (cashier).
 > Roles vigentes comprobados en BD por petición; contactos promocionales por

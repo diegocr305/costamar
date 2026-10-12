@@ -1,5 +1,9 @@
 # API — Endpoints (NestJS)
 
+> `POST /club/survey` registra vista/omisión/respuesta del usuario autenticado.
+> Socios admin acepta `surveyStatus`; preferencias incluyen estado/fechas y
+> `visitType=not_visited`. Ver `docs/club-encuesta-bienvenida.md` (61 pruebas).
+
 > Equipo: `/team` solo superadmin y `/team/access` para el rol propio vigente.
 > `/users` restringido a superadmin. JWT valida identidad; autorización consulta
 > `user_roles` por petición para revocar accesos sin esperar renovación del token.

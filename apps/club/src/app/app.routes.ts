@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth.guard';
+import { surveyGuard } from './core/survey.guard';
 
 export const routes: Routes = [
+  {path:'personalizar',canActivate:[authGuard],loadComponent:()=>import('./pages/personalizar/personalizar.component').then(m=>m.PersonalizarComponent)},
   // Landing pública del club (beneficios + continuar con Google)
   {
     path: '',
@@ -48,7 +50,7 @@ export const routes: Routes = [
   },
   {
     path: 'inicio',
-    canActivate: [authGuard],
+    canActivate: [authGuard, surveyGuard],
     loadComponent: () =>
       import('./pages/inicio/inicio.component').then((m) => m.InicioComponent),
   },

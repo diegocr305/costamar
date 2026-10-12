@@ -60,6 +60,10 @@ export class ClubService {
       commune: (row['commune'] as string) ?? '',
       foodPreferences: (row['food_preferences'] as string[]) ?? [],
       visitType: (row['visit_type'] as string) ?? '',
+      surveyStatus: (row['survey_status'] as ClubMemberPreferences['surveyStatus']) ?? 'not_shown',
+      surveySeenAt: (row['survey_seen_at'] as string) ?? null,
+      surveySkippedAt: (row['survey_skipped_at'] as string) ?? null,
+      surveyRespondedAt: (row['survey_responded_at'] as string) ?? null,
     };
   }
 
@@ -198,6 +202,18 @@ export class ClubService {
   }
 
   /** Actualiza preferencias de comunicaciones del socio. */
+  async surveyEvent(userId:string,action:string,dto:UpdatePreferencesDto={}) {
+    const patch:Record<string,unknown>={};
+    if(dto.commune!==undefined) patch['commune']=dto.commune.trim();
+    if(dto.foodPreferences!==undefined) patch['food_preferences']=dto.foodPreferences;
+    if(dto.visitType!==undefined) patch['visit_type']=dto.visitType;
+    if(dto.marketingEmail!==undefined) patch['marketing_email']=dto.marketingEmail;
+    if(dto.marketingWhatsapp!==undefined) patch['marketing_whatsapp']=dto.marketingWhatsapp;
+    const {data,error}=await this.supabase.client.rpc('club_survey_event',{p_user_id:userId,p_action:action,p_patch:patch});
+    if(error) throw new BadRequestException(error.message.includes('SURVEY_EMPTY')?'Puedes responder alguna pregunta o elegir Ahora no.':'No pudimos guardar la encuesta.');
+    return this.mapPreferences(data);
+  }
+
   async updatePreferences(
     userId: string,
     dto: UpdatePreferencesDto,

@@ -51,6 +51,10 @@ export interface ClubMemberPreferences {
   commune?: string;
   foodPreferences?: string[];
   visitType?: string;
+  surveyStatus?: 'not_shown' | 'viewed' | 'skipped' | 'responded';
+  surveySeenAt?: string | null;
+  surveySkippedAt?: string | null;
+  surveyRespondedAt?: string | null;
 }
 
 /** Respuesta de GET /club/me cuando el usuario está autenticado. */

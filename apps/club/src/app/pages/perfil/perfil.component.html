@@ -1,4 +1,4 @@
-<section class="page">
+﻿<section class="page">
   <a routerLink="/mi-tarjeta" class="back">← Mi tarjeta</a>
   <h1>Mi perfil</h1>
 
@@ -19,10 +19,10 @@
    <form (ngSubmit)="saveExperience()">
     <fieldset [disabled]="savingPrefs()"><legend>Personaliza tu experiencia</legend>
      <label class="field">¿En qué comuna vives? <span class="hint">Opcional</span><input name="commune" [(ngModel)]="commune" maxlength="80" autocomplete="address-level3" placeholder="Tu comuna" /></label>
-     <fieldset class="foods"><legend>¿Qué disfrutas más de Costa Mar?</legend>
+     <fieldset class="foods"><legend>¿Qué te gustaría disfrutar en Costa Mar?</legend>
       @for(option of foodOptions;track option.value) {<label class="switch"><input type="checkbox" [checked]="foods.includes(option.value)" (change)="toggleFood(option.value,$any($event.target).checked)"/><span>{{option.label}}</span></label>}
      </fieldset>
-     <label class="field">¿Cómo sueles visitarnos?<select name="visitType" [(ngModel)]="visitType"><option value="">Sin responder</option><option value="family">En familia</option><option value="couple">En pareja</option><option value="friends">Con amigos</option><option value="alone">Por mi cuenta</option><option value="prefer_not_to_say">Prefiero no responder</option></select></label>
+     <label class="field">¿Con quién sueles visitarnos?<select name="visitType" [(ngModel)]="visitType"><option value="">Sin responder</option><option value="family">En familia</option><option value="couple">En pareja</option><option value="friends">Con amigos</option><option value="alone">Por mi cuenta</option><option value="not_visited">Aún no he visitado Costa Mar</option><option value="prefer_not_to_say">Prefiero no responder</option></select></label>
      <button class="cm-btn cm-btn--primary" [disabled]="savingPrefs()">{{savingPrefs()?'Guardando…':'Guardar mis preferencias'}}</button>
     </fieldset>
    </form>

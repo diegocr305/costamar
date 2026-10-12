@@ -4,6 +4,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { ClubService } from './club.service';
 import { EnrollDto } from './dto/enroll.dto';
 import { UpdatePreferencesDto } from './dto/preferences.dto';
+import { SurveyDto } from './dto/survey.dto';
 
 /**
  * API del Club Costa Mar. Todas las rutas exigen JWT válido (guard global).
@@ -43,6 +44,8 @@ export class ClubController {
   consents(@CurrentUser() user: AuthenticatedUser) {
     return this.club.getConsents(user.userId);
   }
+  @Post('survey')
+  survey(@CurrentUser() user:AuthenticatedUser,@Body() dto:SurveyDto) {return this.club.surveyEvent(user.userId,dto.action,dto.preferences);}
 
   /** Campañas activas (para mostrar en la PWA). */
   @Get('campaigns')

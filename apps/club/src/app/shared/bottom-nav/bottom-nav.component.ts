@@ -23,7 +23,7 @@ export class BottomNavComponent {
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  private readonly hiddenRoutes = ['/', '/ingresar', '/auth/callback', '/completar-perfil'];
+  private readonly hiddenRoutes = ['/', '/ingresar', '/auth/callback', '/completar-perfil', '/personalizar'];
   protected readonly visible = signal(this.computeVisible(this.router.url));
 
   constructor() {
