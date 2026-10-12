@@ -1,5 +1,9 @@
 # API — Endpoints (NestJS)
 
+> `GET /club/admin/overview`: resumen agregado para superadmin/admin, actor del
+> JWT, solo lectura. `docs/club-resumen-admin.md` detalla ventanas y conteos.
+> Tipo compartido `ClubOverview`; 64 pruebas de API.
+
 > `POST /club/survey` registra vista/omisión/respuesta del usuario autenticado.
 > Socios admin acepta `surveyStatus`; preferencias incluyen estado/fechas y
 > `visitType=not_visited`. Ver `docs/club-encuesta-bienvenida.md` (61 pruebas).

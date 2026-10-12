@@ -1,5 +1,10 @@
 # Pendientes, reglas de negocio y decisiones
 
+> Resumen del Club implementado en Inicio del admin, exclusivo superadmin/admin:
+> `docs/club-resumen-admin.md`. Altas, encuestas, cumpleaños, cupones y canjes;
+> días calendario de Chile, consulta manual y acceso a filtros. No cuenta visitas.
+> Próximo paso propuesto: registro de visitas reales; aún no implementado.
+
 > Encuesta de bienvenida implementada: `docs/club-encuesta-bienvenida.md`.
 > Tras registro y al próximo ingreso a Inicio de socios sin encuesta. Opcional,
 > omisión visible, estado/fechas en admin, no repetición y preferencias editables.

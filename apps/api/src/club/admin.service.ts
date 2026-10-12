@@ -1,11 +1,17 @@
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
-import type { CampaignAdmin } from '@costamar/shared';
+import type { CampaignAdmin, ClubOverview } from '@costamar/shared';
 import type { CampaignCouponsQueryDto, CreateCampaignDto, UpdateCampaignDto } from './dto/campaign.dto';
 
 @Injectable()
 export class ClubAdminService {
   constructor(private readonly supabase: SupabaseService) {}
+  async overview(actor:string):Promise<ClubOverview> {
+    const {data,error}=await this.supabase.client.rpc('club_admin_overview',{p_actor:actor});
+    if(error?.message.includes('OVERVIEW_REQUIRED'))throw new ForbiddenException('Tu cuenta no puede consultar el resumen del Club.');
+    if(error||!data)throw new BadRequestException('No pudimos cargar el resumen del Club. Inténtalo de nuevo.');
+    return data;
+  }
   private fail(error: { message: string; code?: string }): never {
     const messages: Record<string, string> = {
       CAMPAIGN_NOT_FOUND: 'Campaña no encontrada.', CAMPAIGN_ADMIN_REQUIRED: 'Tu cuenta no puede modificar campañas.',

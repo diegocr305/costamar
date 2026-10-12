@@ -28,6 +28,7 @@ export * from './types/loyalty';
 
 // Tipos — Club Costa Mar (membresía)
 export * from './types/club';
+export * from './types/club-overview';
 
 // Tipos — Cupones y campañas del Club
 export * from './types/coupons';

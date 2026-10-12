@@ -15,11 +15,12 @@ function todayInChile(): string {
 })
 export class ClubHistoryComponent implements OnInit {
   private readonly staff = inject(ClubStaffService);
-  protected campaignId = inject(ActivatedRoute).snapshot.queryParamMap.get('campaignId') ?? '';
+  private readonly route=inject(ActivatedRoute);
+  protected campaignId = this.route.snapshot.queryParamMap.get('campaignId') ?? '';
   protected readonly result = signal<RedemptionHistory>({ items: [], total: 0, page: 1, pageSize: 20 });
   protected readonly loading = signal(false);
   protected readonly error = signal(false);
-  protected date = todayInChile();
+  protected date = /^\d{4}-\d{2}-\d{2}$/.test(this.route.snapshot.queryParamMap.get('date')??'') ? this.route.snapshot.queryParamMap.get('date')! : todayInChile();
   protected query = '';
   private requestId = 0;
   ngOnInit(): void { void this.load(); }

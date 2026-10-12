@@ -1,0 +1,21 @@
+<section class="overview" aria-labelledby="overview-title" [attr.aria-busy]="loading()">
+ <div class="heading"><div><span class="eyebrow">Club Costa Mar · Tu comunidad</span><h2 id="overview-title">Así va el Club</h2><p>Registros, preferencias y regalos, en un solo vistazo.</p></div><button class="cm-button" (click)="load()" [disabled]="loading()">{{loading()?'Actualizando…':'Actualizar resumen ↻'}}</button></div>
+ @if(error()){<div class="error" role="alert">{{error()}} @if(!summary()){<button class="cm-button" (click)="load()" [disabled]="loading()">Reintentar</button>}</div>}
+ @if(loading()&&!summary()){<p class="hint" role="status">Consultando los registros del Club…</p>}
+ @if(summary();as s){
+  <p class="updated">{{error()?'Última consulta correcta':'Actualizado'}}: {{updated(s.generatedAt)}} · hora de Chile</p>
+  <div class="metrics">
+   <article><span class="icon" aria-hidden="true">👥</span><span>Socios del Club</span><strong>{{s.members.total}}</strong><small>{{s.members.active}} activos</small><a routerLink="/club/socios">Ver socios activos →</a></article>
+   <article><span class="icon" aria-hidden="true">🌊</span><span>Socios nuevos hoy</span><strong>{{s.members.newToday}}</strong><small>{{s.members.new7Days}} en 7 días · {{s.members.new30Days}} en 30 días</small><span class="detail">Registros de membresía</span></article>
+   <article><span class="icon" aria-hidden="true">🎁</span><span>Cupones disponibles</span><strong>{{s.coupons.available}}</strong><small>Vigentes para socios activos</small><a routerLink="/club/campanas">Ver campañas y cupones →</a></article>
+   <article><span class="icon" aria-hidden="true">✓</span><span>Canjes de hoy</span><strong>{{s.redemptions.today}}</strong><small>{{s.redemptions.last7Days}} en los últimos 7 días</small><a routerLink="/club/historial" [queryParams]="{date:s.date}">Consultar canjes →</a></article>
+   <article><span class="icon" aria-hidden="true">🎂</span><span>Cumpleañeros del mes</span><strong>{{s.members.birthdaysThisMonth}}</strong><small>Entre los socios activos</small><a routerLink="/club/socios" [queryParams]="{birthday:'true'}">Ver cumpleañeros →</a></article>
+   <article><span class="icon" aria-hidden="true">💬</span><span>Encuestas respondidas</span><strong>{{s.surveys.responded}}</strong><small>{{percent(s.surveys.responded,s.surveys.total)}}% de {{s.surveys.total}} socios activos</small><a routerLink="/club/socios" [queryParams]="{surveyStatus:'responded'}">Ver sus preferencias →</a></article>
+  </div>
+  <div class="survey"><div><h3>Participación en la encuesta</h3><p>Cada socio activo aparece en su estado actual. Una respuesta puede ser parcial.</p></div>
+   <div class="survey-grid">@for(state of surveyStates;track state.key){<a routerLink="/club/socios" [queryParams]="{surveyStatus:state.status}" [class]="'survey-state survey-state--'+state.key"><span>{{state.label}}</span><strong>{{s.surveys[state.key]}}</strong><div class="bar" aria-hidden="true"><span [style.width.%]="percent(s.surveys[state.key],s.surveys.total)"></span></div><small>{{percent(s.surveys[state.key],s.surveys.total)}}% · Ver socios →</small></a>}</div>
+   <p class="hint">Omitir la encuesta no indica rechazo a promociones. Los permisos de correo y WhatsApp se consultan por separado.</p>
+  </div>
+  <p class="hint">Los periodos de 7 y 30 días incluyen hoy y siguen el calendario de Chile. Los registros y canjes no representan todas las visitas al restaurante.</p>
+ }
+</section>

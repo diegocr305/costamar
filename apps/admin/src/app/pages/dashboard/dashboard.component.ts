@@ -3,12 +3,14 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { sectionsForRole } from '../../core/navigation';
 import { ClubStaffService } from '../../features/club/club-staff.service';
+import { ClubOverviewComponent } from '../../features/club/club-overview.component';
 
 @Component({
-  selector: 'cm-dashboard', standalone: true, imports: [RouterLink],
+  selector: 'cm-dashboard', standalone: true, imports: [RouterLink,ClubOverviewComponent],
   template: `
     <section class="dashboard"><header class="page-head"><div><span class="eyebrow">Costa Mar · Nuestro equipo</span><h1>Todo listo para atender</h1><p>Tus herramientas para recibir a los socios y llevar el registro de sus regalos.</p></div></header>
-    @if (canValidate()) {
+    @if(canSeeOverview()){<cm-club-overview />}
+    @if (canValidate() && !canSeeOverview()) {
       <div class="today"><span class="today__icon" aria-hidden="true">✓</span><div><strong>{{ todayCount() === null ? 'Canjes de hoy' : todayCount() + ' canjes hoy' }}</strong><p>{{ countError() ? 'No pudimos actualizar el resumen. Consulta el historial.' : 'Registro de atención en horario de Chile.' }}</p></div><a routerLink="/club/historial">Ver historial →</a></div>
     }
     <h2>¿Qué necesitas hacer?</h2><div class="cards">@for (section of tools(); track section.path) { <a [routerLink]="section.path" class="tool"><span class="tool__icon" aria-hidden="true">{{ section.path === '/club/validar' ? '📷' : section.path === '/club/historial' ? '🧾' : section.path === '/club/campanas' ? '🎁' : '🍽️' }}</span><strong>{{ section.label }}</strong><p>{{ section.path === '/club/validar' ? 'Abre la cámara, revisa el beneficio y confirma el canje.' : section.path === '/club/historial' ? 'Busca un socio, código o mesa y consulta quién lo atendió.' : section.path === '/club/campanas' ? 'Define regalos, productos, cupos y vigencia de tus promociones.' : 'Actualiza productos, precios y disponibilidad.' }}</p><span class="tool__action">Abrir →</span></a> }</div>
@@ -28,8 +30,9 @@ export class DashboardComponent implements OnInit {
   protected readonly countError = signal(false);
   protected readonly tools = computed(() => sectionsForRole(this.auth.user()?.role ?? 'customer').filter(s => ['/club/validar', '/club/historial', '/club/campanas', '/carta'].includes(s.path)));
   protected readonly canValidate = computed(() => this.tools().some(s => s.path === '/club/validar'));
+  protected readonly canSeeOverview = computed(()=>['superadmin','admin'].includes(this.auth.user()?.role??''));
   ngOnInit(): void {
-    if (!this.canValidate()) return;
+    if (!this.canValidate() || this.canSeeOverview()) return;
     const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
     const today = ['year', 'month', 'day'].map(k => parts.find(p => p.type === k)?.value).join('-');
     this.staff.history(today, '').subscribe({ next: result => this.todayCount.set(result.total), error: () => this.countError.set(true) });

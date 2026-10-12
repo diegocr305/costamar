@@ -14,6 +14,8 @@ import { BadRequestException } from '@nestjs/common';
 @Roles('superadmin', 'admin', 'manager')
 export class ClubAdminController {
   constructor(private readonly admin: ClubAdminService, private readonly staff: ClubStaffService, private readonly supabase:SupabaseService) {}
+  @Get('overview') @Roles('superadmin','admin')
+  overview(@CurrentUser() user:AuthenticatedUser){return this.admin.overview(user.userId);}
   @Get('members') @Roles('superadmin','admin')
   async members(@Query() dto:SegmentDto) {
     const {data,error}=await this.supabase.client.rpc('club_segment_members_survey',{p_birthday:dto.birthday==='true',p_food:dto.food??'',p_visit:dto.visit??'',p_commune:dto.commune??'',p_channel:dto.channel??'all',p_q:dto.q??'',p_page:dto.page,p_survey_status:dto.surveyStatus??''});
