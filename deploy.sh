@@ -15,7 +15,7 @@
 # ================================================================
 set -euo pipefail
 
-COMPOSE="docker compose -f docker-compose.piloto.yml --env-file .env"
+COMPOSE=(docker compose -f docker-compose.piloto.yml --env-file .env)
 SERVICES=("$@")
 if [ ${#SERVICES[@]} -eq 0 ]; then
   SERVICES=("web" "api" "club" "admin")
@@ -24,12 +24,20 @@ fi
 echo "==> 1/4 Trayendo cambios de GitHub (git pull --ff-only)"
 git pull --ff-only
 
+# Radar es optativo. Una vez activado, conservar su configuración al desplegar API.
+# No cargar .env como código shell ni imprimir sus secretos.
+if grep -Eq $'^RADAR_ENABLED=(true|1)\r?$' .env || printf '%s\n' "${SERVICES[@]}" | grep -qx 'radar-worker'; then
+  COMPOSE+=(-f docker-compose.radar.yml)
+  if printf '%s\n' "${SERVICES[@]}" | grep -qx 'api' && ! printf '%s\n' "${SERVICES[@]}" | grep -qx 'radar-worker'; then
+    SERVICES+=(radar-worker)
+  fi
+fi
+
 echo "==> 2/4 Reconstruyendo: ${SERVICES[*]}"
-# shellcheck disable=SC2086
-$COMPOSE up -d --build "${SERVICES[@]}"
+"${COMPOSE[@]}" up -d --build "${SERVICES[@]}"
 
 echo "==> 3/4 Estado de contenedores"
-$COMPOSE ps
+"${COMPOSE[@]}" ps
 
 echo "==> 4/4 Verificaciones"
 # API

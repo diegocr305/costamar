@@ -10,6 +10,7 @@ import { HealthModule } from './health/health.module';
 import { CartaModule } from './carta/carta.module';
 import { ClubModule } from './club/club.module';
 import { ReservationsModule } from './reservations/reservations.module';
+import { RadarModule } from './radar/radar.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
@@ -28,6 +29,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
     CartaModule,
     ClubModule,
     ReservationsModule,
+    RadarModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,0 +1,608 @@
+<section class="radar">
+  <header class="page-head">
+    <div>
+      <span class="eyebrow">Inteligencia comercial</span>
+      <h1>Radar Costa Mar</h1>
+      <p>Encuentra oportunidades y organiza las que quieres cotizar.</p>
+    </div>
+    <button
+      class="cm-button"
+      (click)="sync()"
+      [disabled]="saving() || !status()?.configured || status()?.running"
+    >
+      {{ status()?.running ? "Revisando…" : "Revisar ahora" }}
+    </button>
+  </header>
+  @if (notice()) {
+    <p class="notice" role="status">{{ notice() }}</p>
+  }
+  @if (healthError()) {
+    <p class="notice error" role="alert">
+      {{ healthError() }}
+      <button class="text-button" (click)="health()">Reintentar</button>
+    </p>
+  }
+  @if (status(); as health) {
+    <div class="health">
+      <span class="dot" [class.dot--warning]="stale()"></span
+      ><span
+        >Última revisión:
+        <strong>{{ time(health.last_success_at) }}</strong></span
+      ><span>{{ health.opportunities }} oportunidades guardadas</span
+      ><span>{{ health.calls24h }} consultas / últimas 24 h</span>
+    </div>
+    @if (!health.configured) {
+      <p class="notice warning">
+        Falta configurar el acceso a Mercado Público en el servidor. Las
+        oportunidades aparecerán después de la primera sincronización.
+      </p>
+    } @else if (workerMissing()) {
+      <p class="notice warning">
+        El proceso de revisión no está activo o no ha informado recientemente.
+        Revisa el worker del servidor.
+      </p>
+    }
+    @if (health.last_error) {
+      <p class="notice warning">
+        {{ health.last_error }} Conservamos la última información disponible.
+      </p>
+    }
+    @if (health.blocked_until) {
+      <p class="hint">
+        Próximo intento disponible desde {{ time(health.blocked_until) }}.
+      </p>
+    } @else if (stale() && health.last_success_at) {
+      <p class="notice warning">
+        La información necesita actualizarse. Comprueba la ficha oficial antes
+        de cotizar.
+      </p>
+    }
+    @if (initialScan()) {
+      <p class="hint">
+        La búsqueda inicial sigue en curso. Pueden aparecer más oportunidades al
+        revisar las páginas restantes.
+      </p>
+    }
+  }
+  <nav class="tabs" aria-label="Secciones de Radar">
+    <button
+      [class.active]="tab === 'opportunities'"
+      (click)="switchTab('opportunities')"
+    >
+      Oportunidades</button
+    ><button [class.active]="tab === 'alerts'" (click)="switchTab('alerts')">
+      Avisos
+      @if (status()?.unread) {
+        <span class="count">{{ status()?.unread }}</span>
+      }</button
+    ><button
+      [class.active]="tab === 'profiles'"
+      (click)="switchTab('profiles')"
+    >
+      Perfiles de búsqueda
+    </button>
+  </nav>
+  @if (error()) {
+    <p class="notice error" role="alert">{{ error() }}</p>
+  }
+  @if (tab === "opportunities") {
+    <form class="filters card" (ngSubmit)="load()">
+      <label class="wide"
+        >Buscar<input
+          name="q"
+          [(ngModel)]="q"
+          placeholder="Nombre, código u organismo" /></label
+      ><label
+        >Procedimiento<select name="source" [(ngModel)]="source">
+          <option value="">Todos</option>
+          <option value="compra_agil">Compra Ágil</option>
+          <option value="licitacion">Licitaciones</option>
+        </select></label
+      ><label
+        >Estado oficial<select name="official" [(ngModel)]="officialStatus">
+          <option value="">Todos</option>
+          <option value="publicada">Publicadas</option>
+          <option value="cerrada">Cerradas</option>
+          <option value="adjudicada">Adjudicadas</option>
+          <option value="proveedor_seleccionado">Proveedor seleccionado</option>
+          <option value="desierta">Desiertas</option>
+          <option value="cancelada">Canceladas</option>
+          <option value="revocada">Revocadas</option>
+          <option value="suspendida">Suspendidas</option>
+        </select></label
+      >
+      <label
+        >Mi seguimiento<select name="stageFilter" [(ngModel)]="stageFilter">
+          <option value="">Todos</option>
+          @for (s of stages; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select></label
+      ><label
+        >Perfil<select name="profileFilter" [(ngModel)]="profileFilter">
+          <option value="">Todos</option>
+          @for (p of profiles(); track p.id) {
+            <option [value]="p.id">{{ p.name }}</option>
+          }
+        </select></label
+      ><label
+        >Comuna o dirección<input
+          name="commune"
+          [(ngModel)]="commune"
+          placeholder="Ej. Olmué" /></label
+      ><label
+        >Desde presupuesto CLP<input
+          type="number"
+          min="0"
+          name="minBudget"
+          [(ngModel)]="minBudget" /></label
+      ><label
+        >Hasta presupuesto CLP<input
+          type="number"
+          min="0"
+          name="maxBudget"
+          [(ngModel)]="maxBudget"
+      /></label>
+      <div class="checks wide">
+        <label
+          ><input
+            type="checkbox"
+            name="favorite"
+            [(ngModel)]="favoriteOnly"
+          />Solo favoritas</label
+        ><label
+          ><input
+            type="checkbox"
+            name="closing"
+            [(ngModel)]="closingOnly"
+          />Cierre confirmado en 24 h</label
+        >
+      </div>
+      <button
+        class="cm-button cm-button--primary"
+        type="submit"
+        [disabled]="loading()"
+      >
+        {{ loading() ? "Buscando…" : "Aplicar filtros" }}
+      </button>
+    </form>
+    <div class="list-head">
+      <h2>{{ result().total }} oportunidades</h2>
+      <button
+        class="text-button"
+        (click)="load(result().page)"
+        [disabled]="loading()"
+      >
+        Actualizar lista
+      </button>
+    </div>
+    @if (loading()) {
+      <p role="status">Cargando oportunidades…</p>
+    } @else if (!error() && !result().items.length) {
+      <div class="empty card">
+        <h3>No hay oportunidades con estos filtros</h3>
+        <p>
+          Amplía la búsqueda o revisa cuándo se realizó la última
+          sincronización.
+        </p>
+      </div>
+    }
+    <div class="opportunities">
+      @for (row of result().items; track row.id) {
+        <article class="card opportunity">
+          <div class="card-top">
+            <span class="badge">{{ sourceName(row.source) }}</span
+            ><span class="status">{{ row.official_status }}</span>
+            @if (row.favorite) {
+              <span aria-label="Favorita">★</span>
+            }
+          </div>
+          <small>{{ row.code }} · {{ row.buyer }}</small>
+          <h3>{{ row.name }}</h3>
+          <div class="amount">{{ money(row) }}</div>
+          <small>{{ row.budget_type }} · IVA: verificar bases</small>
+          <p class="delivery">
+            {{ row.delivery || "Entrega pendiente de revisar" }}
+            @if (preferred(row)) {
+              <span class="badge nearby">Zona preferida</span>
+            }
+          </p>
+          <p class="deadline">
+            <strong>Cierre:</strong>
+            @if (row.verified_closes_at || row.closes_at) {
+              {{ time(row.verified_closes_at || row.closes_at) }}
+            } @else {
+              {{ row.closes_raw || "No informado" }}
+              <small>· Hora según fuente, por confirmar</small>
+            }
+          </p>
+          <div class="card-bottom">
+            <span class="badge">{{ row.stage }}</span
+            ><button
+              class="cm-button"
+              (click)="open(row.id)"
+              [disabled]="saving()"
+            >
+              Ver oportunidad →
+            </button>
+          </div>
+        </article>
+      }
+    </div>
+    @if (result().total > result().pageSize) {
+      <div class="pagination">
+        <button
+          class="cm-button"
+          [disabled]="loading() || result().page === 1"
+          (click)="load(result().page - 1)"
+        >
+          Anterior</button
+        ><span>Página {{ result().page }}</span
+        ><button
+          class="cm-button"
+          [disabled]="
+            loading() || result().page * result().pageSize >= result().total
+          "
+          (click)="load(result().page + 1)"
+        >
+          Siguiente
+        </button>
+      </div>
+    }
+  }
+  @if (tab === "alerts") {
+    <div class="list-head">
+      <h2>Avisos recientes</h2>
+      <button class="text-button" (click)="loadAlerts()">Actualizar</button>
+    </div>
+    <p class="hint">
+      {{
+        status()?.emailEnabled && status()?.emailConfigured
+          ? "El envío por correo está activado."
+          : "Los avisos están disponibles aquí. El correo requiere configurar y activar el proveedor en el servidor."
+      }}
+    </p>
+    @if (!loading() && !error() && !alerts().length) {
+      <div class="card empty">
+        Todavía no hay avisos. Aparecerán al detectar novedades o cambios.
+      </div>
+    }
+    <div class="alerts">
+      @for (a of alerts(); track a.id) {
+        <article class="card alert" [class.unread]="!a.read_at">
+          <div>
+            <small>{{ time(a.created_at) }}</small>
+            <h3>{{ a.title }}</h3>
+            <p>{{ a.message }}</p>
+            <small
+              >Correo:
+              {{
+                a.email_state === "sent"
+                  ? "Enviado"
+                  : a.email_state === "review"
+                    ? "Entrega por revisar"
+                    : a.email_state === "failed"
+                      ? "Pendiente de reintento"
+                      : "Sin enviar"
+              }}</small
+            >
+          </div>
+          <div class="actions">
+            <button class="cm-button" (click)="open(a.opportunity_id)">
+              Ver ficha
+            </button>
+            @if (!a.read_at) {
+              <button class="text-button" (click)="read(a)">
+                Marcar leído
+              </button>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+  @if (tab === "profiles") {
+    <div class="list-head">
+      <h2>Perfiles de búsqueda</h2>
+      <button class="cm-button" (click)="editProfile()">Nuevo perfil</button>
+    </div>
+    <p class="hint">
+      Las comunas preferidas destacan entregas cercanas. No excluyen otros
+      destinos: evalúa siempre su logística.
+    </p>
+    <div class="profiles-layout">
+      <div class="profiles">
+        @for (p of profiles(); track p.id) {
+          <button class="card profile" (click)="editProfile(p)">
+            <strong>{{ p.name }}</strong
+            ><span
+              >{{ p.enabled ? "Activo" : "Pausado" }} ·
+              {{ regionNames(p.regions) }}</span
+            ><small>{{ p.keywords.join(", ") }}</small>
+          </button>
+        }
+      </div>
+      <form class="card profile-editor" (ngSubmit)="saveProfile()">
+        <h3>{{ profileId ? "Editar perfil" : "Crear perfil" }}</h3>
+        @if (profileError()) {
+          <p class="notice error" role="alert">{{ profileError() }}</p>
+        }
+        <label
+          >Nombre<input
+            name="profileName"
+            [(ngModel)]="profileName"
+            maxlength="100"
+            required
+        /></label>
+        <fieldset class="regions">
+          <legend>Regiones del comprador</legend>
+          @for (r of regions; track r.code) {
+            <label
+              ><input
+                type="checkbox"
+                [checked]="profileRegions.includes(r.code)"
+                (change)="chooseRegion(r.code, $event)"
+              />{{ r.name }}</label
+            >
+          }
+        </fieldset>
+        <label
+          >Palabras de interés<textarea
+            name="keywords"
+            [(ngModel)]="profileKeywords"
+            rows="3"
+            required
+          ></textarea
+          ><small>Separa cada palabra o frase con coma.</small></label
+        ><label
+          >Excluir palabras<textarea
+            name="excluded"
+            [(ngModel)]="profileExcluded"
+            rows="2"
+          ></textarea></label
+        ><label
+          >Comunas preferidas<textarea
+            name="communes"
+            [(ngModel)]="profileCommunes"
+            rows="2"
+          ></textarea>
+        </label>
+        <div class="two">
+          <label
+            >Presupuesto mínimo CLP<input
+              name="profileMin"
+              type="number"
+              min="0"
+              [(ngModel)]="profileMin" /></label
+          ><label
+            >Presupuesto máximo CLP<input
+              name="profileMax"
+              type="number"
+              min="0"
+              [(ngModel)]="profileMax"
+          /></label>
+        </div>
+        <div class="checks">
+          <label
+            ><input
+              name="enabled"
+              type="checkbox"
+              [(ngModel)]="profileEnabled"
+            />Perfil activo</label
+          ><label
+            ><input
+              name="unknown"
+              type="checkbox"
+              [(ngModel)]="profileUnknown"
+            />Incluir presupuesto no informado o en otra moneda</label
+          ><label
+            ><input
+              name="licitaciones"
+              type="checkbox"
+              [(ngModel)]="profileLicitaciones"
+            />Incluir licitaciones</label
+          >
+        </div>
+        <button class="cm-button cm-button--primary" [disabled]="saving()">
+          Guardar perfil
+        </button>
+      </form>
+    </div>
+  }
+  <p class="attribution">
+    Fuente: ChileCompra / Mercado Público. Confirma las bases y la ficha oficial
+    antes de enviar tu oferta.
+  </p>
+</section>
+@if (detailLoading() || selected() || detailError()) {
+  <div class="detail-backdrop">
+    <section
+      class="detail-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="detail-title"
+      (keydown)="trap($event)"
+    >
+      <div class="detail-head">
+        <h2 id="detail-title">Detalle de oportunidad</h2>
+        <button class="cm-button" (click)="close()" [disabled]="saving()">
+          Cerrar ✕
+        </button>
+      </div>
+      @if (detailLoading()) {
+        <p role="status">Cargando ficha…</p>
+      }
+      @if (detailError()) {
+        <p class="notice error" role="alert">{{ detailError() }}</p>
+      }
+      @if (selected(); as row) {
+        <span class="badge"
+          >{{ sourceName(row.source) }} · {{ row.official_status }}</span
+        >
+        <h3>{{ row.name }}</h3>
+        <p class="hint">
+          {{ row.code }} · Consultada {{ time(row.checked_at) }}
+        </p>
+        <dl>
+          <div>
+            <dt>Organismo</dt>
+            <dd>{{ row.buyer }}</dd>
+          </div>
+          <div>
+            <dt>Presupuesto</dt>
+            <dd>{{ money(row) }} · {{ row.budget_type }}</dd>
+          </div>
+          <div>
+            <dt>Entrega</dt>
+            <dd>
+              {{ row.delivery || "Sin dirección confirmada" }}
+              @if (row.delivery_days !== null) {
+                · plazo informado: {{ row.delivery_days }} días
+              }
+            </dd>
+          </div>
+          <div>
+            <dt>Cierre según API</dt>
+            <dd>{{ row.closes_raw || "No informado" }}</dd>
+          </div>
+          @if (row.call_number) {
+            <div>
+              <dt>Convocatoria</dt>
+              <dd>
+                {{
+                  row.call_number === 1
+                    ? "Primer llamado · revisar condición de empresa de menor tamaño"
+                    : "Segundo llamado"
+                }}
+              </dd>
+            </div>
+          }
+        </dl>
+        <p class="description">
+          {{
+            row.description || "Revisa las bases para conocer las condiciones."
+          }}
+        </p>
+        <p class="notice warning">
+          Elegibilidad y rentabilidad pendientes de evaluar. La región del
+          comprador y las cantidades globales no confirman dónde ni para cuántas
+          personas debes prestar el servicio.
+        </p>
+        <h3>Productos y servicios</h3>
+        <div class="items">
+          @for (i of row.items; track $index) {
+            <article>
+              <strong>{{ i.name }}</strong
+              ><small
+                >Cantidad de la fuente: {{ i.quantity ?? "No informada" }}
+                {{ i.unit }} · {{ i.code }}</small
+              >
+              <p>{{ i.description }}</p>
+            </article>
+          } @empty {
+            <p class="hint">La API no informó productos. Consulta las bases.</p>
+          }
+        </div>
+        <h3>Documentos de la fuente</h3>
+        <ul class="documents">
+          @for (d of row.documents; track d.id) {
+            <li>{{ d.name }}</li>
+          } @empty {
+            <li>Sin adjuntos informados por la API.</li>
+          }
+        </ul>
+        <p class="hint">
+          Descarga las bases desde Mercado Público y adjúntalas aquí para
+          conservarlas. Los nombres de archivos no confirman sus requisitos.
+        </p>
+        <a
+          class="cm-button"
+          href="https://www.mercadopublico.cl/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Ir a Mercado Público ↗</a
+        >
+        <h3>Documentos guardados</h3>
+        <div class="documents">
+          @for (d of row.uploads; track d.id) {
+            <button class="text-button" (click)="download(d.id)">
+              {{ d.name }} ↓
+            </button>
+          } @empty {
+            <p class="hint">Todavía no adjuntaste documentos.</p>
+          }
+        </div>
+        <label class="upload"
+          >Adjuntar PDF, DOCX, PNG o JPG · hasta 10 MB<input
+            type="file"
+            accept=".pdf,.docx,.png,.jpg,.jpeg"
+            (change)="upload($event)"
+            [disabled]="saving()"
+        /></label>
+        <form class="tracking" (ngSubmit)="saveTracking()">
+          <h3>Seguimiento de Costa Mar</h3>
+          <label
+            >Estado comercial<select name="editStage" [(ngModel)]="editStage">
+              @for (s of stages; track s) {
+                <option [value]="s">{{ s }}</option>
+              }
+            </select></label
+          ><label class="check"
+            ><input
+              type="checkbox"
+              name="editFavorite"
+              [(ngModel)]="editFavorite"
+            />Guardar como favorita</label
+          ><label
+            >Notas<textarea
+              name="notes"
+              rows="4"
+              maxlength="5000"
+              [(ngModel)]="editNotes"
+              placeholder="Requisitos por revisar, logística, contacto o motivo de descarte"
+            ></textarea>
+          </label>
+          <details>
+            <summary>Confirmar fecha de cierre para recibir avisos</summary>
+            <p class="hint">
+              Comprueba la ficha oficial y confirma el cierre en hora de Chile.
+              Si cambia el cierre de la fuente, se solicitará confirmar de
+              nuevo.
+            </p>
+            <label class="check"
+              ><input
+                name="closeVerified"
+                type="checkbox"
+                [(ngModel)]="closeVerified"
+              />Ya comprobé la fecha en Mercado Público</label
+            >
+            @if (closeVerified) {
+              <label
+                >Fecha y hora de cierre · Chile<input
+                  name="verifiedClose"
+                  type="datetime-local"
+                  [(ngModel)]="verifiedClose"
+              /></label>
+            }
+          </details>
+          <p class="hint">
+            Marcar «Postulada» registra tu seguimiento; la oferta se presenta en
+            Mercado Público.
+          </p>
+          <button
+            class="cm-button cm-button--primary"
+            [disabled]="saving() || detailLoading()"
+          >
+            {{ saving() ? "Guardando…" : "Guardar seguimiento" }}
+          </button>
+        </form>
+        <h3>Registro de cambios</h3>
+        <ul class="documents">
+          @for (c of row.changes; track c.id) {
+            <li>{{ time(c.created_at) }}</li>
+          }
+        </ul>
+      }
+    </section>
+  </div>
+}

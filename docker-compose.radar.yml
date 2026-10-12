@@ -1,0 +1,37 @@
+# Combinar con docker-compose.piloto.yml o docker-compose.yml.
+# El worker reutiliza la imagen API, pero no abre un servidor HTTP.
+services:
+  api:
+    environment:
+      MERCADO_PUBLICO_TICKET: ${MERCADO_PUBLICO_TICKET:-}
+      RADAR_EMAIL_ENABLED: ${RADAR_EMAIL_ENABLED:-false}
+      RADAR_EMAIL_FROM: ${RADAR_EMAIL_FROM:-}
+      RADAR_EMAIL_TO: ${RADAR_EMAIL_TO:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+  radar-worker:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: costamar/api:latest
+    container_name: costamar-radar-worker
+    command: ["node", "dist/radar/worker.js"]
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      SUPABASE_URL: ${SUPABASE_URL:?Falta SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:?Falta SUPABASE_SERVICE_ROLE_KEY}
+      MERCADO_PUBLICO_TICKET: ${MERCADO_PUBLICO_TICKET:?Falta MERCADO_PUBLICO_TICKET}
+      RADAR_INTERVAL_SECONDS: ${RADAR_INTERVAL_SECONDS:-900}
+      RADAR_REQUEST_DELAY_MS: ${RADAR_REQUEST_DELAY_MS:-5000}
+      RADAR_EMAIL_ENABLED: ${RADAR_EMAIL_ENABLED:-false}
+      RADAR_EMAIL_FROM: ${RADAR_EMAIL_FROM:-}
+      RADAR_EMAIL_TO: ${RADAR_EMAIL_TO:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+    healthcheck:
+      disable: true
+    networks:
+      - costamar_net
+    deploy:
+      resources:
+        limits:
+          memory: 256M

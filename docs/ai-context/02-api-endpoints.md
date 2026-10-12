@@ -128,3 +128,13 @@ Pruebas Jest en `apps/api/src/**/*.spec.ts` y SQL con rollback en
 `supabase/tests`. Ejecutar `pnpm exec jest --runInBand` dentro de apps/api.
 Pruebas de propiedad de reservas rechazan UUID inválido, secretos incorrectos y
 usuarios distintos; las de conflictos incluyen llegada y preparación reales.
+
+## Radar Comercial
+
+Las rutas nuevas `/api/v1/radar/*` requieren superadmin/admin y usan las
+tablas privadas del módulo. Incluyen oportunidades, fichas, seguimiento,
+perfiles, estado/cola de sincronización, avisos y documentos privados.
+Contrato y despliegue: [Radar Comercial](../radar-comercial.md).
+La migración está validada localmente pero no aplicada remotamente por un
+fallo de renovación OAuth del conector Supabase. No confundir código listo
+con módulo disponible en producción. Correo Resend preparado, desactivado.

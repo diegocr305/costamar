@@ -1,0 +1,2 @@
+# Mantener ejecutable el despliegue al trabajar desde Windows.
+deploy.sh text eol=lf

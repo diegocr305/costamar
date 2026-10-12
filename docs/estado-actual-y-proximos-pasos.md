@@ -19,6 +19,7 @@ sustituyen este estado.
 | Resumen del Club | Altas, encuestas, cumpleaños, cupones y canjes para superadmin/admin | [Resumen](club-resumen-admin.md) |
 | Reservas | Solicitud web/Club, agenda, ingreso manual, mesas/uniones, confirmación, llegada/salida y auditoría | [Reservas](reservas-primera-version.md) |
 | Análisis CSV | Herramienta local reproducible y reporte privado; no importación en la BD | [Análisis](../tools/analysis/README.md) |
+| Radar comercial | Búsqueda oficial, sincronización, fichas, perfiles, favoritos, seguimiento, avisos y documentos privados; preparado localmente | [Radar](radar-comercial.md) |
 
 API, configuración pública de reservas y web/Club/admin respondieron HTTP 200 en
 la comprobación de lectura del 12-10-2026. Eso verifica disponibilidad, no sustituye
@@ -44,6 +45,12 @@ El dueño realiza el despliegue de nuevas correcciones mediante `deploy.sh`.
 6. **OTP, mensajes y otras integraciones:** elegir proveedor, presupuesto y alcance. No hay envío promocional ni verificación telefónica automática.
 
 ## Próximo orden propuesto
+
+El dueño aprobó desarrollar primero Radar Comercial. La primera versión está
+implementada y comprobada localmente; falta aplicar su migración remota y
+desplegar API/Admin/worker. El conector Supabase falló al renovar OAuth y no se
+modificó la base remota en esta entrega. El correo requiere configurar Resend.
+Después se retoman los siguientes pasos operativos:
 
 1. Usar reservas y canjes con el equipo y validar Google/cámara/PWA en los teléfonos reales.
 2. Gastos y cuentas por pagar con registro manual/importación, después de definir responsables y documentos.

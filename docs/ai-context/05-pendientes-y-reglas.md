@@ -18,6 +18,9 @@ Esta lista reemplaza los pendientes históricos anteriores.
 - Correcciones de revisión: estado individual Club, recuperación de enlace,
   hora caducada, reintento de mapa y preparación posterior a salida real.
 - Guía del equipo y análisis privado reproducible del CSV, sin importación en BD.
+- Radar Comercial fase 1 implementado y validado localmente: fuente oficial,
+  perfiles, fichas, seguimiento, avisos y documentos privados para superadmin/admin.
+  Ver [configuración y estado de despliegue](../radar-comercial.md).
 
 ## Reglas confirmadas que se conservan
 
@@ -67,6 +70,10 @@ No introducir estas reglas a partir de una propuesta antigua: requieren decisió
 o datos que todavía no están disponibles.
 
 ## Validaciones prácticas pendientes
+
+- Radar: aplicar migración remota y desplegar API/Admin/worker. El conector
+  Supabase falló al renovar OAuth; no se aplicó esta migración remotamente.
+  Configurar Resend antes de activar correo; validar Storage y Google del dueño.
 
 - Google real de cada empleado, cámara QR y PWA en sus teléfonos.
 - Ensayo de reservas y canjes con el equipo, siguiendo la [guía](../guia-equipo-atencion.md).
