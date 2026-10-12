@@ -4,7 +4,11 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  ArrayMaxSize,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CampaignProductDto } from './campaign.dto';
 
 /** Confirmación de canje por el personal. */
 export class RedeemDto {
@@ -16,7 +20,10 @@ export class RedeemDto {
   /** Productos entregados (referencias/nombres). Opcional. */
   @IsOptional()
   @IsArray()
-  products?: unknown[];
+  @ArrayMaxSize(3)
+  @ValidateNested({ each: true })
+  @Type(() => CampaignProductDto)
+  products?: CampaignProductDto[];
 
   /** Referencia del consumo asociado (mesa, pedido o boleta). Opcional. */
   @IsOptional()

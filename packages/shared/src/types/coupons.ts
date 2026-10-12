@@ -3,7 +3,7 @@
  * La API es la única autoridad de elegibilidad, emisión y canje.
  */
 
-export type CampaignType = 'birthday' | 'founders';
+export type CampaignType = 'birthday' | 'founders' | 'promotion';
 export type CampaignStatus = 'draft' | 'active' | 'paused' | 'closed';
 export type CouponStatus = 'issued' | 'redeemed' | 'expired' | 'void';
 export type CampaignProductRole = 'drink' | 'dessert' | 'gift';
@@ -45,7 +45,34 @@ export interface CouponWithCampaign extends Coupon {
   campaign: Pick<
     Campaign,
     'name' | 'description' | 'imagePath' | 'type' | 'slug'
-  >;
+  > & { benefit?: string };
+}
+
+export interface CampaignStats {
+  issued: number;
+  available: number;
+  redeemed: number;
+  expired: number;
+  void: number;
+  remaining: number | null;
+}
+
+export interface CampaignAdmin extends Campaign {
+  stats: CampaignStats;
+  products: (CampaignProduct & { isAvailable: boolean })[];
+}
+
+export interface CampaignWrite {
+  name: string;
+  description: string | null;
+  imagePath: string | null;
+  startsAt: string | null;
+  endsAt: string | null;
+  maxCoupons: number | null;
+  validityDays: number | null;
+  benefit: string;
+  status: CampaignStatus;
+  products: { productId: string; role: CampaignProductRole }[];
 }
 
 /** Resultado de evaluar elegibilidad (sin emitir). */

@@ -6,6 +6,7 @@ export * from './constants/business';
 // Validación
 export * from './validation/roles.validation';
 export * from './validation/age.validation';
+export * from './validation/chile-date.validation';
 
 // Tipos — Autenticación
 export * from './types/auth';

@@ -115,6 +115,9 @@
                 required
               />
             </label>
+            @for (role of productRoles(); track role) {
+              <label class="field"><span>{{ roleLabel(role) }} que entregarás *</span><select [ngModel]="selectedProducts()[role] || ''" (ngModelChange)="setProduct(role, $event)"><option value="">Elige un producto</option>@for (product of options(role); track product.productId) { <option [value]="product.productId" [disabled]="!product.isAvailable">{{ product.name }}{{ product.isAvailable ? '' : ' — No disponible' }}</option> }</select></label>
+            }
             <p class="hint">Quedará guardado junto al socio y al funcionario que confirma el canje.</p>
 
             <div class="actions">
@@ -124,7 +127,7 @@
               <button
                 type="button"
                 class="btn btn--primary"
-                [disabled]="loading() || !selectedCoupon() || !consumptionRef().trim() || l.member.status !== 'active'"
+                [disabled]="loading() || !selectedCoupon() || !consumptionRef().trim() || !productsReady() || l.member.status !== 'active'"
                 (click)="confirmRedeem()"
               >
                 {{ loading() ? 'Canjeando…' : 'Confirmar canje' }}

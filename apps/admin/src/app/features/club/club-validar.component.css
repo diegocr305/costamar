@@ -3,7 +3,7 @@
 .card--success { align-items: center; text-align: center; border-color: #b2dcca; }
 .check { width: 64px; height: 64px; border-radius: 50%; background: #1b7157; color: #fff; display: grid; place-items: center; font-size: 2rem; }
 .field { display: flex; flex-direction: column; gap: .4rem; } .field span { font-weight: 700; font-size: .85rem; }
-.field input { min-height: 48px; padding: .65rem .85rem; border: 1px solid #c9dce3; border-radius: 10px; width: 100%; }
+.field input, .field select { min-height: 48px; padding: .65rem .85rem; border: 1px solid #c9dce3; border-radius: 10px; width: 100%; background: #fff; }
 .btn { min-height: 48px; padding: .75rem 1.4rem; border: 0; border-radius: 11px; font-weight: 700; cursor: pointer; }
 .btn--primary { background: var(--cm-primary); color: #fff; } .btn--ghost { background: #fff; border: 1px solid var(--cm-border); color: var(--cm-text); }
 .hint { font-size: .85rem; color: var(--cm-muted); margin: 0; }

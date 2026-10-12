@@ -4,12 +4,14 @@ import {
   ElementRef,
   OnDestroy,
   signal,
+  computed,
   inject,
   viewChild,
 } from '@angular/core';
 import jsQR from 'jsqr';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import type { CampaignProductRole } from '@costamar/shared';
 import { firstValueFrom } from 'rxjs';
 import {
   ClubStaffService,
@@ -44,6 +46,13 @@ export class ClubValidarComponent implements OnDestroy {
   protected readonly lookup = signal<StaffLookup | null>(null);
   protected selectedCoupon = signal<string | null>(null);
   protected consumptionRef = signal('');
+  protected readonly selectedProducts = signal<Record<string, string>>({});
+  protected readonly productRoles = computed(() => [...new Set(this.lookup()?.coupons.find(c => c.code === this.selectedCoupon())?.allowedProducts?.map(p => p.role) ?? [])]);
+  protected readonly productsReady = computed(() => this.productRoles().every(role => !!this.selectedProducts()[role]));
+
+  protected options(role: CampaignProductRole) { return this.lookup()?.coupons.find(c => c.code === this.selectedCoupon())?.allowedProducts?.filter(p => p.role === role) ?? []; }
+  protected roleLabel(role: CampaignProductRole): string { return { drink: 'Bebestible', dessert: 'Postre', gift: 'Regalo' }[role]; }
+  protected setProduct(role: CampaignProductRole, id: string): void { this.selectedProducts.update(p => ({ ...p, [role]: id })); }
 
   // --- Escáner de cámara ---
   protected readonly scanning = signal(false);
@@ -159,7 +168,8 @@ export class ClubValidarComponent implements OnDestroy {
       const res = await firstValueFrom(this.staff.lookup(code));
       this.lookup.set(res);
       const available = res.coupons.filter(c => c.status === 'issued' && (!c.expiresAt || new Date(c.expiresAt).getTime() > Date.now()));
-      this.selectedCoupon.set(res.member.status === 'active' && available.length === 1 ? available[0].code : null);
+      if (res.member.status === 'active' && available.length === 1) this.pickCoupon(available[0].code);
+      else { this.selectedCoupon.set(null); this.selectedProducts.set({}); }
       this.step.set('review');
     } catch (e: unknown) {
       this.error.set(this.msg(e, 'Socio no encontrado.'));
@@ -170,6 +180,12 @@ export class ClubValidarComponent implements OnDestroy {
 
   protected pickCoupon(code: string): void {
     this.selectedCoupon.set(code);
+    const products: Record<string, string> = {};
+    for (const role of this.productRoles()) {
+      const choices = this.options(role).filter(p => p.isAvailable);
+      if (choices.length === 1) products[role] = choices[0].productId;
+    }
+    this.selectedProducts.set(products);
   }
 
   /** Confirma el canje del cupón seleccionado. */
@@ -180,11 +196,12 @@ export class ClubValidarComponent implements OnDestroy {
       this.error.set('Indica la mesa, pedido o boleta para poder consultar este canje después.');
       return;
     }
+    if (!this.productsReady()) { this.error.set('Selecciona los productos que entregarás al socio.'); return; }
     this.loading.set(true);
     this.error.set(null);
     try {
       await firstValueFrom(
-        this.staff.redeem(code, this.consumptionRef().trim() || undefined),
+        this.staff.redeem(code, this.consumptionRef().trim(), this.productRoles().map(role => ({ productId: this.selectedProducts()[role], role }))),
       );
       this.step.set('done');
     } catch (e: unknown) {
@@ -200,6 +217,7 @@ export class ClubValidarComponent implements OnDestroy {
     this.memberCodeInput.set('');
     this.lookup.set(null);
     this.selectedCoupon.set(null);
+    this.selectedProducts.set({});
     this.consumptionRef.set('');
     this.error.set(null);
   }

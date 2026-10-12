@@ -9,6 +9,9 @@
 > También se implementó el historial de canjes en `/club/historial`, se renovó
 > la interfaz del admin y se asignó rol cashier a la cuenta del restaurante.
 > Desplegar `api club admin` para publicar todo este cambio.
+> Gestión de campañas implementada: ver `docs/club-campanas-admin.md`.
+> Crear/editar, catálogo, cupos, vigencia, resultados y cupones paginados listos.
+> Reservas es el siguiente módulo. Cumpleaños sigue sin límite de socios.
 
 ## Estado actual (qué funciona)
 - Web pública en vivo (hero con foto de ceviche, carta real con fotos, favicon).

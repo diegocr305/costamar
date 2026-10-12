@@ -54,6 +54,11 @@ export const routes: Routes = [
         data: { title: 'Pedidos' },
       },
       {
+        path: 'club/campanas',
+        canActivate: [roleGuard(['superadmin', 'admin', 'manager'])],
+        loadComponent: () => import('./features/club/club-campaigns.component').then(m => m.ClubCampaignsComponent),
+      },
+      {
         path: 'club/historial',
         canActivate: [roleGuard(['superadmin', 'admin', 'manager', 'cashier'])],
         loadComponent: () => import('./features/club/club-history.component').then(m => m.ClubHistoryComponent),

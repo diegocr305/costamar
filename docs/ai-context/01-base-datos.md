@@ -1,5 +1,9 @@
 # Base de datos — Supabase (schema public)
 
+> Actualización 12-10-2026: se añadió tipo de campaña `promotion`, RPC de
+> administración/emisión y tabla `club_campaign_events` (auditoría backend).
+> Cumpleaños es único y sin cupos por restricción de BD. Ver `docs/club-campanas-admin.md`.
+
 Project ref: `pebdhasajkvsjttclbhf`. Postgres. RLS activo en todas las tablas.
 Migraciones en `supabase/migrations/` (nombre = timestamp + descripción).
 

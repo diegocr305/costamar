@@ -7,7 +7,7 @@
     "build": "ng build",
     "dev": "ng serve --port 4202",
     "test": "ng test --watch=false --browsers=ChromeHeadless || echo 'no tests'",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit --project tsconfig.app.json"
   },
   "dependencies": {
     "@angular/animations": "^20.0.0",

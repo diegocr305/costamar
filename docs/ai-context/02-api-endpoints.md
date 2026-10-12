@@ -1,5 +1,9 @@
 # API — Endpoints (NestJS)
 
+> Actualización 12-10-2026: endpoints `/club/admin/*` implementados.
+> Contratos y reglas actuales en `docs/club-campanas-admin.md`.
+> Historial staff acepta `campaignId` y canje acepta productos `{productId,role}`.
+
 Base URL: `https://api.restaurantecostamar.cl/api/v1` (local: `http://localhost:3000/api/v1`).
 Prefijo global: `api/v1`. CORS controlado por `ALLOWED_ORIGINS` (env).
 

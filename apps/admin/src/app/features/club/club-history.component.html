@@ -7,6 +7,7 @@
     <button class="cm-button cm-button--primary" type="submit" [disabled]="loading()">Buscar</button>
     <div class="quick-filters"><button type="button" class="cm-button" (click)="showToday()" [disabled]="loading()">Hoy</button><button type="button" class="cm-button" (click)="showAll()" [disabled]="loading()">Todas las fechas</button><button type="button" class="cm-button" (click)="load(result().page)" [disabled]="loading()">Actualizar ↻</button></div>
   </form>
+  @if (campaignId) { <p>Mostrando los canjes de la campaña seleccionada. <button class="cm-button" (click)="allCampaigns()">Ver todas las campañas</button></p> }
   @if (loading()) { <p class="state" role="status">Actualizando historial…</p> }
   @else if (error()) { <div class="state" role="alert"><p>No pudimos cargar el historial.</p><button class="cm-button" (click)="load()">Reintentar</button></div> }
   @else {
@@ -14,7 +15,7 @@
     @if (result().items.length === 0) { <div class="empty"><span aria-hidden="true">✓</span><h2>No hay canjes para esta búsqueda</h2><p>Prueba con otra fecha o con el nombre, código o mesa.</p></div> }
     <div class="entries">
       @for (entry of result().items; track entry.id) {
-        <article class="entry"><div class="entry__top"><span class="confirmed">✓ Canje confirmado</span><time [attr.datetime]="entry.createdAt">{{ timestamp(entry.createdAt) }}</time></div><h2>{{ entry.memberName }}</h2><p class="campaign">{{ entry.campaignName }}</p><dl><div class="table"><dt>Mesa / pedido / boleta</dt><dd>{{ entry.consumptionRef || 'Sin referencia registrada' }}</dd></div><div><dt>Confirmó</dt><dd>{{ entry.staffName }}</dd></div><div><dt>Código del cupón</dt><dd class="code">{{ entry.couponCode }}</dd></div><div><dt>Código del socio</dt><dd class="code">{{ entry.memberCode || 'No disponible' }}</dd></div></dl></article>
+        <article class="entry"><div class="entry__top"><span class="confirmed">✓ Canje confirmado</span><time [attr.datetime]="entry.createdAt">{{ timestamp(entry.createdAt) }}</time></div><h2>{{ entry.memberName }}</h2><p class="campaign">{{ entry.campaignName }}</p><dl><div class="table"><dt>Mesa / pedido / boleta</dt><dd>{{ entry.consumptionRef || 'Sin referencia registrada' }}</dd></div><div><dt>Confirmó</dt><dd>{{ entry.staffName }}</dd></div><div><dt>Código del cupón</dt><dd class="code">{{ entry.couponCode }}</dd></div><div><dt>Código del socio</dt><dd class="code">{{ entry.memberCode || 'No disponible' }}</dd></div>@if (productsLabel(entry.products)) { <div><dt>Productos entregados</dt><dd>{{ productsLabel(entry.products) }}</dd></div> }</dl></article>
       }
     </div>
     @if (result().total > result().pageSize) {

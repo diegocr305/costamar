@@ -2,6 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import type { CampaignProductRole } from '@costamar/shared';
+
+export interface StaffProduct { productId: string; role: CampaignProductRole; name: string; isAvailable: boolean; }
 
 export interface StaffCoupon {
   code: string;
@@ -9,6 +12,7 @@ export interface StaffCoupon {
   expiresAt: string | null;
   campaignName: string;
   campaignType: string;
+  allowedProducts?: StaffProduct[];
 }
 
 export interface StaffLookup {
@@ -47,10 +51,11 @@ export class ClubStaffService {
   private readonly http = inject(HttpClient);
   private readonly base = `${environment.apiUrl}/club/staff`;
 
-  history(date: string, query: string, page = 1): Observable<RedemptionHistory> {
+  history(date: string, query: string, page = 1, campaignId = ''): Observable<RedemptionHistory> {
     let params = new HttpParams().set('page', page).set('pageSize', 20);
     if (date) params = params.set('date', date);
     if (query.trim()) params = params.set('q', query.trim());
+    if (campaignId) params = params.set('campaignId', campaignId);
     return this.http.get<RedemptionHistory>(`${this.base}/redemptions`, { params });
   }
 

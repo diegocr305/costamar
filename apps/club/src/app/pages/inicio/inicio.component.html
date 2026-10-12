@@ -13,11 +13,11 @@
         @for (c of availableCoupons(); track c.id) {
           <article class="founders" [class.founders--birthday]="c.campaign.type === 'birthday'">
             @if (c.campaign.imagePath) { <img class="founders__img" [src]="image(c.campaign.imagePath)" [alt]="c.campaign.name" loading="lazy" /> }
-            @else { <span class="gift-icon" aria-hidden="true">🎂</span> }
+            @else { <span class="gift-icon" aria-hidden="true">{{ c.campaign.type === 'birthday' ? '🎂' : '🎁' }}</span> }
             <span class="founders__state founders__state--ok">✓ Listo para disfrutar</span>
-            <strong>{{ c.campaign.type === 'birthday' ? '¡Celebremos tu cumpleaños!' : 'Tu regalo de bienvenida' }}</strong>
-            <span class="founders__benefit">{{ c.campaign.type === 'birthday' ? '1 bebestible + 1 postre personal' : '1 bebestible personal de regalo' }}</span>
-            <p>{{ c.campaign.type === 'birthday' ? 'Disfrútalo durante tu mes de cumpleaños, con consumo en el local.' : 'Elige jugo, bebida o schop de cerveza, con consumo en el local.' }}</p>
+            <strong>{{ c.campaign.type === 'birthday' ? '¡Celebremos tu cumpleaños!' : c.campaign.type === 'founders' ? 'Tu regalo de bienvenida' : c.campaign.name }}</strong>
+            <span class="founders__benefit">{{ c.campaign.benefit || (c.campaign.type === 'birthday' ? '1 bebestible + 1 postre personal' : c.campaign.type === 'founders' ? '1 bebestible personal de regalo' : 'Beneficio del Club') }}</span>
+            <p>{{ c.campaign.type === 'birthday' ? 'Disfrútalo durante tu mes de cumpleaños, con consumo en el local.' : c.campaign.type === 'founders' ? 'Elige jugo, bebida o schop de cerveza, con consumo en el local.' : c.campaign.description }}</p>
             <a routerLink="/mi-tarjeta" class="cm-btn cm-btn--gold">Mostrar mi tarjeta para usarlo →</a>
           </article>
         }
@@ -27,7 +27,7 @@
       <a routerLink="/cupones" class="cm-btn cm-btn--primary inicio__cta">Ver mis cupones</a>
       @if (news().length > 0) {
         <h2 class="inicio__title news-title">Beneficios del Club</h2>
-        <ul class="campaigns">@for (c of news(); track c.id) { <li class="campaign"><strong>{{ c.type === 'birthday' ? '🎂 Un regalo en tu mes de cumpleaños' : '🎁 Bienvenida para socios fundadores' }}</strong><p>{{ c.type === 'birthday' ? 'Tu bebestible y postre aparecerán automáticamente durante tu mes, con tu perfil completo.' : 'Bebestible personal con consumo en el local, sujeto a cupos y condiciones.' }}</p></li> }</ul>
+        <ul class="campaigns">@for (c of news(); track c.id) { <li class="campaign"><strong>{{ c.type === 'birthday' ? '🎂 Un regalo en tu mes de cumpleaños' : c.type === 'founders' ? '🎁 Bienvenida para socios fundadores' : c.name }}</strong><p>{{ c.type === 'birthday' ? 'Tu bebestible y postre aparecerán automáticamente durante tu mes, con tu perfil completo.' : c.type === 'founders' ? 'Bebestible personal con consumo en el local, sujeto a cupos y condiciones.' : c.description }}</p></li> }</ul>
       }
       <a routerLink="/beneficios" class="benefits-link">Conoce los beneficios y sus condiciones →</a>
     }

@@ -29,7 +29,7 @@ export class ShellComponent {
   }
 
   protected icon(path: string): string {
-    return ({ '/dashboard': '⌂', '/club/validar': '▦', '/club/historial': '↺', '/carta': '☷', '/pedidos': '▤', '/inventario': '▣', '/usuarios': '♙' } as Record<string, string>)[path] ?? '';
+    return ({ '/dashboard': '⌂', '/club/validar': '▦', '/club/historial': '↺', '/club/campanas': '☆', '/carta': '☷', '/pedidos': '▤', '/inventario': '▣', '/usuarios': '♙' } as Record<string, string>)[path] ?? '';
   }
 
   async logout(): Promise<void> {

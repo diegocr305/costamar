@@ -298,6 +298,7 @@ export class ClubService {
         CAMPAIGN_NOT_FOUND: 'La campaña no existe.',
         CAMPAIGN_NOT_ACTIVE: 'La campaña no está activa en este momento.',
         NO_COUPONS_LEFT: 'Se agotaron los cupos de fundadores.',
+        CAMPAIGN_NOT_ELIGIBLE_OR_FULL: 'El regalo no está disponible: revisa tu perfil, la vigencia o los cupos de la campaña.',
       };
       const msg = map[rpcError.message] ?? rpcError.message;
       throw new BadRequestException(msg);
@@ -316,7 +317,7 @@ export class ClubService {
     const { data, error } = await this.supabase.client
       .from('club_coupons')
       .select(
-        'id, code, campaign_id, status, issued_at, expires_at, redeemed_at, club_campaigns(name, description, image_path, type, slug)',
+        'id, code, campaign_id, status, issued_at, expires_at, redeemed_at, club_campaigns(name, description, image_path, type, slug, rules)',
       )
       .eq('user_id', userId)
       .order('issued_at', { ascending: false });
@@ -339,6 +340,7 @@ export class ClubService {
           imagePath: (camp?.['image_path'] as string | null) ?? undefined,
           type: camp?.['type'] as string,
           slug: camp?.['slug'] as string,
+          benefit: ((camp?.['rules'] as Record<string, unknown> | null)?.['benefit'] as string | undefined),
         },
       };
     });
