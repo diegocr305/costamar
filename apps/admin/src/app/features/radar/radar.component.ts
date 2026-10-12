@@ -156,6 +156,19 @@ export class RadarComponent implements OnInit, OnDestroy {
         !!s.last_error)
     );
   }
+  protected healthNotice() {
+    const s = this.status();
+    if (!s) return '';
+    if (!s.configured) return 'Falta activar el acceso a Mercado Público. Las oportunidades aparecerán después de la primera revisión.';
+    if (s.last_error) return `${s.last_error} Conservamos la última información disponible.`;
+    if (this.workerMissing()) return 'La revisión automática no está activa o no ha informado recientemente. Puedes seguir consultando las oportunidades guardadas.';
+    if (this.stale() && s.last_success_at) return 'La información necesita actualizarse. Comprueba la ficha oficial antes de cotizar.';
+    return '';
+  }
+  protected paused() {
+    const until = this.status()?.blocked_until;
+    return !!until && Date.parse(until) > Date.now();
+  }
   protected workerMissing() {
     const t = this.status()?.worker_seen_at;
     return !t || Date.now() - new Date(t).getTime() > 120000;

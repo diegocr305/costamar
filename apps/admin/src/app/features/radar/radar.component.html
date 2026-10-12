@@ -8,9 +8,9 @@
     <button
       class="cm-button"
       (click)="sync()"
-      [disabled]="saving() || !status()?.configured || status()?.running"
+      [disabled]="saving() || !status()?.configured || status()?.running || paused()"
     >
-      {{ status()?.running ? "Revisando…" : "Revisar ahora" }}
+      {{ status()?.running ? "Revisando…" : paused() ? "Consulta en pausa" : "Revisar ahora" }}
     </button>
   </header>
   @if (notice()) {
@@ -31,30 +31,12 @@
       ><span>{{ health.opportunities }} oportunidades guardadas</span
       ><span>{{ health.calls24h }} consultas / últimas 24 h</span>
     </div>
-    @if (!health.configured) {
-      <p class="notice warning">
-        Falta configurar el acceso a Mercado Público en el servidor. Las
-        oportunidades aparecerán después de la primera sincronización.
-      </p>
-    } @else if (workerMissing()) {
-      <p class="notice warning">
-        El proceso de revisión no está activo o no ha informado recientemente.
-        Revisa el worker del servidor.
-      </p>
+    @if (healthNotice()) {
+      <p class="notice warning" role="status">{{ healthNotice() }}</p>
     }
-    @if (health.last_error) {
-      <p class="notice warning">
-        {{ health.last_error }} Conservamos la última información disponible.
-      </p>
-    }
-    @if (health.blocked_until) {
+    @if (paused()) {
       <p class="hint">
         Próximo intento disponible desde {{ time(health.blocked_until) }}.
-      </p>
-    } @else if (stale() && health.last_success_at) {
-      <p class="notice warning">
-        La información necesita actualizarse. Comprueba la ficha oficial antes
-        de cotizar.
       </p>
     }
     @if (initialScan()) {
