@@ -22,6 +22,6 @@ export const BUSINESS = {
   hours: [
     { days: 'Lunes a Jueves', open: '12:00', close: '19:00' },
     { days: 'Viernes y Sábado', open: '12:00', close: '22:00' },
-    { days: 'Domingo', open: '12:00', close: '19:00' },
+    { days: 'Domingo', open: '12:00', close: '18:00' },
   ],
 } as const;

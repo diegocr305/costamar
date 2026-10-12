@@ -6,6 +6,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
+  // La API de producción está publicada solo en loopback, detrás de Nginx.
+  if(config.get<string>('NODE_ENV')==='production')app.getHttpAdapter().getInstance().set('trust proxy',1);
 
   // Prefijo global de versionado de la API
   app.setGlobalPrefix('api/v1');

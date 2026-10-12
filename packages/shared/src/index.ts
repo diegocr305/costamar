@@ -22,6 +22,7 @@ export * from './types/orders';
 
 // Tipos — Reservas
 export * from './types/reservations';
+export * from './validation/reservation.validation';
 
 // Tipos — Fidelización
 export * from './types/loyalty';

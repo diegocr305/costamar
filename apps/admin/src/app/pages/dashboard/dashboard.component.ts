@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+﻿import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { sectionsForRole } from '../../core/navigation';
@@ -13,9 +13,9 @@ import { ClubOverviewComponent } from '../../features/club/club-overview.compone
     @if (canValidate() && !canSeeOverview()) {
       <div class="today"><span class="today__icon" aria-hidden="true">✓</span><div><strong>{{ todayCount() === null ? 'Canjes de hoy' : todayCount() + ' canjes hoy' }}</strong><p>{{ countError() ? 'No pudimos actualizar el resumen. Consulta el historial.' : 'Registro de atención en horario de Chile.' }}</p></div><a routerLink="/club/historial">Ver historial →</a></div>
     }
-    <h2>¿Qué necesitas hacer?</h2><div class="cards">@for (section of tools(); track section.path) { <a [routerLink]="section.path" class="tool"><span class="tool__icon" aria-hidden="true">{{ section.path === '/club/validar' ? '📷' : section.path === '/club/historial' ? '🧾' : section.path === '/club/campanas' ? '🎁' : '🍽️' }}</span><strong>{{ section.label }}</strong><p>{{ section.path === '/club/validar' ? 'Abre la cámara, revisa el beneficio y confirma el canje.' : section.path === '/club/historial' ? 'Busca un socio, código o mesa y consulta quién lo atendió.' : section.path === '/club/campanas' ? 'Define regalos, productos, cupos y vigencia de tus promociones.' : 'Actualiza productos, precios y disponibilidad.' }}</p><span class="tool__action">Abrir →</span></a> }</div>
+    <h2>¿Qué necesitas hacer?</h2><div class="cards">@for (section of tools(); track section.path) { <a [routerLink]="section.path" class="tool"><span class="tool__icon" aria-hidden="true">{{ section.path === '/reservas' ? '📅' : section.path === '/club/validar' ? '📷' : section.path === '/club/historial' ? '🧾' : section.path === '/club/campanas' ? '🎁' : '🍽️' }}</span><strong>{{ section.label }}</strong><p>{{ section.path === '/reservas' ? 'Consulta la agenda, confirma solicitudes y asigna mesas.' : section.path === '/club/validar' ? 'Abre la cámara, revisa el beneficio y confirma el canje.' : section.path === '/club/historial' ? 'Busca un socio, código o mesa y consulta quién lo atendió.' : section.path === '/club/campanas' ? 'Define regalos, productos, cupos y vigencia de tus promociones.' : 'Actualiza productos, precios y disponibilidad.' }}</p><span class="tool__action">Abrir →</span></a> }</div>
     @if (tools().length === 0) { <p>Tu cuenta no tiene herramientas habilitadas aquí. Contacta al encargado del restaurante.</p> }
-    <p class="note">Reservas, pedidos e inventario están en preparación. Los registros del Club ya están disponibles.</p></section>
+    <p class="note">Pedidos e inventario están en preparación. Los registros del Club ya están disponibles.</p></section>
   `,
   styles: [`
     .dashboard { max-width: 1120px; margin: 0 auto; } h2 { font-size: 1.2rem; margin: 1.75rem 0 1rem; }
@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
   private readonly staff = inject(ClubStaffService);
   protected readonly todayCount = signal<number | null>(null);
   protected readonly countError = signal(false);
-  protected readonly tools = computed(() => sectionsForRole(this.auth.user()?.role ?? 'customer').filter(s => ['/club/validar', '/club/historial', '/club/campanas', '/carta'].includes(s.path)));
+  protected readonly tools = computed(() => sectionsForRole(this.auth.user()?.role ?? 'customer').filter(s => ['/reservas', '/club/validar', '/club/historial', '/club/campanas', '/carta'].includes(s.path)));
   protected readonly canValidate = computed(() => this.tools().some(s => s.path === '/club/validar'));
   protected readonly canSeeOverview = computed(()=>['superadmin','admin'].includes(this.auth.user()?.role??''));
   ngOnInit(): void {

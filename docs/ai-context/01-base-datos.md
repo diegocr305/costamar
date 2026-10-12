@@ -1,3 +1,5 @@
+> Estado 12-10-2026: reservas ya implementadas en web/Club/admin con confirmaci?n manual por caja y atenci?n, asignaci?n de mesas, historial y configuraci?n de superadmin. Ver [reservas-primera-version.md](../reservas-primera-version.md) para el comportamiento vigente; las especificaciones anteriores de reservas son hist?ricas.
+
 # Base de datos — Supabase (schema public)
 
 > Actualización 12-10-2026: se añadió tipo de campaña `promotion`, RPC de

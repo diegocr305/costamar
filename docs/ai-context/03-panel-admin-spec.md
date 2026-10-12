@@ -1,3 +1,5 @@
+> Estado 12-10-2026: reservas ya implementadas en web/Club/admin con confirmaci?n manual por caja y atenci?n, asignaci?n de mesas, historial y configuraci?n de superadmin. Ver [reservas-primera-version.md](../reservas-primera-version.md) para el comportamiento vigente; las especificaciones anteriores de reservas son hist?ricas.
+
 # Panel Admin — Especificación (PRIORIDAD)
 
 > Actualización 12-10-2026: admin ya accesible, diseño renovado y nueva ruta
@@ -5,7 +7,7 @@
 > Incluye filtros por fecha chilena y búsqueda por mesa, socio, código o funcionario.
 > Campañas ya implementado en `/club/campanas` (12-10-2026). Ver
 > `docs/club-campanas-admin.md` para comportamiento real, API y despliegue.
-> Reservas sigue pendiente. Ver `docs/club-lanzamiento-2026-10-12.md`.
+> Reservas implementado. Ver `docs/reservas-primera-version.md`.
 
 App: `apps/admin` (Angular 20 SPA). Dominio: `admin.restaurantecostamar.cl`.
 Objetivo: manejo integral de **reservas** y **cupones/campañas**, y a futuro

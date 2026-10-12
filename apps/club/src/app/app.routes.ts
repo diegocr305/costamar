@@ -3,6 +3,7 @@ import { authGuard } from './core/auth.guard';
 import { surveyGuard } from './core/survey.guard';
 
 export const routes: Routes = [
+  {path:'reservas',canActivate:[authGuard],loadComponent:()=>import('./pages/reservas/reservas.component').then(m=>m.ReservasComponent)},
   {path:'personalizar',canActivate:[authGuard],loadComponent:()=>import('./pages/personalizar/personalizar.component').then(m=>m.PersonalizarComponent)},
   // Landing pública del club (beneficios + continuar con Google)
   {

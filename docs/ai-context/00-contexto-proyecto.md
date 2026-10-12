@@ -1,3 +1,5 @@
+> Estado 12-10-2026: reservas ya implementadas en web/Club/admin con confirmaci?n manual por caja y atenci?n, asignaci?n de mesas, historial y configuraci?n de superadmin. Ver [reservas-primera-version.md](../reservas-primera-version.md) para el comportamiento vigente; las especificaciones anteriores de reservas son hist?ricas.
+
 # Costa Mar — Contexto del proyecto (para IA de desarrollo)
 
 > Este documento y los demás en `docs/ai-context/` son el **brief maestro**

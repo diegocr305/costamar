@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+﻿import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { sectionsForRole } from '../core/navigation';
@@ -29,7 +29,7 @@ export class ShellComponent {
   }
 
   protected icon(path: string): string {
-    return ({ '/dashboard': '⌂', '/club/validar': '▦', '/club/historial': '↺', '/club/campanas': '☆', '/carta': '☷', '/pedidos': '▤', '/inventario': '▣', '/usuarios': '♙' } as Record<string, string>)[path] ?? '';
+    return ({ '/reservas': '▦', '/club/socios': '♧', '/dashboard': '⌂', '/club/validar': '▦', '/club/historial': '↺', '/club/campanas': '☆', '/carta': '☷', '/pedidos': '▤', '/inventario': '▣', '/usuarios': '♙' } as Record<string, string>)[path] ?? '';
   }
 
   async logout(): Promise<void> {

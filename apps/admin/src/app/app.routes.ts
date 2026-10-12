@@ -21,6 +21,7 @@ export const routes: Routes = [
       import('./layout/shell.component').then((m) => m.ShellComponent),
     canActivate: [authGuard],
     children: [
+      {path:'reservas',canActivate:[roleGuard(['superadmin','admin','manager','cashier'])],loadComponent:()=>import('./features/reservas/reservas.component').then(m=>m.ReservasAdminComponent)},
       {
         path: 'dashboard',
         loadComponent: () =>

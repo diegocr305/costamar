@@ -1,0 +1,39 @@
+<section class="reservas">
+ <header><span class="eyebrow">Costa Mar · Te esperamos</span><h1>Reserva tu visita</h1><p>Cuéntanos cuándo quieres venir. Nuestro equipo revisará la disponibilidad y te contactará para confirmar.</p></header>
+ @if(error()){<p class="notice error" role="alert">{{error()}}</p>}
+ @if(feedback()){<p class="notice" role="status">{{feedback()}}</p>}
+ @if(loading()){<p role="status">Cargando horarios…</p>}
+ @else if(config();as c){
+ @if(result();as r){
+  <article class="result"><span class="status">{{labels[r.status]}}</span><h2>{{r.reference}}</h2><strong>{{timestamp(r.reservedAt)}} · {{r.partySize}} personas</strong><p>{{r.customerName}} · Preferencia: {{areas[r.areaPreference]}}</p>@if(r.assignedArea){<p>Zona asignada: {{areas[r.assignedArea]}}</p>}
+   @if(r.status==='pending'){<p>La solicitud está recibida. Tu mesa quedará reservada cuando el equipo la confirme.</p>}
+   @if(r.status==='confirmed'){<p>¡Te esperamos! Conservamos tu reserva durante {{r.toleranceMinutes}} minutos desde la hora acordada.</p>}
+   @if(r.tableNumbers.length){<p>Mesas asignadas: {{r.tableNumbers.join(' + ')}}</p>}
+   @if(!isClub&&privateLink){<label>Tu enlace privado<input readonly [value]="privateLink" aria-label="Enlace privado de mi reserva"/></label><small>Guárdalo. Quien tenga este enlace podrá consultar o cancelar tu reserva.</small><button class="button" (click)="copy()">Copiar enlace</button>}
+   <div class="actions"><button class="button" (click)="refresh()" [disabled]="busy()">Consultar estado ↻</button>@if(canCancel(r)){<button class="button" (click)="cancel(r)" [disabled]="busy()">{{cancelId===r.id?'Confirmar cancelación':'Cancelar reserva'}}</button>}<button class="button" (click)="newRequest()" [disabled]="busy()">Solicitar otra reserva</button></div>
+   @if(cancelId===r.id){<p>Confirma para cancelar esta reserva y liberar su asignación.</p>}
+  </article>
+ }@else{
+  <form #form="ngForm" (ngSubmit)="submit()" class="booking-form"><div class="honeypot" aria-hidden="true"><label>Sitio web<input name="website" [(ngModel)]="website" tabindex="-1" autocomplete="off"/></label></div><fieldset [disabled]="busy()"><legend>Tu próxima visita</legend>
+   <label>Nombre<input name="name" [(ngModel)]="name" required maxlength="120" autocomplete="name"/></label>
+   <label>Celular de contacto<span class="phone"><span>+56 9</span><input name="phone" [(ngModel)]="phone" required pattern="[0-9]{8}" minlength="8" maxlength="8" inputmode="numeric" autocomplete="tel-local" placeholder="82155189"/></span><small>Escribe los ocho dígitos restantes. Lo usaremos para gestionar tu reserva.</small></label>
+   <div class="two"><label>Personas<input type="number" name="party" [(ngModel)]="party" (ngModelChange)="changed()" min="1" max="100" step="1" required/></label><label>Fecha<input type="date" name="date" [(ngModel)]="date" (ngModelChange)="changed()" [min]="today" required/></label></div>
+   <label>Hora de llegada<select name="time" [(ngModel)]="time" required><option value="">Elige una hora</option>@for(t of times();track t){<option [value]="t">{{t}}</option>}</select></label>
+   @if(!times().length){<p class="hint">No hay horarios para solicitar en esa fecha con la anticipación requerida. Elige otra fecha o contáctanos.</p>}
+   <label>¿Dónde prefieres sentarte? <small>Según disponibilidad</small><select name="area" [(ngModel)]="area"><option value="any">Sin preferencia</option><option value="salon">Salón</option><option value="terraza">Terraza</option><option value="barra">Barra</option></select></label>
+   <label>Comentario <small>Opcional</small><textarea name="notes" [(ngModel)]="notes" maxlength="500" rows="2" placeholder="¿Hay algo que debamos considerar?"></textarea></label>
+   <p class="hint">Solicita con al menos {{c.advanceMinutes/60}} horas de anticipación. Visita prevista: {{party<=4?c.durationSmall:c.durationLarge}} minutos. La asignación y los grupos grandes se revisan antes de confirmar.</p>
+   <button class="button primary" [disabled]="form.invalid||!name.trim()||!time||busy()">{{busy()?'Enviando…':'Solicitar reserva'}}</button>
+  </fieldset></form>
+ }
+ <p class="contact">Para una visita más próxima o consultas: <a [href]="business.whatsapp" target="_blank" rel="noopener">Hablar con Costa Mar por WhatsApp →</a></p>
+ @if(!isClub){<p class="hint">También puedes <a [href]="business.clubUrl+'/reservas'">reservar desde el Club</a> y consultar tus reservas con tu cuenta.</p>}
+ }
+ @else{<button class="button" (click)="ngOnInit()">Reintentar</button>}
+ @if(isClub){<section class="mine"><div class="actions"><h2>Mis reservas</h2><button class="button" (click)="refresh()" [disabled]="busy()">Actualizar ↻</button></div>
+  @for(r of mine().items;track r.id){<article class="mine-row"><span class="status">{{labels[r.status]}}</span><strong>{{r.reference}} · {{timestamp(r.reservedAt)}}</strong><span>{{r.partySize}} personas · {{areas[r.areaPreference]}}</span>@if(r.tableNumbers.length){<small>Mesas: {{r.tableNumbers.join(' + ')}}</small>}@if(canCancel(r)){<button class="button" (click)="cancel(r)" [disabled]="busy()">{{cancelId===r.id?'Confirmar cancelación':'Cancelar reserva'}}</button>}</article>}@empty{<p class="hint">Aquí aparecerán las solicitudes que hagas desde tu cuenta.</p>}
+  @if(mine().total>20){<div class="actions"><button class="button" (click)="loadMine(mine().page-1)" [disabled]="mine().page===1||busy()">Anterior</button><span>Página {{mine().page}}</span><button class="button" (click)="loadMine(mine().page+1)" [disabled]="mine().page*20>=mine().total||busy()">Siguiente</button></div>}
+ </section>}
+</section>
+
+@if(error()&&!isClub&&privateLink&&!result()){<p><a [href]="privateLink" (click)="$event.preventDefault();refresh()">Consultar si mi solicitud fue recibida ?</a></p>}
