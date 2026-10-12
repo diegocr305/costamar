@@ -34,6 +34,15 @@ export class CompletarPerfilComponent implements OnInit {
   ngOnInit(): void {
     const u = this.auth.user();
     if (u?.fullName) this.fullName.set(u.fullName);
+    this.club.getMe().subscribe({
+      next: ({ member }) => {
+        if (!member) return;
+        this.fullName.set(member.fullName);
+        this.phone.set(member.phone ?? '');
+        this.birthDate.set(member.birthDate ?? '');
+      },
+      error: () => { /* El formulario sigue disponible para reintentar el alta. */ },
+    });
   }
 
   /** Edad válida (≥18) si hay fecha. */

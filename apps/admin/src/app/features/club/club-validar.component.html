@@ -1,8 +1,9 @@
 <section class="validar">
-  <header class="validar__head">
-    <h1>Validar cupón del Club</h1>
+  <header class="validar__head page-head"><div><span class="eyebrow">Club Costa Mar · Atención en el local</span>
+    <h1>Escanear y validar</h1>
     <p>Escanea el QR de la tarjeta del cliente para consultar sus cupones.</p>
-  </header>
+  </div></header>
+  <nav class="club-tabs" aria-label="Atención del Club"><a routerLink="/club/validar" class="active" aria-current="page">Escanear y validar</a><a routerLink="/club/historial">Historial de canjes</a></nav>
 
   @if (error(); as e) {
     <div class="alert alert--error" role="alert">{{ e }}</div>
@@ -21,8 +22,9 @@
           </div>
         } @else {
           @if (scanSupported()) {
-            <button type="button" class="btn btn--primary" (click)="startScan()">
-              📷 Escanear QR
+            <div class="scan-intro"><span aria-hidden="true">▦</span><h2>Un regalo, una buena visita</h2><p>Pide al socio que abra Mi tarjeta en su teléfono.</p></div>
+            <button type="button" class="btn btn--primary scan-launch" (click)="startScan()">
+              Abrir cámara y escanear QR
             </button>
             <p class="hint">El cliente abre Mi tarjeta en Costa Mar Club. Apunta la cámara a su QR.</p>
           } @else {
@@ -82,7 +84,7 @@
                     <input
                       type="radio"
                       name="coupon"
-                      [disabled]="c.status !== 'issued'"
+                      [disabled]="c.status !== 'issued' || l.member.status !== 'active'"
                       [checked]="selectedCoupon() === c.code"
                       (change)="pickCoupon(c.code)"
                     />
@@ -103,14 +105,17 @@
             </ul>
 
             <label class="field">
-              <span>Referencia de consumo (mesa / pedido / boleta)</span>
+              <span>Mesa / pedido / boleta *</span>
               <input
                 type="text"
                 [ngModel]="consumptionRef()"
                 (ngModelChange)="consumptionRef.set($event)"
                 placeholder="Ej: Mesa 5 / Boleta 1234"
+                maxlength="120"
+                required
               />
             </label>
+            <p class="hint">Quedará guardado junto al socio y al funcionario que confirma el canje.</p>
 
             <div class="actions">
               <button type="button" class="btn btn--ghost" (click)="reset()">
@@ -119,7 +124,7 @@
               <button
                 type="button"
                 class="btn btn--primary"
-                [disabled]="loading() || !selectedCoupon()"
+                [disabled]="loading() || !selectedCoupon() || !consumptionRef().trim() || l.member.status !== 'active'"
                 (click)="confirmRedeem()"
               >
                 {{ loading() ? 'Canjeando…' : 'Confirmar canje' }}
@@ -135,9 +140,11 @@
         <div class="check" aria-hidden="true">✓</div>
         <h2>Canje confirmado</h2>
         <p>El beneficio fue registrado correctamente.</p>
+        <div class="confirmation"><strong>{{ lookup()?.member?.fullName }}</strong><span>{{ consumptionRef() }}</span><small>{{ selectedCoupon() }}</small></div>
         <button type="button" class="btn btn--primary" (click)="reset()">
           Validar otro cupón
         </button>
+        <a routerLink="/club/historial" class="history-link">Consultar este canje en el historial →</a>
       </div>
     }
   }

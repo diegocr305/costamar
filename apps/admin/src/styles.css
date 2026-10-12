@@ -1,20 +1,15 @@
-/* Estilos globales — Costa Mar Admin */
-:root {
-  --cm-primary: #0a5c7a;
-  --cm-accent: #e8743b;
-  --cm-bg: #f4f6f8;
-  --cm-text: #1a2b33;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background: var(--cm-bg);
-  color: var(--cm-text);
-}
+﻿:root { --cm-primary: #087c91; --cm-primary-dark: #075f70; --cm-ocean: #1263a0; --cm-gold: #e28e06; --cm-secondary: #75bdc5; --cm-bg: #f3f9fb; --cm-text: #17324d; --cm-muted: #536f7c; --cm-border: #dbe8ed; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--cm-bg); color: var(--cm-text); line-height: 1.5; }
+h1, h2, h3 { letter-spacing: -.025em; line-height: 1.2; } button, input, select { font: inherit; } button, a, input { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; } button:disabled { opacity: .5; cursor: not-allowed; } a { color: var(--cm-primary-dark); }
+:focus-visible { outline: 3px solid #e28e06; outline-offset: 3px; }
+.cm-button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; padding: .65rem 1rem; border: 1px solid var(--cm-border); border-radius: 10px; background: #fff; color: var(--cm-text); font-weight: 700; font-size: .88rem; text-decoration: none; }
+.cm-button--primary { background: var(--cm-primary); border-color: var(--cm-primary); color: #fff; }
+.page-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem; background: linear-gradient(115deg, #0e2a38, #154b62); border-radius: 20px; color: #fff; margin-bottom: 1.25rem; }
+.page-head h1 { margin: .45rem 0 .5rem; font-size: clamp(1.5rem, 4vw, 2rem); color: #fff; }
+.page-head p { margin: 0; color: #d1e5ed; font-size: .92rem; max-width: 540px; }
+.eyebrow { font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .65rem; color: #ffbf58; }
+.club-tabs { display: flex; flex-wrap: wrap; gap: .5rem; } .club-tabs a { display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; padding: .65rem 1rem; border-radius: 10px; color: var(--cm-muted); background: #e7f0f4; font-weight: 700; font-size: .87rem; }
+.club-tabs a.active { background: #d8f1f5; color: #075f70; box-shadow: inset 0 -2px 0 #087c91; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }

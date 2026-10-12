@@ -1,5 +1,15 @@
 # Pendientes, reglas de negocio y decisiones
 
+> Actualización 12-10-2026: leer `docs/club-lanzamiento-2026-10-12.md` primero.
+> Admin ya accesible; healthcheck y Compose corregidos. Cumpleaños automático
+> ya activado en Supabase (dos cupones de octubre + cron). Nueva portada,
+> beneficios e ingreso directo a Google preparados; pendiente desplegar API/Club.
+> La lista inferior conserva el contexto histórico; el punto de cumpleaños y
+> protección de fecha de nacimiento ya está implementado.
+> También se implementó el historial de canjes en `/club/historial`, se renovó
+> la interfaz del admin y se asignó rol cashier a la cuenta del restaurante.
+> Desplegar `api club admin` para publicar todo este cambio.
+
 ## Estado actual (qué funciona)
 - Web pública en vivo (hero con foto de ceviche, carta real con fotos, favicon).
 - Club en vivo: login Google, perfil (nombre/teléfono/fecha nac. ≥18), tarjeta

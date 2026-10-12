@@ -1,6 +1,7 @@
 <section class="cupones">
   <header class="cupones__head">
     <h1>Mis cupones</h1>
+    <p>Tus regalos se asignan automáticamente. Para usarlos, muestra tu tarjeta al personal.</p>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Filtrar cupones">
@@ -61,14 +62,17 @@
                   <span class="coupon__code">{{ c.code }}</span>
                   @if (c.expiresAt) {
                     <span class="coupon__exp">
-                      Vence: {{ c.expiresAt | date: 'longDate' }}
+                      Válido hasta: {{ expiryLabel(c) }}
                     </span>
                   }
                 </div>
+                @if (isAvailable(c)) {
+                  <a routerLink="/mi-tarjeta" class="cm-btn cm-btn--gold coupon__use">Mostrar mi tarjeta →</a>
+                }
               </div>
               <span class="coupon__status coupon__status--{{ c.status }}">
                 {{
-                  c.status === 'issued' ? 'Disponible' :
+                  c.status === 'issued' ? (isAvailable(c) ? 'Disponible' : 'Vencido') :
                   c.status === 'redeemed' ? 'Canjeado' :
                   c.status === 'expired' ? 'Vencido' : 'Anulado'
                 }}

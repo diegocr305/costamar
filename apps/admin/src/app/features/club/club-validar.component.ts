@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import jsQR from 'jsqr';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import {
   ClubStaffService,
@@ -27,7 +28,7 @@ declare const BarcodeDetector: {
 @Component({
   selector: 'cm-club-validar',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './club-validar.component.html',
   styleUrl: './club-validar.component.css',
 })
@@ -157,6 +158,8 @@ export class ClubValidarComponent implements OnDestroy {
     try {
       const res = await firstValueFrom(this.staff.lookup(code));
       this.lookup.set(res);
+      const available = res.coupons.filter(c => c.status === 'issued' && (!c.expiresAt || new Date(c.expiresAt).getTime() > Date.now()));
+      this.selectedCoupon.set(res.member.status === 'active' && available.length === 1 ? available[0].code : null);
       this.step.set('review');
     } catch (e: unknown) {
       this.error.set(this.msg(e, 'Socio no encontrado.'));
@@ -172,7 +175,11 @@ export class ClubValidarComponent implements OnDestroy {
   /** Confirma el canje del cupón seleccionado. */
   async confirmRedeem(): Promise<void> {
     const code = this.selectedCoupon();
-    if (!code) return;
+    if (!code || this.loading()) return;
+    if (!this.consumptionRef().trim()) {
+      this.error.set('Indica la mesa, pedido o boleta para poder consultar este canje después.');
+      return;
+    }
     this.loading.set(true);
     this.error.set(null);
     try {

@@ -1,125 +1,35 @@
-<section class="inicio">
-  <header class="inicio__head">
-    <span class="inicio__eyebrow">Club Costa Mar</span>
-    <h1>
-      @if (firstName()) { Hola, {{ firstName() }} } @else { Bienvenido }
-    </h1>
-    <p>Tus beneficios y campañas, en un solo lugar.</p>
-  </header>
-
-  <h2 class="inicio__title">Campañas y novedades</h2>
-
+﻿<section class="inicio">
+  <header class="inicio__head"><span class="inicio__eyebrow">Club Costa Mar</span><h1>@if (firstName()) { Hola, {{ firstName() }} } @else { Bienvenido }</h1><p>Qué bueno verte. Estos son tus regalos.</p></header>
   @switch (state()) {
-    @case ('loading') {
-      <div class="state"><div class="spinner" aria-hidden="true"></div></div>
-    }
-    @case ('offline') {
-      <div class="state" role="alert">
-        <p>Sin conexión.</p>
-        <button type="button" class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button>
-      </div>
-    }
-    @case ('error') {
-      <div class="state" role="alert">
-        <p>No pudimos cargar las campañas.</p>
-        <button type="button" class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button>
-      </div>
-    }
+    @case ('loading') { <div class="state" role="status"><div class="spinner" aria-hidden="true"></div><p>Buscando tus beneficios…</p></div> }
+    @case ('offline') { <div class="state" role="alert"><p>Necesitamos conexión para ver tus regalos.</p><button class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button></div> }
+    @case ('error') { <div class="state" role="alert"><p>No pudimos cargar tus beneficios.</p><button class="cm-btn cm-btn--primary" (click)="load()">Reintentar</button></div> }
     @case ('loaded') {
-      @if (campaigns().length === 0) {
-        <div class="empty">
-          <p>Pronto anunciaremos nuevas campañas y beneficios.</p>
-        </div>
-      } @else {
-        <ul class="campaigns">
-          @for (c of campaigns(); track c.id) {
-            <li class="campaign">
-              <div class="campaign__body">
-                <strong>{{ c.name }}</strong>
-                @if (c.description) {
-                  <p>{{ c.description }}</p>
-                }
-              </div>
-            </li>
-          }
-        </ul>
+      @if (!profileComplete()) {
+        <div class="empty empty--soft"><strong>Un último paso para recibir tus regalos</strong><p>Completa tu teléfono y fecha de nacimiento para conocer los beneficios disponibles para ti.</p><a routerLink="/completar-perfil" class="cm-btn cm-btn--gold">Completar mi perfil →</a></div>
       }
+      @if (availableCoupons().length > 0) {
+        <div class="ready-banner" role="status"><span aria-hidden="true">🎁</span><div><strong>{{ availableCoupons().length === 1 ? 'Tienes un regalo listo para usar' : 'Tienes ' + availableCoupons().length + ' regalos listos para usar' }}</strong><p>Ya está en tus cupones. Solo falta tu próxima visita.</p></div></div>
+        @for (c of availableCoupons(); track c.id) {
+          <article class="founders" [class.founders--birthday]="c.campaign.type === 'birthday'">
+            @if (c.campaign.imagePath) { <img class="founders__img" [src]="image(c.campaign.imagePath)" [alt]="c.campaign.name" loading="lazy" /> }
+            @else { <span class="gift-icon" aria-hidden="true">🎂</span> }
+            <span class="founders__state founders__state--ok">✓ Listo para disfrutar</span>
+            <strong>{{ c.campaign.type === 'birthday' ? '¡Celebremos tu cumpleaños!' : 'Tu regalo de bienvenida' }}</strong>
+            <span class="founders__benefit">{{ c.campaign.type === 'birthday' ? '1 bebestible + 1 postre personal' : '1 bebestible personal de regalo' }}</span>
+            <p>{{ c.campaign.type === 'birthday' ? 'Disfrútalo durante tu mes de cumpleaños, con consumo en el local.' : 'Elige jugo, bebida o schop de cerveza, con consumo en el local.' }}</p>
+            <a routerLink="/mi-tarjeta" class="cm-btn cm-btn--gold">Mostrar mi tarjeta para usarlo →</a>
+          </article>
+        }
+      } @else {
+        <div class="empty empty--soft"><p>No tienes regalos disponibles en este momento.</p><a routerLink="/cupones">Ver mis cupones y regalos utilizados →</a></div>
+      }
+      <a routerLink="/cupones" class="cm-btn cm-btn--primary inicio__cta">Ver mis cupones</a>
+      @if (news().length > 0) {
+        <h2 class="inicio__title news-title">Beneficios del Club</h2>
+        <ul class="campaigns">@for (c of news(); track c.id) { <li class="campaign"><strong>{{ c.type === 'birthday' ? '🎂 Un regalo en tu mes de cumpleaños' : '🎁 Bienvenida para socios fundadores' }}</strong><p>{{ c.type === 'birthday' ? 'Tu bebestible y postre aparecerán automáticamente durante tu mes, con tu perfil completo.' : 'Bebestible personal con consumo en el local, sujeto a cupos y condiciones.' }}</p></li> }</ul>
+      }
+      <a routerLink="/beneficios" class="benefits-link">Conoce los beneficios y sus condiciones →</a>
     }
   }
-
-  @if (foundersCampaign(); as f) {
-    <div class="founders">
-      @if (f.imagePath) {
-        <img
-          class="founders__img"
-          [src]="image(f.imagePath)"
-          [alt]="f.name"
-          loading="lazy"
-        />
-      }
-      <span class="cm-eyebrow">Regalo de bienvenida</span>
-      <strong>{{ f.name }}</strong>
-      <span class="founders__benefit">1 bebestible personal de regalo</span>
-      @if (f.description) {
-        <p>{{ f.description }}</p>
-      }
-
-      @if (canClaimFounder()) {
-        <!-- No tiene cupón: puede reclamar -->
-        <button
-          type="button"
-          class="cm-btn cm-btn--gold"
-          [disabled]="claiming()"
-          (click)="claimFounder()"
-        >
-          {{ claiming() ? 'Reclamando…' : 'Reclamar mi regalo' }}
-        </button>
-      } @else if (founderCoupon(); as fc) {
-        <!-- Ya tiene cupón: mostrar estado, nunca reofrecer canje -->
-        @if (fc.status === 'issued') {
-          <span class="founders__state founders__state--ok">
-            ✓ Ya reclamaste tu regalo. Preséntalo en el local.
-          </span>
-          <a routerLink="/cupones" class="cm-btn cm-btn--gold">Ver mi cupón</a>
-        } @else if (fc.status === 'redeemed') {
-          <span class="founders__state">Regalo ya utilizado. ¡Gracias!</span>
-        } @else {
-          <span class="founders__state">Este regalo ya no está vigente.</span>
-        }
-      }
-
-      @if (claimMsg(); as msg) {
-        <p class="founders__msg">{{ msg }}</p>
-      }
-    </div>
-  }
-
-  <!-- Beneficios disponibles (issued y vigentes) -->
-  @if (availableCoupons().length > 0) {
-    <h2 class="inicio__title">Beneficios disponibles</h2>
-    <ul class="campaigns">
-      @for (c of availableCoupons(); track c.id) {
-        <li class="campaign campaign--coupon">
-          @if (c.campaign.imagePath) {
-            <img
-              class="campaign__thumb"
-              [src]="image(c.campaign.imagePath)"
-              [alt]="c.campaign.name"
-              loading="lazy"
-            />
-          }
-          <div class="campaign__info">
-            <strong>{{ c.campaign.name }}</strong>
-            <small class="campaign__code">{{ c.code }}</small>
-          </div>
-        </li>
-      }
-    </ul>
-  } @else if (state() === 'loaded' && !canClaimFounder()) {
-    <div class="empty empty--soft">
-      <p>¡Pronto tendrás nuevas sorpresas en Costa Mar! 🌊</p>
-    </div>
-  }
-
-  <a routerLink="/cupones" class="cm-btn cm-btn--gold inicio__cta">Ver mis cupones</a>
 </section>

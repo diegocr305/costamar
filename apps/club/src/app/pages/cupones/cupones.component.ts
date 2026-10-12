@@ -6,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import type { CouponWithCampaign } from '@costamar/shared';
 import { ClubService } from '../../core/club.service';
@@ -18,7 +18,7 @@ type State = 'loading' | 'loaded' | 'error' | 'offline';
 @Component({
   selector: 'cm-cupones',
   standalone: true,
-  imports: [DatePipe],
+  imports: [RouterLink],
   templateUrl: './cupones.component.html',
   styleUrl: './cupones.component.css',
 })
@@ -41,9 +41,8 @@ export class CuponesComponent implements OnInit {
     const now = Date.now();
     return this.coupons().filter((c) => {
       const notStarted = false; // "próximos" se usará cuando haya issued_at futuro
-      const expired =
-        c.status === 'expired' ||
-        (c.expiresAt ? new Date(c.expiresAt).getTime() < now : false);
+      const expired = c.status === 'issued' &&
+        (c.expiresAt ? new Date(c.expiresAt).getTime() <= now : false);
       switch (this.tab()) {
         case 'disponibles':
           return c.status === 'issued' && !expired && !notStarted;
@@ -52,7 +51,7 @@ export class CuponesComponent implements OnInit {
         case 'canjeados':
           return c.status === 'redeemed';
         case 'vencidos':
-          return c.status === 'void' || expired;
+          return c.status === 'void' || c.status === 'expired' || expired;
       }
     });
   });
@@ -76,6 +75,20 @@ export class CuponesComponent implements OnInit {
   /** URL de imagen de la campaña (Storage). */
   protected image(path?: string): string {
     return mediaUrl(path);
+  }
+
+  protected isAvailable(c: CouponWithCampaign): boolean {
+    return c.status === 'issued' && (!c.expiresAt || new Date(c.expiresAt).getTime() > Date.now());
+  }
+
+  protected expiryLabel(c: CouponWithCampaign): string {
+    if (!c.expiresAt) return '';
+    const birthday = c.campaign.type === 'birthday';
+    const date = new Date(new Date(c.expiresAt).getTime() - (birthday ? 1 : 0));
+    return new Intl.DateTimeFormat('es-CL', {
+      timeZone: 'America/Santiago', day: '2-digit', month: '2-digit', year: 'numeric',
+      ...(birthday ? {} : { hour: '2-digit', minute: '2-digit' }),
+    }).format(date);
   }
 
   protected load(): void {

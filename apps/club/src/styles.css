@@ -85,8 +85,10 @@ a {
 
 .cm-btn--gold {
   background: var(--cm-gold);
-  color: #fff;
+  color: #16202a;
 }
+
+.cm-btn:disabled { opacity: 0.65; cursor: wait; transform: none; }
 
 .cm-btn:focus-visible {
   outline: 3px solid var(--cm-gold);

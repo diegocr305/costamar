@@ -1,5 +1,10 @@
 # Panel Admin — Especificación (PRIORIDAD)
 
+> Actualización 12-10-2026: admin ya accesible, diseño renovado y nueva ruta
+> `/club/historial` para consulta de canjes (superadmin/admin/manager/cashier).
+> Incluye filtros por fecha chilena y búsqueda por mesa, socio, código o funcionario.
+> CRUD de campañas y reservas siguen pendientes. Ver `docs/club-lanzamiento-2026-10-12.md`.
+
 App: `apps/admin` (Angular 20 SPA). Dominio: `admin.restaurantecostamar.cl`.
 Objetivo: manejo integral de **reservas** y **cupones/campañas**, y a futuro
 **inventario**. Reutilizar la app admin existente, no crear otro sistema.

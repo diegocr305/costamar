@@ -14,7 +14,7 @@ export interface NavSection {
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
-    label: 'Dashboard',
+    label: 'Inicio',
     path: '/dashboard',
     roles: ['superadmin', 'admin', 'manager', 'kitchen', 'inventory', 'cashier'],
   },
@@ -43,8 +43,14 @@ export const NAV_SECTIONS: NavSection[] = [
     path: '/club/validar',
     roles: ['superadmin', 'admin', 'manager', 'cashier'],
   },
+  {
+    label: 'Historial de canjes',
+    path: '/club/historial',
+    roles: ['superadmin', 'admin', 'manager', 'cashier'],
+  },
 ];
 
 export function sectionsForRole(role: UserRole): NavSection[] {
-  return NAV_SECTIONS.filter((s) => s.roles.includes(role));
+  const order = ['/dashboard', '/club/validar', '/club/historial', '/carta', '/pedidos', '/inventario', '/usuarios'];
+  return NAV_SECTIONS.filter((s) => s.roles.includes(role)).sort((a, b) => order.indexOf(a.path) - order.indexOf(b.path));
 }

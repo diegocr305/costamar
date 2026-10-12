@@ -41,8 +41,9 @@ Todas exigen JWT (identidad del token, nunca del body).
 - `GET /club/staff/lookup/:memberCode` — datos mínimos del socio + sus cupones
   (para validación presencial). No expone datos sensibles.
 - `POST /club/staff/redeem` — confirma canje. Body `RedeemDto`:
-  `{ code, products?: unknown[], consumptionRef? }`. Llama RPC `redeem_coupon`.
+  `{ code, products?: unknown[], consumptionRef }`. La API exige referencia no vacía (mesa/pedido/boleta). Llama RPC `redeem_coupon`.
   Registra funcionario (del JWT), socio, productos y referencia de consumo.
+- `GET /club/staff/redemptions?date=YYYY-MM-DD&q=&page=1&pageSize=20` — historial paginado de canjes para los mismos roles. Filtra fecha en America/Santiago y busca por socio, código, mesa o funcionario. Devuelve `{items,total,page,pageSize}`; sin exposición directa de la RPC al cliente.
 
 ## Mensajes de error de canje/emisión (mapeados a texto)
 - Emisión: CAMPAIGN_NOT_ACTIVE, NO_COUPONS_LEFT, CAMPAIGN_NOT_FOUND.

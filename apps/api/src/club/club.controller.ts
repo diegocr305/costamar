@@ -50,7 +50,7 @@ export class ClubController {
     return this.club.listActiveCampaigns();
   }
 
-  /** Cupones del socio autenticado (solo lectura en V1). */
+  /** Sincroniza beneficios elegibles y devuelve cupones del socio autenticado. */
   @Get('coupons')
   myCoupons(@CurrentUser() user: AuthenticatedUser) {
     return this.club.getMyCoupons(user.userId);

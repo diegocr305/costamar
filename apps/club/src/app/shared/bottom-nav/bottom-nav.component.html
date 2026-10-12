@@ -1,4 +1,4 @@
-@if (visible()) {
+@if (visible() && auth.isAuthenticated()) {
   <nav class="bnav" aria-label="Navegación del Club">
     <a routerLink="/inicio" routerLinkActive="is-active" class="bnav__item">
       <span class="bnav__icon" aria-hidden="true">⌂</span>

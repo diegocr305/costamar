@@ -154,8 +154,8 @@
 
 .founders__img {
   width: 100%;
-  max-height: 180px;
-  object-fit: cover;
+  height: 160px;
+  object-fit: contain;
   border-radius: 12px;
   margin-bottom: 0.75rem;
 }
@@ -181,7 +181,7 @@
 .campaign__thumb {
   width: 56px;
   height: 56px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
   flex-shrink: 0;
 }
@@ -189,3 +189,9 @@
 .campaign__info {
   min-width: 0;
 }
+.ready-banner { display: flex; gap: .75rem; align-items: center; padding: 1rem; border-radius: 14px; background: #87e4cb15; border: 1px solid #87e4cb55; margin-bottom: 1rem; }
+.ready-banner > span { font-size: 1.7rem; } .ready-banner strong { color: #a8efd7; } .ready-banner p { margin: .2rem 0 0; font-size: .84rem; color: var(--cm-muted); }
+.founders .cm-btn { width: 100%; } .founders__state--ok { color: #a8efd7; } .founders--birthday { border-color: #80dceb; }
+.gift-icon { font-size: 2.5rem; } .news-title { margin-top: 1.75rem; } .benefits-link { display: block; margin-top: 1rem; color: #80dceb; font-size: .88rem; text-align: center; }
+.founders { animation: gift-enter .35s ease-out; } @keyframes gift-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .founders { animation: none; } }

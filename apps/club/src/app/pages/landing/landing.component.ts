@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 
@@ -16,6 +16,16 @@ import { AuthService } from '../../core/auth.service';
 export class LandingComponent implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  protected readonly connecting = signal(false);
+  protected readonly loginError = signal(false);
+
+  constructor() {
+    effect(() => {
+      if (this.auth.ready() && this.auth.isAuthenticated() && !new URLSearchParams(window.location.search).has('code')) {
+        void this.router.navigate(['/inicio']);
+      }
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     // Salvaguarda: si Supabase devolvió el código OAuth a la raíz del club
@@ -39,7 +49,15 @@ export class LandingComponent implements OnInit {
     }
   }
 
-  goToLogin(): void {
-    void this.router.navigate(['/ingresar']);
+  async goToLogin(): Promise<void> {
+    if (this.connecting()) return;
+    this.connecting.set(true);
+    this.loginError.set(false);
+    try {
+      await this.auth.loginWithGoogle();
+    } catch {
+      this.loginError.set(true);
+      this.connecting.set(false);
+    }
   }
 }

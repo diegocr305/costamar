@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import type { AuthenticatedUser } from '../auth/auth.types';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
 import { ClubStaffService } from './staff.service';
 import { RedeemDto } from './dto/redeem.dto';
+import { RedemptionHistoryDto } from './dto/redemption-history.dto';
 
 /**
  * API del personal (garzón/cajero/manager/admin) para validar y canjear
@@ -14,6 +15,11 @@ import { RedeemDto } from './dto/redeem.dto';
 @Roles('superadmin', 'admin', 'manager', 'cashier')
 export class ClubStaffController {
   constructor(private readonly staff: ClubStaffService) {}
+
+  @Get('redemptions')
+  history(@Query() filters: RedemptionHistoryDto) {
+    return this.staff.redemptionHistory(filters);
+  }
 
   /** Al escanear el QR (member_code): datos mínimos del socio + sus cupones. */
   @Get('lookup/:memberCode')

@@ -24,6 +24,14 @@ export class ShellComponent {
     return u ? sectionsForRole(u.role) : [];
   });
 
+  protected roleLabel(role?: string): string {
+    return ({ superadmin: 'Superadministrador', admin: 'Administrador', manager: 'Encargado', cashier: 'Caja y atención', kitchen: 'Cocina', inventory: 'Inventario', customer: 'Socio' } as Record<string, string>)[role ?? ''] ?? '';
+  }
+
+  protected icon(path: string): string {
+    return ({ '/dashboard': '⌂', '/club/validar': '▦', '/club/historial': '↺', '/carta': '☷', '/pedidos': '▤', '/inventario': '▣', '/usuarios': '♙' } as Record<string, string>)[path] ?? '';
+  }
+
   async logout(): Promise<void> {
     await this.auth.logout();
     await this.router.navigate(['/login']);

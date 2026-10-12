@@ -131,7 +131,9 @@ export class ClubService {
           updated_at: now,
         })
         .eq('user_id', userId);
-      if (error) throw new BadRequestException(error.message);
+      if (error) throw new BadRequestException(error.message.includes('BIRTH_DATE_LOCKED')
+        ? 'Tu fecha de nacimiento ya está asociada a un beneficio. Contacta al restaurante para corregirla.'
+        : error.message);
     } else {
       isNew = true;
       const { error } = await this.supabase.client
@@ -307,6 +309,10 @@ export class ClubService {
 
   /** Cupones del socio autenticado, con datos de su campaña. */
   async getMyCoupons(userId: string) {
+    // Recupera beneficios elegibles sin un paso manual para el socio.
+    // La BD controla cupos, fechas, perfil y unicidad; el cron cubre a quienes no abren la app.
+    const { error: benefitError } = await this.supabase.client.rpc('assign_club_benefits', { p_user_id: userId });
+    if (benefitError) throw new BadRequestException('No pudimos actualizar tus beneficios. Inténtalo de nuevo.');
     const { data, error } = await this.supabase.client
       .from('club_coupons')
       .select(
@@ -323,7 +329,7 @@ export class ClubService {
         id: c.id,
         code: c.code,
         campaignId: c.campaign_id,
-        status: c.status,
+        status: c.status === 'issued' && c.expires_at && new Date(c.expires_at).getTime() <= Date.now() ? 'expired' : c.status,
         issuedAt: c.issued_at,
         expiresAt: c.expires_at ?? null,
         redeemedAt: c.redeemed_at ?? null,

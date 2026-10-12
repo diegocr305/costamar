@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { AuthService } from '../../core/auth.service';
 import {
   NavigationEnd,
   Router,
@@ -15,11 +15,12 @@ import { filter } from 'rxjs';
 @Component({
   selector: 'cm-bottom-nav',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, NgClass],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './bottom-nav.component.html',
   styleUrl: './bottom-nav.component.css',
 })
 export class BottomNavComponent {
+  protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
   private readonly hiddenRoutes = ['/', '/ingresar', '/auth/callback', '/completar-perfil'];

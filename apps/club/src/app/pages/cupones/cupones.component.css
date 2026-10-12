@@ -79,7 +79,8 @@
 }
 
 .coupon {
-  display: flex;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
   align-items: flex-start;
   gap: 0.75rem;
   background: var(--cm-surface);
@@ -89,9 +90,9 @@
 }
 
 .coupon__thumb {
-  width: 56px;
-  height: 56px;
-  object-fit: cover;
+  width: 64px;
+  height: 80px;
+  object-fit: contain;
   border-radius: 10px;
   flex-shrink: 0;
 }
@@ -99,6 +100,7 @@
 .coupon__body {
   flex: 1;
   min-width: 0;
+  grid-column: 2;
 }
 
 .coupon__name {
@@ -125,6 +127,9 @@
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
   color: var(--cm-gold);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .coupon__exp {
@@ -139,16 +144,18 @@
   border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  grid-column: 2;
+  justify-self: start;
 }
 
 .coupon__status--issued {
   background: rgba(18, 167, 194, 0.15);
-  color: var(--cm-primary-dark);
+  color: #8ee5ef;
 }
 
 .coupon__status--redeemed {
   background: rgba(46, 160, 67, 0.15);
-  color: #2e7d32;
+  color: #a6eab5;
 }
 
 .coupon__status--expired,
@@ -162,3 +169,5 @@
     animation: none;
   }
 }
+.cupones__head p { color: var(--cm-muted); font-size: .88rem; margin: -.25rem 0 1rem; }
+.coupon__use { margin-top: .85rem; width: 100%; font-size: .82rem; padding: .65rem .75rem; }

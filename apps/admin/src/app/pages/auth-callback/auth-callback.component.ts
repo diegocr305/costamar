@@ -32,7 +32,7 @@ export class AuthCallbackComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       await this.auth.handleOAuthCallback(window.location.href);
-      await this.router.navigate(['/dashboard']);
+      await this.router.navigate([this.auth.user()?.role === 'cashier' ? '/club/validar' : '/dashboard']);
     } catch {
       this.message = 'No se pudo completar el inicio de sesión.';
       await this.router.navigate(['/login']);
