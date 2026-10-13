@@ -28,6 +28,8 @@ export class RadarQueryDto {
   @IsOptional()
   @IsIn(["", "recommended", "matched", "review", "manual"])
   match = "";
+  @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(16) region?: number;
+  @IsOptional() @IsIn(['newest', 'closing']) sort = 'newest';
   @IsOptional() @IsString() @MaxLength(100) commune = "";
   @IsOptional() @Type(() => Number) @IsNumber() @Min(0) minBudget?: number;
   @IsOptional() @Type(() => Number) @IsNumber() @Min(0) maxBudget?: number;

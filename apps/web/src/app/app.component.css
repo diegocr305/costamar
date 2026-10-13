@@ -114,6 +114,7 @@
 }
 
 .cm-nav a:not(.cm-header__cta) {
+  display:inline-flex; align-items:center; gap:.45rem; min-height:44px;
   color: var(--cm-text);
   text-decoration: none;
   font-weight: 700;
@@ -147,6 +148,7 @@
 }
 
 .cm-header__cta {
+  display:inline-flex; align-items:center; justify-content:center; gap:.55rem; min-height:44px;
   background: var(--cm-action);
   color: var(--cm-deep);
   text-decoration: none;
@@ -268,6 +270,8 @@
 .cm-footer__links a { padding:.35rem 0; min-height:36px; }
 .cm-footer__col { min-width:0; }
 .cm-footer__col a { overflow-wrap:anywhere; }
+.cm-footer__col a cm-action-icon { margin-right:.45rem; }
+.cm-footer__links a { min-height:44px; }
 
 .cm-footer a {
   color: #cfe8f0;

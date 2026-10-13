@@ -4,6 +4,11 @@ Radar es un módulo privado de Admin, en `/radar`, autorizado para superadmin/ad
 
 ## Funciones
 
+Actualización de cierres preparada localmente, **pendiente de revisión y publicación**:
+vista privada, interpretación visible de horas civiles de Chile, ventana estricta,
+conteos, ordenamiento y contador local. Ver [auditoría y pruebas](ux-iconos-y-radar-cierres-2026-10-12.md).
+La regla de producción descrita abajo sigue vigente hasta aplicar esa actualización.
+
 ### Mi Radar y General diario
 
 Mi Radar muestra por defecto coincidencias del perfil y compras que guardaste

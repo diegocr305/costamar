@@ -91,7 +91,7 @@
           <option value="compra_agil">Compra Ágil</option>
           <option value="licitacion">Licitaciones</option>
         </select></label
-      ><label
+      ><label>Región del comprador<select name="regionFilter" [(ngModel)]="regionFilter"><option [ngValue]="null">Todas</option>@for (r of regions; track r.code) {<option [ngValue]="r.code">{{r.name}}</option>}</select></label><label>Ordenar<select name="sortFilter" [(ngModel)]="sortFilter" [disabled]="closingOnly"><option value="newest">Más recientes</option><option value="closing">Cierre más próximo</option></select></label><label
         >Estado oficial<select name="official" [(ngModel)]="officialStatus">
           <option value="">Todos</option>
           <option value="publicada">Publicadas</option>
@@ -156,7 +156,8 @@
             type="checkbox"
             name="closing"
             [(ngModel)]="closingOnly"
-          />Cierre confirmado en 24 h</label
+            (ngModelChange)="closingChanged()"
+          />Próximas 24 horas</label
         >
       </div>
       <button
@@ -168,7 +169,7 @@
       </button>
     </form>
     <div class="list-head">
-      <h2>{{ result().total }} oportunidades</h2>
+      <h2>{{ result().total }} oportunidades con los filtros aplicados</h2>
       <button
         class="text-button"
         (click)="load(result().page)"
@@ -177,6 +178,10 @@
         Actualizar lista
       </button>
     </div>
+    @if (!loading() && !error()) {
+      <p class="deadline-summary">{{result().closingTotal ?? 0}} publicadas con cierre en las próximas 24 h · {{result().unknownCloseTotal ?? 0}} sin fecha válida. Conteos sobre todas las páginas, con los demás filtros aplicados.</p>
+      <p class="hint">Resultados al consultar: {{time(result().asOf)}}. El contador de cada ficha se actualiza cada 30 segundos; «Actualizar lista» recalcula el conjunto completo. Hora de Chile interpretada cuando la fuente no incluye zona; confirma el cierre oficial antes de cotizar.</p>
+    }
     @if (loading()) {
       <p role="status">Cargando oportunidades…</p>
     } @else if (!error() && !result().items.length) {
@@ -215,13 +220,16 @@
           </p>
           <p class="deadline">
             <strong>Cierre:</strong>
-            @if (row.verified_closes_at || row.closes_at) {
-              {{ time(row.verified_closes_at || row.closes_at) }}
+            @if (deadline(row).iso) {
+              {{ time(deadline(row).iso) }} · Chile
+              @if (deadline(row).basis === 'chile_local') {<small>Hora de Chile interpretada · por confirmar</small>}
+              @else if (deadline(row).basis === 'verified') {<small>Confirmada por el equipo</small>}
             } @else {
-              {{ row.closes_raw || "No informado" }}
-              <small>· Hora según fuente, por confirmar</small>
+              Fecha de cierre no disponible
+              @if (row.closes_raw) {<small>Dato de la fuente: {{row.closes_raw}} · no interpretable</small>}
             }
           </p>
+          <p class="remaining" [class.remaining--urgent]="urgent(row)">{{remaining(row)}}</p>
           <div class="card-bottom">
             <span class="badge">{{ row.stage }}</span
             ><button
@@ -354,10 +362,10 @@
               <small>{{ row.code }} · Publicada</small>
               <h3>{{ row.name }}</h3>
               <p>{{ row.buyer }}</p>
-              <small
-                >Cierre según fuente: {{ row.closes_raw || "No informado" }} ·
-                confirmar en ficha</small
-              >
+              <small>Cierre: {{deadline(row).iso ? time(deadline(row).iso) + ' · Chile' : 'Fecha de cierre no disponible'}}
+                @if(deadline(row).basis==='chile_local'){ · Hora de Chile interpretada; confirmar en ficha}
+              </small>
+              <p class="remaining" [class.remaining--urgent]="urgent(row)">{{remaining(row)}}</p>
             </div>
             <button
               class="cm-button"
@@ -622,6 +630,7 @@
             <dt>Cierre según API</dt>
             <dd>{{ row.closes_raw || "No informado" }}</dd>
           </div>
+          <div><dt>Cierre para seguimiento · Chile</dt><dd>{{deadline(row).iso ? time(deadline(row).iso) : 'Fecha de cierre no disponible'}} · {{remaining(row)}}@if(deadline(row).basis==='chile_local'){<small>Hora de Chile interpretada; confirma la ficha oficial.</small>}</dd></div>
           @if (row.call_number) {
             <div>
               <dt>Convocatoria</dt>

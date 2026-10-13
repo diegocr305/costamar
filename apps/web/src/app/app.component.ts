@@ -1,3 +1,4 @@
+import { ActionIconComponent } from './shared/action-icon.component';
 import { Component, HostListener, signal, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
@@ -6,7 +7,7 @@ import { BUSINESS } from '@costamar/shared';
 @Component({
   selector: 'cm-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, ActionIconComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

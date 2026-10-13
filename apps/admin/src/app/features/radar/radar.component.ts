@@ -15,6 +15,9 @@ import {
   RADAR_REGIONS,
   chileLocalDateTime,
   chileLocalToIso,
+  resolveRadarDeadline,
+  deadlineRemaining,
+  closingIn24Hours,
 } from "@costamar/shared";
 import type {
   RadarAlert,
@@ -46,6 +49,9 @@ export class RadarComponent implements OnInit, OnDestroy {
   private detailRequest = 0;
   private destroyed = false;
   private timer?: ReturnType<typeof setInterval>;
+  private clockTimer?: ReturnType<typeof setInterval>;
+  private clockOffset = 0;
+  protected readonly clock = signal(Date.now());
   private returnFocus: HTMLElement | null = null;
   protected readonly stages = RADAR_STAGES;
   protected readonly regions = RADAR_REGIONS;
@@ -83,6 +89,8 @@ export class RadarComponent implements OnInit, OnDestroy {
   private generalRequest = 0;
   protected favoriteOnly = false;
   protected closingOnly = false;
+  protected regionFilter: number | null = null;
+  protected sortFilter = 'newest';
   protected minBudget: number | null = null;
   protected maxBudget: number | null = null;
   protected editStage = "Nueva";
@@ -107,6 +115,7 @@ export class RadarComponent implements OnInit, OnDestroy {
     void this.loadProfiles();
     void this.health();
     this.timer = setInterval(() => void this.health(), 45000);
+    this.clockTimer = setInterval(() => this.clock.set(Date.now() + this.clockOffset), 30000);
     const id = this.route.snapshot.queryParamMap.get("opportunity");
     if (id && /^[a-f0-9-]{36}$/i.test(id)) void this.open(id);
   }
@@ -117,6 +126,7 @@ export class RadarComponent implements OnInit, OnDestroy {
     this.generalRequest++;
     document.body.style.overflow = "";
     if (this.timer) clearInterval(this.timer);
+    if (this.clockTimer) clearInterval(this.clockTimer);
   }
   @HostListener("document:keydown.escape") escape() {
     if (this.selected() || this.detailLoading() || this.detailError())
@@ -150,7 +160,7 @@ export class RadarComponent implements OnInit, OnDestroy {
           (row.currency || "moneda por verificar");
   }
   protected time(value: string | null | undefined) {
-    return value
+    return value && Number.isFinite(Date.parse(value))
       ? new Date(value).toLocaleString("es-CL", {
           timeZone: "America/Santiago",
           dateStyle: "short",
@@ -158,6 +168,9 @@ export class RadarComponent implements OnInit, OnDestroy {
         })
       : "Sin revisión todavía";
   }
+  protected deadline(row: RadarOpportunity | RadarGeneralItem) { return resolveRadarDeadline(row); }
+  protected remaining(row: RadarOpportunity | RadarGeneralItem) { return deadlineRemaining(this.deadline(row).iso, this.clock()); }
+  protected urgent(row: RadarOpportunity | RadarGeneralItem) { return row.official_status === 'publicada' && closingIn24Hours(this.deadline(row).iso, this.clock()); }
   protected stale() {
     const s = this.status();
     return (
@@ -217,6 +230,7 @@ export class RadarComponent implements OnInit, OnDestroy {
         : "Coincidencia del perfil";
   }
   protected bucket(kind:string){this.matchFilter=kind;void this.load();}
+  protected closingChanged() { if(this.closingOnly) this.sortFilter='closing'; void this.load(); }
   protected generalScope() {
     return this.generalSource === "licitacion"
       ? "Licitaciones · Todo Chile"
@@ -318,6 +332,8 @@ export class RadarComponent implements OnInit, OnDestroy {
       .set("commune", this.commune.trim())
       .set("favorite", String(this.favoriteOnly))
       .set("closing", String(this.closingOnly));
+    params = params.set('sort', this.sortFilter);
+    if (this.regionFilter !== null) params = params.set('region', this.regionFilter);
     if (this.profileFilter) params = params.set("profile", this.profileFilter);
     if (this.minBudget !== null)
       params = params.set("minBudget", this.minBudget);
@@ -329,7 +345,11 @@ export class RadarComponent implements OnInit, OnDestroy {
           .get<RadarList>(this.base + "/opportunities", { params })
           .pipe(timeout(20000)),
       );
-      if (request === this.listRequest) this.result.set(row);
+      if (request === this.listRequest) {
+        this.result.set(row);
+        this.clockOffset = row.asOf ? Date.parse(row.asOf) - Date.now() : 0;
+        this.clock.set(Date.now() + this.clockOffset);
+      }
     } catch (e) {
       if (request === this.listRequest)
         this.error.set(

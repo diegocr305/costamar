@@ -1,3 +1,4 @@
+import { ActionIconComponent } from '../../shared/action-icon.component';
 import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { timeout } from 'rxjs';
@@ -30,7 +31,7 @@ export function selectHomeFlavors(carta: CartaPublica): Flavor[] {
 @Component({
   selector: 'cm-home',
   standalone: true,
-  imports: [RouterLink, GoogleReviewsComponent],
+  imports: [RouterLink, GoogleReviewsComponent, ActionIconComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

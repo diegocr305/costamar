@@ -10,7 +10,7 @@
    @if(r.status==='confirmed'){<p>¡Te esperamos! Conservamos tu reserva durante {{r.toleranceMinutes}} minutos desde la hora acordada.</p>}
    @if(r.tableNumbers.length){<p>Mesas asignadas: {{r.tableNumbers.join(' + ')}}</p>}
    @if(!isClub&&privateLink){<label>Tu enlace privado<input readonly [value]="privateLink" aria-label="Enlace privado de mi reserva"/></label><small>Guárdalo. Quien tenga este enlace podrá consultar o cancelar tu reserva.</small><button class="button" (click)="copy()">Copiar enlace</button>}
-   <div class="actions"><button class="button" (click)="refresh()" [disabled]="busy()">Consultar estado ↻</button>@if(canCancel(r)){<button class="button" (click)="cancel(r)" [disabled]="busy()">{{cancelId===r.id?'Confirmar cancelación':'Cancelar reserva'}}</button>}<button class="button" (click)="newRequest()" [disabled]="busy()">Solicitar otra reserva</button></div>
+   <div class="actions"><button class="button cm-action-label" (click)="refresh()" [disabled]="busy()"><cm-action-icon name="refresh" />Consultar estado</button>@if(canCancel(r)){<button class="button" (click)="cancel(r)" [disabled]="busy()">{{cancelId===r.id?'Confirmar cancelación':'Cancelar reserva'}}</button>}<button class="button cm-action-label" (click)="newRequest()" [disabled]="busy()"><cm-action-icon name="calendar" />Solicitar otra reserva</button></div>
    @if(cancelId===r.id){<p>Confirma para cancelar esta reserva y liberar su asignación.</p>}
   </article>
  }@else if(privateAccess()){<article class="result"><h2>Consulta de reserva</h2><div class="actions"><button class="button" (click)="refresh()" [disabled]="busy()">Consultar nuevamente</button><button class="button" (click)="newRequest()" [disabled]="busy()">Solicitar nueva reserva</button></div></article>}@else{
@@ -23,10 +23,10 @@
    <label>¿Dónde prefieres sentarte? <small>Según disponibilidad</small><select name="area" [(ngModel)]="area"><option value="any">Sin preferencia</option><option value="salon">Salón</option><option value="terraza">Terraza</option><option value="barra">Barra</option></select></label>
    <label>Comentario <small>Opcional</small><textarea name="notes" [(ngModel)]="notes" maxlength="500" rows="2" placeholder="¿Hay algo que debamos considerar?"></textarea></label>
    <p class="hint">Solicita con al menos {{c.advanceMinutes/60}} horas de anticipación. Visita prevista: {{party<=4?c.durationSmall:c.durationLarge}} minutos. La asignación y los grupos grandes se revisan antes de confirmar.</p>
-   <button class="button primary" [disabled]="form.invalid||!name.trim()||!time||busy()">{{busy()?'Enviando…':'Solicitar reserva'}}</button>
+   <button class="button primary cm-action-label" [disabled]="form.invalid||!name.trim()||!time||busy()"><cm-action-icon name="calendar" />{{busy()?'Enviando…':'Solicitar reserva'}}</button>
   </fieldset></form>
  }
- <p class="contact">Para una visita más próxima o consultas: <a [href]="business.whatsapp" target="_blank" rel="noopener">Hablar con Costa Mar por WhatsApp →</a></p>
+ <p class="contact">Para una visita más próxima o consultas: <a class="cm-text-link cm-whatsapp-link" [href]="business.whatsapp" target="_blank" rel="noopener"><cm-action-icon name="whatsapp" />Hablar con Costa Mar por WhatsApp</a></p>
  @if(!isClub){<p class="hint">También puedes <a [href]="business.clubUrl+'/reservas'">reservar desde el Club</a> y consultar tus reservas con tu cuenta.</p>}
  }
  @else{<button class="button" (click)="ngOnInit()">Reintentar</button>}

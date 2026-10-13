@@ -2,6 +2,7 @@
   max-width: 1250px;
   margin: auto;
 }
+.deadline-summary{font-size:.85rem;color:var(--cm-text);line-height:1.65}.remaining{font-weight:700;color:#325b6b;font-size:.85rem}.remaining--urgent{color:#93430b;background:#fff2db;border-radius:8px;padding:.45rem .65rem;width:fit-content}
 .card {
   background: white;
   border: 1px solid var(--cm-border);

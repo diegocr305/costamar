@@ -1,9 +1,11 @@
+import { ActionIconComponent } from './action-icon.component';
 import { Component, Input } from '@angular/core';
 import { BUSINESS } from '@costamar/shared';
 
 @Component({
   selector: 'cm-coming-soon',
   standalone: true,
+  imports: [ActionIconComponent],
   template: `
     <section class="soon">
       <h1>{{ title }}</h1>
@@ -16,8 +18,8 @@ import { BUSINESS } from '@costamar/shared';
         [href]="business.whatsapp"
         target="_blank"
         rel="noopener"
-        class="soon__wa"
-        >Escríbenos por WhatsApp</a
+        class="cm-button cm-button--whatsapp"
+        ><cm-action-icon name="whatsapp" />Escríbenos por WhatsApp</a
       >
     </section>
   `,

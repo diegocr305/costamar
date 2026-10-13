@@ -28,6 +28,9 @@ El dueño realiza el despliegue de nuevas correcciones mediante `deploy.sh`.
 
 ## Correcciones de la revisión
 
+- Iconos públicos y corrección de cierres del Radar revisados y autorizados para
+  commit/push, sin deploy ni SQL remoto. Requieren migración nueva antes
+  de actualizar API/Admin/Web. Ver [auditoría y pruebas](ux-iconos-y-radar-cierres-2026-10-12.md).
 - Rediseño de web pública preparado **localmente**, pendiente de revisión visual:
   home con fotos derivadas de Carta, Club, tokens compartidos y navegación móvil.
   No está desplegado. Ver [auditoría y validación](web-redesign-2026-10-12.md).

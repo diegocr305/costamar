@@ -93,6 +93,13 @@ h4 {
 .cm-button--light { color:#fff; border-color:#9bb7c1; background:rgba(8,29,39,.25); }
 .cm-button--light:hover { background:rgba(8,29,39,.6); }
 .cm-text-link { display:inline-flex; align-items:center; gap:1rem; padding-block:.65rem; font-weight:700; text-decoration:none; color:var(--cm-primary-dark); }
+.cm-button--whatsapp{background:#25d366;color:#0b3021;border-color:#25d366;justify-content:center}
+.cm-button--whatsapp:hover{background:#38df76;border-color:#38df76}
+.cm-whatsapp-link{color:#11683d}
+.cm-button:active{transform:translateY(1px)}
+.cm-button:disabled{opacity:.55;cursor:default;transform:none}
+.cm-text-link{min-height:44px;gap:.65rem}
+.cm-action-label{display:inline-flex;align-items:center;gap:.55rem;min-height:44px}
 :where(a,button,input,select,textarea,[tabindex]):focus-visible { outline:3px solid var(--cm-primary-dark); outline-offset:4px; }
 :where(.hero,.club,.cm-footer) :where(a,button):focus-visible { outline-color:#91d9e0; }
 button,input,select,textarea { font-family:inherit; }

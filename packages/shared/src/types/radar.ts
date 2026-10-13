@@ -82,6 +82,8 @@ export interface RadarOpportunity {
   closes_raw: string;
   closes_at: string | null;
   verified_closes_at: string | null;
+  effective_closes_at?: string | null;
+  deadline_basis?: 'verified' | 'source_timezone' | 'chile_local' | 'unavailable';
   published_raw: string;
   source_changed_raw: string;
   checked_at: string;
@@ -148,4 +150,7 @@ export interface RadarList {
   total: number;
   page: number;
   pageSize: number;
+  asOf?: string;
+  closingTotal?: number;
+  unknownCloseTotal?: number;
 }

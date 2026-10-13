@@ -7,11 +7,13 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { randomUUID } from "crypto";
+import type { RadarOpportunity, RadarList } from '@costamar/shared';
+import { RADAR_DAY_MS } from '@costamar/shared';
 import { SupabaseService } from "../supabase/supabase.service";
 import { RadarProfileDto, RadarQueryDto, RadarTrackingDto } from "./radar.dto";
 import { fold } from "./radar.normalize";
 const columns =
-  "id,source,code,name,description,official_status,buyer,buyer_rut,region,buyer_commune,delivery,delivery_days,budget,currency,budget_type,call_number,closes_raw,closes_at,verified_closes_at,published_raw,source_changed_raw,checked_at,detail_checked_at,created_at,items,documents,profile_ids,stage,favorite,notes,tracking_updated_at,match_kind,match_reasons,manual_selected";
+  "id,source,code,name,description,official_status,buyer,buyer_rut,region,buyer_commune,delivery,delivery_days,budget,currency,budget_type,call_number,closes_raw,closes_at,verified_closes_at,published_raw,source_changed_raw,checked_at,detail_checked_at,created_at,items,documents,profile_ids,stage,favorite,notes,tracking_updated_at,match_kind,match_reasons,manual_selected,effective_closes_at,deadline_basis";
 export function safeFilter(value: string): string {
   return value.replace(/[^\p{L}\p{N}\s-]/gu, "").trim();
 }
@@ -45,7 +47,7 @@ export class RadarService {
       );
     return result.data;
   }
-  async list(dto: RadarQueryDto) {
+  async list(dto: RadarQueryDto): Promise<RadarList> {
     if (
       dto.minBudget !== undefined &&
       dto.maxBudget !== undefined &&
@@ -57,52 +59,59 @@ export class RadarService {
     }
     const page = dto.page ?? 1,
       pageSize = 20;
-    let query = this.db.client
-      .from("radar_opportunities")
-      .select(columns, { count: "exact" });
-    const q = fold(safeFilter(dto.q ?? ""));
-    if (q) query = query.ilike("search_text", `%${q}%`);
-    const commune = fold(safeFilter(dto.commune ?? ""));
-    if (commune) query = query.ilike("delivery_search", `%${commune}%`);
-    if (dto.source) query = query.eq("source", dto.source);
-    if (dto.status) query = query.eq("official_status", dto.status);
-    if (dto.stage) query = query.eq("stage", dto.stage);
-    if (dto.favorite === "true") query = query.eq("favorite", true);
-    if (dto.profile) query = query.contains("profile_ids", [dto.profile]);
-    if (dto.match === "recommended")
-      query = query.or(
-        "match_kind.eq.matched,manual_selected.eq.true,favorite.eq.true",
-      );
-    else if (dto.match === "manual") query = query.eq("manual_selected", true);
-    else if (dto.match) query = query.eq("match_kind", dto.match);
-    if (dto.minBudget !== undefined) query = query.gte("budget", dto.minBudget);
-    if (dto.maxBudget !== undefined) query = query.lte("budget", dto.maxBudget);
-    if (dto.minBudget !== undefined || dto.maxBudget !== undefined)
-      query = query.eq("currency", "CLP");
-    if (dto.closing === "true") {
-      const now = new Date().toISOString(),
-        end = new Date(Date.now() + 86400000).toISOString();
-      query = query
-        .eq("official_status", "publicada")
-        .or(
-          `and(verified_closes_at.gte.${now},verified_closes_at.lte.${end}),and(verified_closes_at.is.null,closes_at.gte.${now},closes_at.lte.${end})`,
+    const nowMs = Date.now(), now = new Date(nowMs).toISOString(), end = new Date(nowMs + RADAR_DAY_MS).toISOString();
+    const baseQuery = (head = false) => {
+      let query = this.db.client
+        .from("radar_opportunities_deadlines")
+        .select(columns, { count: "exact", head });
+      const q = fold(safeFilter(dto.q ?? ""));
+      if (q) query = query.ilike("search_text", `%${q}%`);
+      const commune = fold(safeFilter(dto.commune ?? ""));
+      if (commune) query = query.ilike("delivery_search", `%${commune}%`);
+      if (dto.source) query = query.eq("source", dto.source);
+      if (dto.region !== undefined) query = query.eq('region', dto.region);
+      if (dto.status) query = query.eq("official_status", dto.status);
+      if (dto.stage) query = query.eq("stage", dto.stage);
+      if (dto.favorite === "true") query = query.eq("favorite", true);
+      if (dto.profile) query = query.contains("profile_ids", [dto.profile]);
+      if (dto.match === "recommended")
+        query = query.or(
+          "match_kind.eq.matched,manual_selected.eq.true,favorite.eq.true",
         );
+      else if (dto.match === "manual") query = query.eq("manual_selected", true);
+      else if (dto.match) query = query.eq("match_kind", dto.match);
+      if (dto.minBudget !== undefined) query = query.gte("budget", dto.minBudget);
+      if (dto.maxBudget !== undefined) query = query.lte("budget", dto.maxBudget);
+      if (dto.minBudget !== undefined || dto.maxBudget !== undefined)
+        query = query.eq("currency", "CLP");
+      return query;
+    };
+    const within24 = (query: ReturnType<typeof baseQuery>) => query.eq('official_status', 'publicada')
+      .gt('effective_closes_at', now).lte('effective_closes_at', end);
+    let query = baseQuery();
+    if (dto.closing === "true") {
+      query = within24(query);
     }
-    const result = await query
-      .order("created_at", { ascending: false })
-      .order("id")
-      .range((page - 1) * pageSize, page * pageSize - 1);
+    query = dto.sort === 'closing' || dto.closing === 'true' ? query.order('effective_closes_at', { ascending: true, nullsFirst: false }) :
+      query.order('created_at', { ascending: false });
+    const [result, closing, unknown] = await Promise.all([
+      query.order('id').range((page - 1) * pageSize, page * pageSize - 1).returns<RadarOpportunity[]>(),
+      within24(baseQuery(true)),
+      baseQuery(true).is('effective_closes_at', null),
+    ]);
+    this.check(closing); this.check(unknown);
     return {
-      items: this.check(result),
+      items: this.check(result) ?? [],
       total: result.count ?? 0,
       page,
       pageSize,
+      asOf: now, closingTotal: closing.count ?? 0, unknownCloseTotal: unknown.count ?? 0,
     };
   }
   async detail(id: string) {
     const row = this.check(
       await this.db.client
-        .from("radar_opportunities")
+        .from("radar_opportunities_deadlines")
         .select(columns)
         .eq("id", id)
         .maybeSingle(),
@@ -157,12 +166,12 @@ export class RadarService {
       expected_updated_at === "none"
         ? query.is("tracking_updated_at", null)
         : query.eq("tracking_updated_at", expected_updated_at);
-    const result = this.check(await query.select(columns).maybeSingle());
+    const result = this.check(await query.select('id').maybeSingle());
     if (!result)
       throw new ConflictException(
         "La ficha cambió mientras la editabas. Recárgala antes de guardar.",
       );
-    return result;
+    return this.check(await this.db.client.from('radar_opportunities_deadlines').select(columns).eq('id', result.id).single());
   }
   async profiles() {
     return this.check(

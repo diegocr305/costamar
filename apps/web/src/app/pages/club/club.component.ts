@@ -1,3 +1,4 @@
+import { ActionIconComponent } from '../../shared/action-icon.component';
 import { Component, OnInit, inject } from '@angular/core';
 import { BUSINESS } from '@costamar/shared';
 import { SeoService } from '../../core/seo.service';
@@ -5,7 +6,7 @@ import { SeoService } from '../../core/seo.service';
 @Component({
   selector: 'cm-club',
   standalone: true,
-  imports: [],
+  imports: [ActionIconComponent],
   template: `
     <section class="cm-section club-intro">
       <span class="cm-eyebrow">Un lugar en nuestra mesa</span>
@@ -13,7 +14,7 @@ import { SeoService } from '../../core/seo.service';
       <p>Regístrate gratis y consulta los beneficios y campañas disponibles para ti.</p>
       <p>Los regalos y beneficios de cumpleaños están sujetos a elegibilidad,
         vigencia y disponibilidad. Revisa las condiciones desde tu cuenta.</p>
-      <a [href]="business.clubUrl" class="cm-button cm-button--primary">Conoce Costa Mar Club ↗</a>
+      <a [href]="business.clubUrl" class="cm-button cm-button--primary"><cm-action-icon name="gift" />Conoce Costa Mar Club</a>
     </section>
   `,
   styles: ['.club-intro{max-width:760px;min-height:440px}.club-intro h1{font-size:clamp(2.5rem,6vw,4rem);color:var(--cm-deep)}.club-intro p{color:var(--cm-muted);max-width:560px}.club-intro .cm-button{margin-top:1rem}'],

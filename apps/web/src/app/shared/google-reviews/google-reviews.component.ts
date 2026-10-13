@@ -1,3 +1,4 @@
+import { ActionIconComponent } from '../action-icon.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +11,7 @@ type SortOrder = 'recent' | 'best' | 'worst';
 @Component({
   selector: 'cm-google-reviews',
   standalone: true,
-  imports: [FormsModule, DatePipe, DecimalPipe],
+  imports: [ActionIconComponent, FormsModule, DatePipe, DecimalPipe],
   templateUrl: './google-reviews.component.html',
   styleUrl: './google-reviews.component.css',
 })

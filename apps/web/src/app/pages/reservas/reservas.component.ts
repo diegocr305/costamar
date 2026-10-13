@@ -1,3 +1,4 @@
+import { ActionIconComponent } from '../../shared/action-icon.component';
 import { isPlatformBrowser } from '@angular/common';
 import { Component, DestroyRef, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +9,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BUSINESS, RESERVATION_LABELS, RESERVATION_AREAS, chileLocalDateTime, chileLocalToIso, reservationSlots, type Reservation, type ReservationConfig, type ReservationPage, type ReservationArea } from '@costamar/shared';
 import { resolveApiUrl } from '../../core/api-url';
 import { SeoService } from '../../core/seo.service';
-@Component({selector:'cm-reservas',standalone:true,imports:[FormsModule],templateUrl:'./reservas.component.html',styleUrl:'./reservas.component.css'})
+@Component({selector:'cm-reservas',standalone:true,imports: [ActionIconComponent, FormsModule],templateUrl:'./reservas.component.html',styleUrl:'./reservas.component.css'})
 export class ReservasComponent implements OnInit {
  private readonly http=inject(HttpClient);private readonly route=inject(ActivatedRoute);private readonly router=inject(Router);
  private readonly browser=isPlatformBrowser(inject(PLATFORM_ID));

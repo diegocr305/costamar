@@ -40,3 +40,4 @@ export * from './types/reviews';
 // Tipos — Esquema de base de datos (generado desde Supabase)
 export * from './types/database';
 export * from './types/radar';
+export * from './validation/radar-deadline';

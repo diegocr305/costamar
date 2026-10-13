@@ -1,4 +1,4 @@
-﻿<section class="hero" aria-labelledby="hero-title">
+<section class="hero" aria-labelledby="hero-title">
   <picture class="hero__bg">
     <source media="(max-width: 640px)" srcset="assets/brand/home-hero-mobile.webp" />
     <img [src]="heroImage" alt="Ceviche Costa Mar con pescado, cebolla morada y limón" width="1600" height="1556" fetchpriority="high" decoding="async" />
@@ -9,10 +9,10 @@
     <h1 id="hero-title">El mar nos inspira.<br /><em>El Perú nos reúne.</em></h1>
     <p>Ceviches, cocina criolla y sabores para compartir en Costa Mar Barra Cevichera.</p>
     <div class="hero__cta">
-      <a routerLink="/carta" class="cm-button cm-button--primary">Explorar nuestra carta <span aria-hidden="true">↗</span></a>
-      <a routerLink="/reservas" class="cm-button cm-button--light">Reservar una mesa</a>
+      <a routerLink="/carta" class="cm-button cm-button--primary"><cm-action-icon name="menu" />Explorar nuestra carta</a>
+      <a routerLink="/reservas" class="cm-button cm-button--light"><cm-action-icon name="calendar" />Reservar una mesa</a>
     </div>
-    <a class="hero__discover" href="#sabores">Descubre Costa Mar <span aria-hidden="true">↓</span></a>
+    <a class="hero__discover" href="#sabores">Descubre Costa Mar <cm-action-icon name="arrowDown" /></a>
   </div>
   <span class="hero__signature" aria-hidden="true">Costa Mar / Barra Cevichera</span>
 </section>
@@ -31,7 +31,7 @@
     }
     @case ('loaded') {
       @if (flavors().length) {
-        <p class="flavors__hint">Desliza para descubrir <span aria-hidden="true">→</span></p>
+        <p class="flavors__hint">Desliza para descubrir <cm-action-icon name="arrow" /></p>
         <div class="flavors__grid" role="region" aria-label="Selección de platos de la carta" tabindex="0">
           @for (flavor of flavors(); track flavor.product.id; let i = $index) {
             <a class="flavor" [class.flavor--lead]="i === 0" routerLink="/carta" [fragment]="'cat-' + flavor.categoryId">
@@ -39,7 +39,7 @@
                 @if (!failedImages().has(flavor.product.id)) {
                   <img [src]="photo(flavor.product)" alt="" width="720" height="540" loading="lazy" decoding="async" (error)="photoFailed(flavor.product.id)" />
                 } @else { <span class="flavor__missing">Descúbrelo en nuestra carta</span> }
-                <span class="flavor__arrow" aria-hidden="true">↗</span>
+                <span class="flavor__arrow" aria-hidden="true"><cm-action-icon name="arrow" /></span>
               </div>
               <div class="flavor__caption"><span>{{ flavor.category }}</span><h3>{{ flavor.product.name }}</h3></div>
             </a>
@@ -48,27 +48,27 @@
       } @else { <p class="flavors__state">Estamos preparando las fotografías. Puedes explorar todos los platos en nuestra carta.</p> }
     }
   }
-  <div class="flavors__more"><a routerLink="/carta" class="cm-button cm-button--secondary">Ver carta completa <span aria-hidden="true">↗</span></a></div>
+  <div class="flavors__more"><a routerLink="/carta" class="cm-button cm-button--secondary"><cm-action-icon name="menu" />Ver carta completa</a></div>
 </section>
 
 <section class="club" aria-labelledby="club-title">
   <div class="club__inner cm-section">
-    <div class="club__intro"><span class="cm-eyebrow">Costa Mar Club</span><h2 id="club-title">Tu próxima visita<br />tiene <em>algo especial.</em></h2><p>Sé parte de nuestra mesa. Regístrate gratis y descubre los beneficios del Club desde tu cuenta.</p><a [href]="business.clubUrl" class="cm-button cm-button--primary">Únete a Costa Mar Club <span aria-hidden="true">↗</span></a></div>
+    <div class="club__intro"><span class="cm-eyebrow">Costa Mar Club</span><h2 id="club-title">Tu próxima visita<br />tiene <em>algo especial.</em></h2><p>Sé parte de nuestra mesa. Regístrate gratis y descubre los beneficios del Club desde tu cuenta.</p><a [href]="business.clubUrl" class="cm-button cm-button--primary"><cm-action-icon name="gift" />Únete a Costa Mar Club</a></div>
     <div class="club__benefits"><div><span class="club__number" aria-hidden="true">01</span><h3>Beneficios exclusivos</h3><p>Conoce las campañas y regalos que estén disponibles para ti.</p></div><div><span class="club__number" aria-hidden="true">02</span><h3>Tu cumpleaños, contigo</h3><p>Descubre el beneficio de cumpleaños y sus condiciones en el Club.</p></div><p class="club__conditions">Beneficios sujetos a elegibilidad, vigencia y disponibilidad. Consulta las condiciones de cada campaña.</p></div>
   </div>
 </section>
 
 <section class="experience cm-section" aria-labelledby="experience-title">
   <span class="cm-eyebrow">La experiencia Costa Mar</span>
-  <div class="experience__body"><h2 id="experience-title">Ven por los sabores.<br /><em>Quédate a compartir.</em></h2><div><p>Una mesa en Quillota y una carta para recorrer la cocina peruana: ceviches, especialidades marinas y platos criollos.</p><p>Elige lo que te apetezca, invita a tu gente y planifica tu próxima visita.</p><a routerLink="/reservas" class="cm-text-link">Reserva tu visita <span aria-hidden="true">↗</span></a></div></div>
+  <div class="experience__body"><h2 id="experience-title">Ven por los sabores.<br /><em>Quédate a compartir.</em></h2><div><p>Una mesa en Quillota y una carta para recorrer la cocina peruana: ceviches, especialidades marinas y platos criollos.</p><p>Elige lo que te apetezca, invita a tu gente y planifica tu próxima visita.</p><a routerLink="/reservas" class="cm-text-link"><cm-action-icon name="calendar" />Reserva tu visita</a></div></div>
 </section>
 
 <section class="visit" id="visitanos" aria-labelledby="visit-title">
-  <div class="cm-section"><div class="section-heading"><div><span class="cm-eyebrow">Nos vemos en Quillota</span><h2 id="visit-title">Tu mesa te espera.</h2></div><a routerLink="/reservas" class="cm-button cm-button--primary">Solicitar una reserva</a></div>
+  <div class="cm-section"><div class="section-heading"><div><span class="cm-eyebrow">Nos vemos en Quillota</span><h2 id="visit-title">Tu mesa te espera.</h2></div><a routerLink="/reservas" class="cm-button cm-button--primary"><cm-action-icon name="calendar" />Solicitar una reserva</a></div>
     <div class="info">
-      <article class="info__card"><span class="info__index" aria-hidden="true">01 / Dónde</span><h3>Visítanos</h3><p>{{ business.address }}</p><a class="cm-text-link" href="https://maps.app.goo.gl/EYVh6tqsw4tDTLVv9" target="_blank" rel="noopener">Cómo llegar <span aria-hidden="true">↗</span></a></article>
-      <article class="info__card"><span class="info__index" aria-hidden="true">02 / Cuándo</span><h3>Horarios</h3><ul class="hours">@for (h of business.hours; track h.days) {<li><span>{{ h.days }}</span><strong>{{ h.open }} – {{ h.close }}</strong></li>}</ul></article>
-      <article class="info__card"><span class="info__index" aria-hidden="true">03 / Conversemos</span><h3>Estamos cerca</h3><a class="info__phone" [href]="'tel:' + business.phone">{{ business.phoneDisplay }}</a><a class="info__email" [href]="'mailto:' + business.email">{{ business.email }}</a><a class="cm-text-link" [href]="business.whatsapp" target="_blank" rel="noopener">Escríbenos por WhatsApp <span aria-hidden="true">↗</span></a></article>
+      <article class="info__card"><span class="info__index" aria-hidden="true">01 / Dónde</span><h3>Visítanos</h3><p>{{ business.address }}</p><a class="cm-text-link" href="https://maps.app.goo.gl/EYVh6tqsw4tDTLVv9" target="_blank" rel="noopener"><cm-action-icon name="pin" />Cómo llegar</a></article>
+      <article class="info__card"><span class="info__index" aria-hidden="true">02 / Cuándo</span><h3 class="cm-action-label"><cm-action-icon name="clock" />Horarios</h3><ul class="hours">@for (h of business.hours; track h.days) {<li><span>{{ h.days }}</span><strong>{{ h.open }} – {{ h.close }}</strong></li>}</ul></article>
+      <article class="info__card"><span class="info__index" aria-hidden="true">03 / Conversemos</span><h3>Estamos cerca</h3><a class="info__phone cm-action-label" [href]="'tel:' + business.phone"><cm-action-icon name="phone" />{{ business.phoneDisplay }}</a><a class="info__email cm-action-label" [href]="'mailto:' + business.email"><cm-action-icon name="mail" />{{ business.email }}</a><a class="cm-text-link cm-whatsapp-link" [href]="business.whatsapp" target="_blank" rel="noopener"><cm-action-icon name="whatsapp" />Escríbenos por WhatsApp <cm-action-icon name="arrow" /></a></article>
     </div>
   </div>
 </section>

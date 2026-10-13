@@ -1,4 +1,5 @@
 import type { RadarSource, RadarItem, RadarDocument } from "@costamar/shared";
+import { deadlineInstant } from '@costamar/shared';
 import { createHash } from "crypto";
 export type JsonObject = Record<string, any>;
 export function fold(value: unknown): string {
@@ -21,9 +22,8 @@ export function validCode(source: RadarSource, value: string): boolean {
 }
 // Never infer a timezone from a bare official deadline. Verification can be recorded in Admin.
 export function explicitDate(value: string): string | null {
-  if (!/T.*(?:Z|[+-]\d{2}:\d{2})$/.test(value)) return null;
-  const date = new Date(value);
-  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+  const date = deadlineInstant(value);
+  return date === null ? null : new Date(date).toISOString();
 }
 const regions = [
   "tarapaca",

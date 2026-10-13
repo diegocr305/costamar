@@ -33,15 +33,15 @@
       [class.is-open]="menuOpen()"
       aria-label="Navegación principal"
     >
-      <a routerLink="/carta" routerLinkActive="is-active" (click)="closeMenu()">Carta</a>
-      <a routerLink="/reservas" routerLinkActive="is-active" (click)="closeMenu()">Reservas</a>
-      <a routerLink="/pedidos" routerLinkActive="is-active" (click)="closeMenu()">Pedidos</a>
-      <a [href]="business.clubUrl" rel="noopener" (click)="closeMenu()">Club</a>
+      <a routerLink="/carta" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()"><cm-action-icon name="menu" />Carta</a>
+      <a routerLink="/reservas" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()"><cm-action-icon name="calendar" />Reservas</a>
+      <a routerLink="/pedidos" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()"><cm-action-icon name="bag" />Pedidos</a>
+      <a [href]="business.clubUrl" rel="noopener" (click)="closeMenu()"><cm-action-icon name="gift" />Club</a>
       <a
         routerLink="/reservas"
         class="cm-header__cta"
         (click)="closeMenu()"
-        >Reservar</a
+        ><cm-action-icon name="calendar" />Reservar</a
       >
     </nav>
   </div>
@@ -64,10 +64,10 @@
     <nav class="cm-footer__col" aria-label="Enlaces rápidos">
       <h4>Explora</h4>
       <ul class="cm-footer__links">
-        <li><a routerLink="/carta">Carta</a></li>
-        <li><a routerLink="/reservas">Reservas</a></li>
-        <li><a routerLink="/pedidos">Pedidos</a></li>
-        <li><a [href]="business.clubUrl" rel="noopener">Club Costa Mar</a></li>
+        <li><a routerLink="/carta"><cm-action-icon name="menu" />Carta</a></li>
+        <li><a routerLink="/reservas"><cm-action-icon name="calendar" />Reservas</a></li>
+        <li><a routerLink="/pedidos"><cm-action-icon name="bag" />Pedidos</a></li>
+        <li><a [href]="business.clubUrl" rel="noopener"><cm-action-icon name="gift" />Club Costa Mar</a></li>
       </ul>
     </nav>
 
@@ -75,11 +75,11 @@
     <div class="cm-footer__col">
       <h4>Contacto</h4>
       <ul class="cm-footer__links">
-        <li><a [href]="'tel:' + business.phone">{{ business.phoneDisplay }}</a></li>
-        <li><a [href]="'mailto:' + business.email">{{ business.email }}</a></li>
+        <li><a [href]="'tel:' + business.phone"><cm-action-icon name="phone" />{{ business.phoneDisplay }}</a></li>
+        <li><a [href]="'mailto:' + business.email"><cm-action-icon name="mail" />{{ business.email }}</a></li>
         <li><a [href]="business.instagram" target="_blank" rel="noopener">Instagram</a></li>
         <li><a [href]="business.facebook" target="_blank" rel="noopener">Facebook</a></li>
-        <li><a [href]="business.whatsapp" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a [href]="business.whatsapp" target="_blank" rel="noopener"><cm-action-icon name="whatsapp" />WhatsApp</a></li>
       </ul>
     </div>
 
@@ -91,7 +91,7 @@
           href="https://maps.app.goo.gl/EYVh6tqsw4tDTLVv9"
           target="_blank"
           rel="noopener"
-          >{{ business.address }}</a
+          ><cm-action-icon name="pin" />{{ business.address }}</a
         >
       </p>
       <ul class="cm-footer__hours">
