@@ -8,9 +8,17 @@
     <button
       class="cm-button"
       (click)="sync()"
-      [disabled]="saving() || !status()?.configured || status()?.running || paused()"
+      [disabled]="
+        saving() || !status()?.configured || status()?.running || paused()
+      "
     >
-      {{ status()?.running ? "Revisando…" : paused() ? "Consulta en pausa" : "Revisar ahora" }}
+      {{
+        status()?.running
+          ? "Revisando…"
+          : paused()
+            ? "Consulta en pausa"
+            : "Revisar ahora"
+      }}
     </button>
   </header>
   @if (notice()) {
@@ -51,7 +59,9 @@
       [class.active]="tab === 'opportunities'"
       (click)="switchTab('opportunities')"
     >
-      Oportunidades</button
+      Mi Radar</button
+    ><button [class.active]="tab === 'general'" (click)="switchTab('general')">
+      General diario</button
     ><button [class.active]="tab === 'alerts'" (click)="switchTab('alerts')">
       Avisos
       @if (status()?.unread) {
@@ -68,6 +78,7 @@
     <p class="notice error" role="alert">{{ error() }}</p>
   }
   @if (tab === "opportunities") {
+    <nav class="tabs" aria-label="Clasificación de Radar"><button [class.active]="matchFilter==='recommended'" (click)="bucket('recommended')">Coincidencias y guardadas</button><button [class.active]="matchFilter==='review'" (click)="bucket('review')">Por revisar</button><button [class.active]="matchFilter==='manual'" (click)="bucket('manual')">Guardadas manualmente</button></nav>
     <form class="filters card" (ngSubmit)="load()">
       <label class="wide"
         >Buscar<input
@@ -94,6 +105,14 @@
         </select></label
       >
       <label
+        >Clasificación<select name="matchFilter" [(ngModel)]="matchFilter">
+          <option value="recommended">Coincidencias y guardadas</option>
+          <option value="matched">Coincidencias del perfil</option>
+          <option value="review">Por revisar</option>
+          <option value="manual">Seleccionadas manualmente</option>
+          <option value="">Todas las guardadas</option>
+        </select></label
+      ><label
         >Mi seguimiento<select name="stageFilter" [(ngModel)]="stageFilter">
           <option value="">Todos</option>
           @for (s of stages; track s) {
@@ -180,6 +199,11 @@
             }
           </div>
           <small>{{ row.code }} · {{ row.buyer }}</small>
+          <span
+            class="badge"
+            [class.review-badge]="row.match_kind === 'review'"
+            >{{ classification(row) }}</span
+          >
           <h3>{{ row.name }}</h3>
           <div class="amount">{{ money(row) }}</div>
           <small>{{ row.budget_type }} · IVA: verificar bases</small>
@@ -230,6 +254,143 @@
           Siguiente
         </button>
       </div>
+    }
+  }
+  @if (tab === "general") {
+    <section class="general-intro card">
+      <h2>General diario</h2>
+      <p>
+        Revisa procesos publicados y activos sin el filtro gastronómico. Incluye
+        compras publicadas en días anteriores que siguen abiertas.
+      </p>
+      <p class="hint">
+        El Radar selecciona coincidencias; este listado permite revisar otras
+        oportunidades y guardarlas manualmente.
+      </p>
+    </section>
+    <div class="tabs" aria-label="Procedimiento del listado general">
+      <button
+        [class.active]="generalSource === 'compra_agil'"
+        (click)="changeGeneralSource('compra_agil')"
+        [disabled]="generalLoading()"
+      >
+        Compras Ágiles</button
+      ><button
+        [class.active]="generalSource === 'licitacion'"
+        (click)="changeGeneralSource('licitacion')"
+        [disabled]="generalLoading()"
+      >
+        Licitaciones
+      </button>
+    </div>
+    <form class="card general-filters" (ngSubmit)="loadGeneral()">
+      <label
+        >Buscar en el listado<input
+          name="generalQuery"
+          [(ngModel)]="generalQuery"
+          placeholder="Cualquier palabra o código"
+      /></label>
+      @if (generalSource === "compra_agil") {
+        <label
+          >Región del comprador<select
+            name="generalRegion"
+            [(ngModel)]="generalRegion"
+          >
+            <option [ngValue]="null">Todo Chile</option>
+            @for (r of regions; track r.code) {
+              <option [ngValue]="r.code">{{ r.name }}</option>
+            }
+          </select></label
+        >
+      }
+      <button
+        class="cm-button cm-button--primary"
+        [disabled]="generalLoading()"
+      >
+        Consultar</button
+      ><button
+        type="button"
+        class="cm-button"
+        (click)="loadGeneral(1, true)"
+        [disabled]="generalLoading() || paused()"
+      >
+        Actualizar fuente
+      </button>
+    </form>
+    <p class="hint">
+      {{ generalResult()?.scope || generalScope() }} · Sin exclusiones por
+      comida.
+      @if (generalSource === "licitacion") {
+        La región, el comprador y los productos se revisan al abrir la ficha.
+      }
+    </p>
+    @if (generalError()) {
+      <p class="notice error" role="alert">
+        {{ generalError() }}
+        <button class="text-button" (click)="loadGeneral()">Reintentar</button>
+      </p>
+    }
+    @if (generalLoading()) {
+      <p role="status">Consultando procesos publicados…</p>
+    } @else if (generalResult(); as list) {
+      <div class="list-head">
+        <h2>{{ list.total }} procesos publicados</h2>
+        <small
+          >Fuente consultada: {{ time(list.checkedAt)
+          }}{{ list.cached ? " · guardado temporalmente" : "" }}</small
+        >
+      </div>
+      @if(list.totalPages>1){<div class="pagination"><button class="cm-button" [disabled]="generalLoading()||list.page<=1" (click)="loadGeneral(list.page-1)">Anterior</button><span>Página {{list.page}} de {{list.totalPages}}</span><button class="cm-button" [disabled]="generalLoading()||list.page>=list.totalPages" (click)="loadGeneral(list.page+1)">Siguiente</button></div>}
+      @if (list.stale) {
+        <p class="notice warning">
+          No pudimos actualizar la fuente. Este listado corresponde a la última
+          consulta guardada; comprueba el estado oficial antes de cotizar.
+        </p>
+      }
+      <div class="general-list">
+        @for (row of list.items; track row.code) {
+          <article class="card general-row">
+            <div>
+              <small>{{ row.code }} · Publicada</small>
+              <h3>{{ row.name }}</h3>
+              <p>{{ row.buyer }}</p>
+              <small
+                >Cierre según fuente: {{ row.closes_raw || "No informado" }} ·
+                confirmar en ficha</small
+              >
+            </div>
+            <button
+              class="cm-button"
+              (click)="openGeneral(row)"
+              [disabled]="saving()"
+            >
+              Guardar y ver ficha →
+            </button>
+          </article>
+        } @empty {
+          <div class="card empty">
+            No hay procesos con esta búsqueda en el listado consultado.
+          </div>
+        }
+      </div>
+      @if (list.totalPages > 1) {
+        <div class="pagination">
+          <button
+            class="cm-button"
+            [disabled]="generalLoading() || list.page <= 1"
+            (click)="loadGeneral(list.page - 1)"
+          >
+            Anterior</button
+          ><span>Página {{ list.page }} de {{ list.totalPages }}</span
+          ><button
+            class="cm-button"
+            [disabled]="generalLoading() || list.page >= list.totalPages"
+            (click)="loadGeneral(list.page + 1)"
+          >
+            Siguiente
+          </button>
+        </div>
+      }
     }
   }
   @if (tab === "alerts") {
@@ -292,6 +453,7 @@
       Las comunas preferidas destacan entregas cercanas. No excluyen otros
       destinos: evalúa siempre su logística.
     </p>
+    <p class="hint">Reconocemos variantes de comida en singular y plural. Las palabras excluidas señalan compras «Por revisar»; no eliminan automáticamente un servicio mixto. Usa General diario para comprobar otros títulos.</p>
     <div class="profiles-layout">
       <div class="profiles">
         @for (p of profiles(); track p.id) {
@@ -418,6 +580,19 @@
         <p class="notice error" role="alert">{{ detailError() }}</p>
       }
       @if (selected(); as row) {
+        <p class="hint">
+          {{ classification(row) }}
+          @if (row.manual_selected) {
+            · Guardada desde General diario
+          }
+        </p>
+        @if (row.match_reasons && row.match_reasons.length) {
+          <ul class="hint">
+            @for (reason of row.match_reasons; track reason) {
+              <li>{{ reason }}</li>
+            }
+          </ul>
+        }
         <span class="badge"
           >{{ sourceName(row.source) }} · {{ row.official_status }}</span
         >

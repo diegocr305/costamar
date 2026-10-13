@@ -9,13 +9,12 @@ import {
 } from "./mercado-publico.client";
 import {
   fingerprint,
-  keywordMatch,
-  matchProfiles,
   normalizeAgil,
   normalizeLicitacion,
   validCode,
 } from "./radar.normalize";
 import { RadarEmailService } from "./radar.email";
+import { classifyOpportunity, discoveryKind } from "./radar.match";
 const hash = (value: unknown) =>
   createHash("sha256").update(JSON.stringify(value)).digest("hex");
 @Injectable()
@@ -68,7 +67,9 @@ export class RadarSync {
         const rows = this.check(
           await this.db.client
             .from("radar_opportunities")
-            .select("source,code,checked_at,favorite,official_status,stage")
+            .select(
+              "source,code,checked_at,favorite,official_status,stage,manual_selected",
+            )
             .order("id")
             .range(page * 1000, page * 1000 + 999),
         );
@@ -92,11 +93,12 @@ export class RadarSync {
         if (Date.now() > deadline - 120000) break;
         const scope = `compra_agil:${region}`,
           old = (cursors ?? []).find((x) => x.scope === scope);
-        const profileRevision = hash(
+        const profileRevision = hash([
+          "coverage-v2",
           profiles
             .filter((p) => p.regions.includes(region))
             .map((p) => [p.id, p.updated_at]),
-        );
+        ]);
         const changed = old && old.profile_revision !== profileRevision;
         const reconcile =
           old?.bootstrapped_at &&
@@ -155,10 +157,20 @@ export class RadarSync {
               profiles.some(
                 (p) =>
                   p.regions.includes(region) &&
-                  keywordMatch(`${x.nombre ?? ""} ${x.descripcion ?? ""}`, p),
+                  discoveryKind(
+                    "compra_agil",
+                    `${x.nombre ?? ""} ${x.descripcion ?? ""}`,
+                    p,
+                  ),
               ),
           );
-          await this.enqueue(owner, "compra_agil", relevant);
+          await this.enqueue(
+            owner,
+            "compra_agil",
+            relevant,
+            profiles,
+            knownCodes,
+          );
           const done = cursor.next_page >= payload.paginacion.total_paginas;
           cursor = {
             ...cursor,
@@ -185,24 +197,31 @@ export class RadarSync {
         Date.now() < deadline - 90000
       ) {
         const active = await this.upstream.activeLicitaciones(owner);
+        this.check(
+          await this.db.client
+            .from("radar_general_cache")
+            .upsert({
+              cache_key: "licitacion:active",
+              payload: active,
+              checked_at: new Date().toISOString(),
+            }),
+        );
         const relevant = active.filter(
           (x: any) =>
             knownCodes.has(`licitacion:${x.CodigoExterno}`) ||
-            profiles.some(
-              (p) => p.include_licitaciones && keywordMatch(x.Nombre ?? "", p),
+            profiles.some((p) =>
+              discoveryKind("licitacion", x.Nombre ?? "", p),
             ),
         );
-        await this.enqueue(owner, "licitacion", relevant);
+        await this.enqueue(owner, "licitacion", relevant, profiles, knownCodes);
         this.check(
-          await this.db.client
-            .from("radar_cursors")
-            .upsert({
-              scope: "licitacion",
-              mode: "active",
-              next_page: 1,
-              completed_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            }),
+          await this.db.client.from("radar_cursors").upsert({
+            scope: "licitacion",
+            mode: "active",
+            next_page: 1,
+            completed_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          }),
         );
       }
       // Tracked closed/removed processes still receive a direct detail refresh.
@@ -213,19 +232,27 @@ export class RadarSync {
             ["Postulada", "Cotizando"].includes(row.stage)) &&
           Date.now() - new Date(row.checked_at).getTime() > 3600000
         ) {
-          await this.enqueue(owner, row.source as RadarSource, [
-            row.source === "compra_agil"
-              ? { codigo: row.code, refresh: true }
-              : { CodigoExterno: row.code, refresh: true },
-          ]);
+          await this.enqueue(
+            owner,
+            row.source as RadarSource,
+            [
+              row.source === "compra_agil"
+                ? { codigo: row.code, refresh: true }
+                : { CodigoExterno: row.code, refresh: true },
+            ],
+            profiles,
+            knownCodes,
+          );
         }
       }
       const pending = this.check(
         await this.db.client.rpc("radar_pending_candidates", { p_limit: 60 }),
       );
       let warning: string | null = null;
+      let reviewDetails = 0;
       for (const candidate of pending) {
         if (Date.now() > deadline - 60000) break;
+        if (candidate.priority === 1 && reviewDetails++ >= 8) continue;
         try {
           const raw = await this.upstream.detail(
             owner,
@@ -237,16 +264,28 @@ export class RadarSync {
               ? normalizeAgil(raw)
               : normalizeLicitacion(raw);
           if (row.code !== candidate.code) throw new Error("RADAR_SCHEMA");
-          row.profile_ids = matchProfiles(row, profiles);
+          const classification = classifyOpportunity(row, profiles);
+          const remembered = known.find(
+            (x) => x.source === row.source && x.code === row.code,
+          );
+          const data = {
+            ...row,
+            ...classification,
+            match_kind: classification.profile_ids.length
+              ? classification.match_kind
+              : remembered?.manual_selected
+                ? "manual"
+                : "review",
+          };
           // Keep tracked records even when new exclusions disqualify them. Discard irrelevant national candidates.
           if (
-            row.profile_ids.length ||
+            data.profile_ids.length ||
             knownCodes.has(`${row.source}:${row.code}`)
           )
             this.check(
               await this.db.client.rpc("radar_ingest", {
                 p_owner: owner,
-                p_data: row,
+                p_data: data,
                 p_raw: raw,
                 p_fingerprint: fingerprint(row),
               }),
@@ -311,12 +350,34 @@ export class RadarSync {
       this.busy = false;
     }
   }
-  private async enqueue(owner: string, source: RadarSource, rows: any[]) {
+  private async enqueue(
+    owner: string,
+    source: RadarSource,
+    rows: any[],
+    profiles: RadarProfile[],
+    knownCodes: Set<string>,
+  ) {
     const candidates = rows.map((x) => ({
       source,
       code: source === "compra_agil" ? x.codigo : x.CodigoExterno,
-      revision: hash(x),
+      revision: hash({ matching: "coverage-v2", payload: x }),
       payload: x,
+      priority: knownCodes.has(
+        `${source}:${source === "compra_agil" ? x.codigo : x.CodigoExterno}`,
+      )
+        ? 4
+        : profiles.some(
+              (p) =>
+                discoveryKind(
+                  source,
+                  source === "compra_agil"
+                    ? `${x.nombre ?? ""} ${x.descripcion ?? ""}`
+                    : (x.Nombre ?? ""),
+                  p,
+                ) === "matched",
+            )
+          ? 3
+          : 1,
     }));
     if (candidates.some((x) => !validCode(source, x.code ?? "")))
       throw new RadarUpstreamError(

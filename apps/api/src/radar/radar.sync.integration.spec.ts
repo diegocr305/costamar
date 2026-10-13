@@ -87,12 +87,10 @@ integration("Radar sincronización con PostgreSQL real", () => {
     );
     upstream = {
       configured: () => true,
-      agilePage: jest
-        .fn()
-        .mockResolvedValue({
-          items: [{ codigo: detail.codigo, nombre: detail.nombre }],
-          paginacion: { total_paginas: 1 },
-        }),
+      agilePage: jest.fn().mockResolvedValue({
+        items: [{ codigo: detail.codigo, nombre: detail.nombre }],
+        paginacion: { total_paginas: 1 },
+      }),
       activeLicitaciones: jest.fn().mockResolvedValue([]),
       detail: jest.fn().mockResolvedValue(detail),
     };

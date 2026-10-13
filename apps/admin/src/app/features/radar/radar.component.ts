@@ -22,6 +22,8 @@ import type {
   RadarOpportunity,
   RadarProfile,
   RadarStatus,
+  RadarGeneralList,
+  RadarGeneralItem,
 } from "@costamar/shared";
 import { environment } from "../../../environments/environment";
 type Detail = RadarOpportunity & {
@@ -71,6 +73,14 @@ export class RadarComponent implements OnInit, OnDestroy {
   protected stageFilter = "";
   protected commune = "";
   protected profileFilter = "";
+  protected matchFilter = "recommended";
+  protected generalSource = "compra_agil";
+  protected generalRegion: number | null = null;
+  protected generalQuery = "";
+  protected generalLoading = signal(false);
+  protected generalError = signal("");
+  protected generalResult = signal<RadarGeneralList | null>(null);
+  private generalRequest = 0;
   protected favoriteOnly = false;
   protected closingOnly = false;
   protected minBudget: number | null = null;
@@ -104,6 +114,7 @@ export class RadarComponent implements OnInit, OnDestroy {
     this.destroyed = true;
     this.listRequest++;
     this.detailRequest++;
+    this.generalRequest++;
     document.body.style.overflow = "";
     if (this.timer) clearInterval(this.timer);
   }
@@ -158,12 +169,16 @@ export class RadarComponent implements OnInit, OnDestroy {
   }
   protected healthNotice() {
     const s = this.status();
-    if (!s) return '';
-    if (!s.configured) return 'Falta activar el acceso a Mercado Público. Las oportunidades aparecerán después de la primera revisión.';
-    if (s.last_error) return `${s.last_error} Conservamos la última información disponible.`;
-    if (this.workerMissing()) return 'La revisión automática no está activa o no ha informado recientemente. Puedes seguir consultando las oportunidades guardadas.';
-    if (this.stale() && s.last_success_at) return 'La información necesita actualizarse. Comprueba la ficha oficial antes de cotizar.';
-    return '';
+    if (!s) return "";
+    if (!s.configured)
+      return "Falta activar el acceso a Mercado Público. Las oportunidades aparecerán después de la primera revisión.";
+    if (s.last_error)
+      return `${s.last_error} Conservamos la última información disponible.`;
+    if (this.workerMissing())
+      return "La revisión automática no está activa o no ha informado recientemente. Puedes seguir consultando las oportunidades guardadas.";
+    if (this.stale() && s.last_success_at)
+      return "La información necesita actualizarse. Comprueba la ficha oficial antes de cotizar.";
+    return "";
   }
   protected paused() {
     const until = this.status()?.blocked_until;
@@ -193,6 +208,79 @@ export class RadarComponent implements OnInit, OnDestroy {
   }
   protected sourceName(value: string) {
     return value === "compra_agil" ? "Compra Ágil" : "Licitación";
+  }
+  protected classification(row: RadarOpportunity) {
+    return row.match_kind === "review"
+      ? "Por revisar"
+      : row.match_kind === "manual"
+        ? "Selección manual"
+        : "Coincidencia del perfil";
+  }
+  protected bucket(kind:string){this.matchFilter=kind;void this.load();}
+  protected generalScope() {
+    return this.generalSource === "licitacion"
+      ? "Licitaciones · Todo Chile"
+      : this.generalRegion === null
+        ? "Compras Ágiles · Todo Chile"
+        : `Compras Ágiles · ${this.regionNames([this.generalRegion])}`;
+  }
+  protected async loadGeneral(page = 1, refresh = false) {
+    const request = ++this.generalRequest;
+    this.generalLoading.set(true);
+    this.generalError.set("");
+    let params = new HttpParams()
+      .set("source", this.generalSource)
+      .set("page", page)
+      .set("q", this.generalQuery.trim())
+      .set("refresh", String(refresh));
+    if (this.generalSource === "compra_agil" && this.generalRegion !== null)
+      params = params.set("region", this.generalRegion);
+    try {
+      const result = await firstValueFrom(
+        this.http
+          .get<RadarGeneralList>(this.base + "/general", { params })
+          .pipe(timeout(50000)),
+      );
+      if (request === this.generalRequest) this.generalResult.set(result);
+    } catch (e) {
+      if (request === this.generalRequest) {
+        this.generalResult.set(null);
+        this.generalError.set(
+          this.errorText(
+            e,
+            "No pudimos obtener el listado general. Inténtalo de nuevo.",
+          ),
+        );
+      }
+    } finally {
+      if (request === this.generalRequest) this.generalLoading.set(false);
+    }
+  }
+  protected changeGeneralSource(source: string) {
+    this.generalSource = source;
+    this.generalResult.set(null);
+    void this.loadGeneral();
+  }
+  protected async openGeneral(row: RadarGeneralItem) {
+    if (this.saving()) return;
+    this.saving.set(true);
+    this.generalError.set("");
+    try {
+      const result = await firstValueFrom(
+        this.http
+          .post<{
+            id: string;
+          }>(`${this.base}/general/${row.source}/${row.code}/import`, {})
+          .pipe(timeout(50000)),
+      );
+      this.saving.set(false);
+      await this.open(result.id);
+      this.notice.set("Oportunidad guardada desde el listado general.");
+    } catch (e) {
+      this.generalError.set(this.errorText(e, "No pudimos abrir esta ficha."));
+    } finally {
+      this.saving.set(false);
+    }
   }
   protected regionNames(codes: number[]) {
     return codes
@@ -226,6 +314,7 @@ export class RadarComponent implements OnInit, OnDestroy {
       .set("source", this.source)
       .set("status", this.officialStatus)
       .set("stage", this.stageFilter)
+      .set("match", this.matchFilter)
       .set("commune", this.commune.trim())
       .set("favorite", String(this.favoriteOnly))
       .set("closing", String(this.closingOnly));
@@ -408,6 +497,8 @@ export class RadarComponent implements OnInit, OnDestroy {
   }
   protected async switchTab(tab: string) {
     this.tab = tab;
+    if (tab === "opportunities") void this.load();
+    if (tab === "general") await this.loadGeneral();
     if (tab === "alerts") await this.loadAlerts();
     if (tab === "profiles") await this.loadProfiles();
   }

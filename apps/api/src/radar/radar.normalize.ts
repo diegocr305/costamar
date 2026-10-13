@@ -1,9 +1,4 @@
-import type {
-  RadarProfile,
-  RadarSource,
-  RadarItem,
-  RadarDocument,
-} from "@costamar/shared";
+import type { RadarSource, RadarItem, RadarDocument } from "@costamar/shared";
 import { createHash } from "crypto";
 export type JsonObject = Record<string, any>;
 export function fold(value: unknown): string {
@@ -173,40 +168,15 @@ export function normalizeLicitacion(p: JsonObject): NormalizedOpportunity {
     })),
   };
 }
-export function keywordMatch(
-  text: string,
-  profile: Pick<RadarProfile, "keywords" | "exclude_keywords">,
-): boolean {
-  const haystack = fold(text);
-  return (
-    profile.keywords.some((k) => haystack.includes(fold(k))) &&
-    !profile.exclude_keywords.some((k) => haystack.includes(fold(k)))
-  );
-}
-export function matchProfiles(
-  row: NormalizedOpportunity,
-  profiles: RadarProfile[],
-): string[] {
-  const text = [
-    row.name,
-    row.description,
-    ...row.items.map((i) => `${i.name} ${i.description}`),
-  ].join(" ");
-  return profiles
-    .filter(
-      (p) =>
-        p.enabled &&
-        (row.source !== "licitacion" || p.include_licitaciones) &&
-        (row.region === null || p.regions.includes(row.region)) &&
-        keywordMatch(text, p) &&
-        (row.budget === null || row.currency !== "CLP"
-          ? p.include_unknown_budget
-          : (p.min_budget === null || row.budget >= p.min_budget) &&
-            (p.max_budget === null || row.budget <= p.max_budget)),
-    )
-    .map((p) => p.id);
-}
 export function fingerprint(row: NormalizedOpportunity): string {
-  const { profile_ids, source_changed_raw, ...stable } = row;
+  const stable: Record<string, unknown> = { ...row };
+  for (const key of [
+    "profile_ids",
+    "source_changed_raw",
+    "match_kind",
+    "match_reasons",
+    "manual_selected",
+  ])
+    delete stable[key];
   return createHash("sha256").update(JSON.stringify(stable)).digest("hex");
 }

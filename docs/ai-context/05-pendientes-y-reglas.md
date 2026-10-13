@@ -71,8 +71,10 @@ o datos que todavía no están disponibles.
 
 ## Validaciones prácticas pendientes
 
-- Radar: aplicar migración remota y desplegar API/Admin/worker. El conector
-  Supabase falló al renovar OAuth; no se aplicó esta migración remotamente.
+- Radar inicial confirmado por el dueño en producción. Para filtros ampliados
+  y General diario, aplicar 20261013001000_radar_general_and_matching.sql y
+  desplegar API/Admin/worker. El conector Supabase falla al renovar OAuth;
+  esta migración nueva no se aplicó remotamente.
   Configurar Resend antes de activar correo; validar Storage y Google del dueño.
 
 - Google real de cada empleado, cámara QR y PWA en sus teléfonos.

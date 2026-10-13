@@ -11,7 +11,7 @@ import { SupabaseService } from "../supabase/supabase.service";
 import { RadarProfileDto, RadarQueryDto, RadarTrackingDto } from "./radar.dto";
 import { fold } from "./radar.normalize";
 const columns =
-  "id,source,code,name,description,official_status,buyer,buyer_rut,region,buyer_commune,delivery,delivery_days,budget,currency,budget_type,call_number,closes_raw,closes_at,verified_closes_at,published_raw,source_changed_raw,checked_at,detail_checked_at,created_at,items,documents,profile_ids,stage,favorite,notes,tracking_updated_at";
+  "id,source,code,name,description,official_status,buyer,buyer_rut,region,buyer_commune,delivery,delivery_days,budget,currency,budget_type,call_number,closes_raw,closes_at,verified_closes_at,published_raw,source_changed_raw,checked_at,detail_checked_at,created_at,items,documents,profile_ids,stage,favorite,notes,tracking_updated_at,match_kind,match_reasons,manual_selected";
 export function safeFilter(value: string): string {
   return value.replace(/[^\p{L}\p{N}\s-]/gu, "").trim();
 }
@@ -46,8 +46,14 @@ export class RadarService {
     return result.data;
   }
   async list(dto: RadarQueryDto) {
-    if (dto.minBudget !== undefined && dto.maxBudget !== undefined && dto.maxBudget < dto.minBudget) {
-      throw new BadRequestException('El presupuesto máximo debe ser mayor o igual al mínimo.');
+    if (
+      dto.minBudget !== undefined &&
+      dto.maxBudget !== undefined &&
+      dto.maxBudget < dto.minBudget
+    ) {
+      throw new BadRequestException(
+        "El presupuesto máximo debe ser mayor o igual al mínimo.",
+      );
     }
     const page = dto.page ?? 1,
       pageSize = 20;
@@ -63,6 +69,12 @@ export class RadarService {
     if (dto.stage) query = query.eq("stage", dto.stage);
     if (dto.favorite === "true") query = query.eq("favorite", true);
     if (dto.profile) query = query.contains("profile_ids", [dto.profile]);
+    if (dto.match === "recommended")
+      query = query.or(
+        "match_kind.eq.matched,manual_selected.eq.true,favorite.eq.true",
+      );
+    else if (dto.match === "manual") query = query.eq("manual_selected", true);
+    else if (dto.match) query = query.eq("match_kind", dto.match);
     if (dto.minBudget !== undefined) query = query.gte("budget", dto.minBudget);
     if (dto.maxBudget !== undefined) query = query.lte("budget", dto.maxBudget);
     if (dto.minBudget !== undefined || dto.maxBudget !== undefined)

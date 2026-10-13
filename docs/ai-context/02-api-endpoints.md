@@ -135,6 +135,9 @@ Las rutas nuevas `/api/v1/radar/*` requieren superadmin/admin y usan las
 tablas privadas del módulo. Incluyen oportunidades, fichas, seguimiento,
 perfiles, estado/cola de sincronización, avisos y documentos privados.
 Contrato y despliegue: [Radar Comercial](../radar-comercial.md).
-La migración está validada localmente pero no aplicada remotamente por un
-fallo de renovación OAuth del conector Supabase. No confundir código listo
-con módulo disponible en producción. Correo Resend preparado, desactivado.
+La primera versión está confirmada por el dueño en producción. La ampliación
+General diario agrega GET /radar/general y POST /radar/general/:source/:code/import,
+y clasificación matched/review/manual. Requiere la migración nueva
+20261013001000_radar_general_and_matching.sql y despliegue de API/Admin/worker.
+El conector Supabase falla al renovar OAuth, así que esa migración nueva se
+entrega para ejecución manual. Correo Resend preparado, desactivado.

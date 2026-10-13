@@ -451,3 +451,61 @@ input[type="checkbox"] {
   min-height: 38px;
   font-weight: 400;
 }
+.review-badge {
+  background: #fff2da;
+  color: #805a12;
+  align-self: flex-start;
+}
+.general-intro h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+.general-intro p {
+  font-size: 0.85rem;
+}
+.general-filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto auto;
+  gap: 0.8rem;
+  align-items: end;
+}
+.general-list {
+  display: grid;
+  gap: 0.7rem;
+}
+.general-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.general-row > div {
+  min-width: 0;
+}
+.general-row h3 {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0.4rem 0;
+  overflow-wrap: anywhere;
+}
+.general-row p {
+  font-size: 0.8rem;
+  margin: 0.3rem 0;
+}
+.general-row .cm-button {
+  flex-shrink: 0;
+}
+@media (max-width: 900px) {
+  .general-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .general-filters {
+    grid-template-columns: 1fr;
+  }
+  .general-row {
+    align-items: start;
+    flex-direction: column;
+  }
+}

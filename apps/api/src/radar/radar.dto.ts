@@ -25,10 +25,20 @@ export class RadarQueryDto {
   @IsOptional() @IsIn(["true", "false"]) favorite = "false";
   @IsOptional() @IsIn(["true", "false"]) closing = "false";
   @IsOptional() @IsUUID() profile?: string;
+  @IsOptional()
+  @IsIn(["", "recommended", "matched", "review", "manual"])
+  match = "";
   @IsOptional() @IsString() @MaxLength(100) commune = "";
   @IsOptional() @Type(() => Number) @IsNumber() @Min(0) minBudget?: number;
   @IsOptional() @Type(() => Number) @IsNumber() @Min(0) maxBudget?: number;
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(10000) page = 1;
+}
+export class RadarGeneralQueryDto {
+  @IsIn(["compra_agil", "licitacion"]) source = "compra_agil";
+  @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(16) region?: number;
+  @IsOptional() @IsString() @MaxLength(120) q = "";
+  @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(10000) page = 1;
+  @IsOptional() @IsIn(["true", "false"]) refresh = "false";
 }
 export class RadarTrackingDto {
   @IsOptional() @IsIn(RADAR_STAGES) stage?: string;

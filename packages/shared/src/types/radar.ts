@@ -10,6 +10,29 @@ export const RADAR_STAGES = [
 ] as const;
 export type RadarStage = (typeof RADAR_STAGES)[number];
 export type RadarSource = "compra_agil" | "licitacion";
+export type RadarMatchKind = "matched" | "review" | "manual";
+export interface RadarGeneralItem {
+  source: RadarSource;
+  code: string;
+  name: string;
+  buyer: string;
+  region: number | null;
+  budget: number | null;
+  currency: string;
+  closes_raw: string;
+  official_status: string;
+}
+export interface RadarGeneralList {
+  items: RadarGeneralItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  checkedAt: string;
+  stale: boolean;
+  cached: boolean;
+  scope: string;
+}
 export const RADAR_REGIONS = [
   { code: 1, name: "Tarapacá" },
   { code: 2, name: "Antofagasta" },
@@ -71,6 +94,9 @@ export interface RadarOpportunity {
   favorite: boolean;
   notes: string;
   tracking_updated_at: string | null;
+  match_kind: RadarMatchKind;
+  match_reasons: string[];
+  manual_selected: boolean;
 }
 export interface RadarProfile {
   id: string;

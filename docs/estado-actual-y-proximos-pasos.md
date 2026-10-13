@@ -46,10 +46,11 @@ El dueño realiza el despliegue de nuevas correcciones mediante `deploy.sh`.
 
 ## Próximo orden propuesto
 
-El dueño aprobó desarrollar primero Radar Comercial. La primera versión está
-implementada y comprobada localmente; falta aplicar su migración remota y
-desplegar API/Admin/worker. El conector Supabase falló al renovar OAuth y no se
-modificó la base remota en esta entrega. El correo requiere configurar Resend.
+El dueño aprobó desarrollar primero Radar Comercial y confirmó la primera
+versión en producción. La ampliación de filtros y General diario está
+implementada y comprobada localmente; requiere su migración nueva y desplegar
+API/Admin/worker. El conector Supabase falla al renovar OAuth, por lo que esa
+migración nueva se entrega para ejecución del dueño. El correo sigue desactivado.
 Después se retoman los siguientes pasos operativos:
 
 1. Usar reservas y canjes con el equipo y validar Google/cámara/PWA en los teléfonos reales.

@@ -15,11 +15,31 @@ import { Roles } from "../common/decorators/roles.decorator";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import type { AuthenticatedUser } from "../auth/auth.types";
 import { RadarService } from "./radar.service";
-import { RadarProfileDto, RadarQueryDto, RadarTrackingDto } from "./radar.dto";
+import {
+  RadarProfileDto,
+  RadarQueryDto,
+  RadarTrackingDto,
+  RadarGeneralQueryDto,
+} from "./radar.dto";
+import { RadarGeneralService } from "./radar.general";
+import type { RadarSource } from "@costamar/shared";
 @Controller("radar")
 @Roles("superadmin", "admin")
 export class RadarController {
-  constructor(private readonly radar: RadarService) {}
+  constructor(
+    private readonly radar: RadarService,
+    private readonly general: RadarGeneralService,
+  ) {}
+  @Get("general") generalList(@Query() dto: RadarGeneralQueryDto) {
+    return this.general.list(dto);
+  }
+  @Post("general/:source/:code/import") generalImport(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param("source") source: RadarSource,
+    @Param("code") code: string,
+  ) {
+    return this.general.import(user.userId, source, code);
+  }
   @Get("opportunities") list(@Query() dto: RadarQueryDto) {
     return this.radar.list(dto);
   }

@@ -1,11 +1,14 @@
 import {
   explicitDate,
   fingerprint,
-  keywordMatch,
-  matchProfiles,
   normalizeAgil,
   normalizeLicitacion,
 } from "./radar.normalize";
+import { classifyOpportunity, discoveryKind } from "./radar.match";
+const matchProfiles = (
+  row: Parameters<typeof classifyOpportunity>[0],
+  profiles: RadarProfile[],
+) => classifyOpportunity(row, profiles).profile_ids;
 import type { RadarProfile } from "@costamar/shared";
 const profile: RadarProfile = {
   id: "test",
@@ -64,9 +67,13 @@ describe("Datos oficiales de Radar", () => {
     );
     expect(explicitDate("invalid")).toBeNull();
   });
-  it("normaliza acentos y excluye falsos positivos configurados", () => {
-    expect(keywordMatch("ALIMENTACION EN OLMUE", profile)).toBe(true);
-    expect(keywordMatch("MENAJE PARA ALIMENTACIÓN", profile)).toBe(false);
+  it("normaliza acentos y conserva exclusiones para revisión", () => {
+    expect(discoveryKind("compra_agil", "ALIMENTACION EN OLMUE", profile)).toBe(
+      "matched",
+    );
+    expect(
+      discoveryKind("compra_agil", "MENAJE PARA ALIMENTACIÓN", profile),
+    ).toBe("review");
   });
   it("la región no inventa cercanía: Juan Fernández conserva dirección real", () => {
     const row = normalizeAgil({

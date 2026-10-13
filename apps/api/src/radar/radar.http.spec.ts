@@ -9,6 +9,7 @@ import { Test } from "@nestjs/testing";
 import { APP_GUARD } from "@nestjs/core";
 import { RadarController } from "./radar.controller";
 import { RadarService } from "./radar.service";
+import { RadarGeneralService } from "./radar.general";
 import { RolesGuard } from "../common/guards/roles.guard";
 const service = {
   list: jest.fn().mockResolvedValue({ items: [], total: 0 }),
@@ -40,6 +41,13 @@ describe("Radar HTTP: acceso y validación", () => {
       controllers: [RadarController],
       providers: [
         { provide: RadarService, useValue: service },
+        {
+          provide: RadarGeneralService,
+          useValue: {
+            list: jest.fn().mockResolvedValue({ items: [], total: 0 }),
+            import: jest.fn().mockResolvedValue({ id: "test" }),
+          },
+        },
         { provide: APP_GUARD, useClass: Identity },
         { provide: APP_GUARD, useClass: RolesGuard },
       ],
@@ -57,6 +65,44 @@ describe("Radar HTTP: acceso y validación", () => {
   });
   afterAll(() => app.close());
   beforeEach(() => jest.clearAllMocks());
+  it("protege General diario y valida sus parámetros", async () => {
+    expect(
+      (
+        await fetch(url + "/radar/general", {
+          headers: { "x-test-role": "cashier" },
+        })
+      ).status,
+    ).toBe(403);
+    expect(
+      (
+        await fetch(url + "/radar/general", {
+          headers: { "x-test-role": "admin" },
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await fetch(url + "/radar/general?source=private", {
+          headers: { "x-test-role": "admin" },
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(url + "/radar/general?region=17", {
+          headers: { "x-test-role": "admin" },
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(url + "/radar/general/compra_agil/999-1-COT26/import", {
+          method: "POST",
+          headers: { "x-test-role": "cashier" },
+        })
+      ).status,
+    ).toBe(403);
+  });
   it("requiere sesión y deniega roles operativos y clientes en todas las rutas", async () => {
     expect((await fetch(url + "/radar/opportunities")).status).toBe(401);
     for (const role of [

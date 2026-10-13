@@ -4,6 +4,73 @@ Radar es un módulo privado de Admin, en `/radar`, autorizado para superadmin/ad
 
 ## Funciones
 
+### Mi Radar y General diario
+
+Mi Radar muestra por defecto coincidencias del perfil y compras que guardaste
+manualmente o marcaste como favoritas. Su filtro «Por revisar» conserva compras
+ambiguas: exclusiones, títulos de jornadas/eventos y categorías amplias. Una
+coincidencia indica afinidad temática, no elegibilidad ni utilidad garantizada.
+
+El motor reconoce variantes explícitas como colación/colaciones,
+almuerzo/almuerzos, coffee/coffe/cofee/café, cena, refrigerio, lunch y cóctel.
+La comparación ignora tildes y mayúsculas y exige límites de palabra. Las palabras
+excluidas ya no descartan automáticamente una compra mixta: un coffee break con
+vasos desechables queda «Por revisar». El detalle también reconoce códigos
+UNSPSC concretos observados en las respuestas oficiales. Los títulos sin pistas
+pueden seguir escapando al Radar; no se promete cobertura absoluta.
+
+General diario consulta procesos **publicados y activos de cualquier rubro**,
+sin heredar palabras, presupuestos o exclusiones del perfil gastronómico.
+«Diario» describe la rutina de revisión: incluye publicaciones anteriores que
+siguen abiertas, no solamente las publicadas hoy. Compra Ágil permite Todo Chile
+o región del comprador; el listado básico de licitaciones es nacional y la
+región/comprador se comprueban al abrir el detalle.
+
+La vista está paginada y permite búsqueda manual. «Guardar y ver ficha» incorpora
+una oportunidad a tu seguimiento, incluso si no coincide con el perfil.
+Los cierres y estados se muestran según la fuente: comprobar siempre la ficha
+oficial antes de postular.
+
+Las consultas generales usan cache de 15 minutos y comparten el límite global
+de 9.000 consultas/24 h con el worker. No toman su lease ni requieren que termine
+una sincronización. Si la fuente falla y existe una copia anterior, se muestra
+con fecha y aviso de desactualización; un fallo sin copia no aparece como cero
+resultados. «Actualizar fuente» solicita una consulta nueva respetando pausas.
+La sincronización prioriza coincidencias claras/seguidas y procesa hasta ocho
+detalles de candidatos ambiguos por ciclo para contener consumo.
+
+### Actualizar una instalación que ya tiene Radar
+
+Aplicar **solo la migración nueva**
+`supabase/migrations/20261013001000_radar_general_and_matching.sql`; no volver a
+ejecutar la migración inicial. Se agregan clasificación, selección manual, cache
+general y RPC privadas. Se conservan fichas, favoritos, notas y estados. El
+worker reinicia el descubrimiento con las variantes ampliadas.
+
+Después, en el servidor:
+
+```bash
+git pull --ff-only
+./deploy.sh api admin radar-worker
+```
+
+No requiere nuevas variables de entorno ni configurar correo. Mantener
+`RADAR_EMAIL_ENABLED=false` si todavía no se activará. La nueva migración fue
+probada en PostgreSQL local; el conector MCP continúa fallando al renovar OAuth,
+por lo que no se aplicó automáticamente a la base remota.
+
+Rutas nuevas, con los mismos permisos superadmin/admin:
+
+- `GET /api/v1/radar/general`: procedimiento, página, búsqueda, región de Compra Ágil y actualización opcional.
+- `POST /api/v1/radar/general/:source/:code/import`: guardar/abrir ficha con identidad del administrador.
+- `GET /api/v1/radar/opportunities?match=review`: filtro de clasificación; también admite matched, manual y recommended.
+
+Pruebas adicionales: `supabase/tests/radar_general.sql`, variantes del clasificador,
+cache/paginación/fallos de la vista general, guardado manual y permisos HTTP.
+Se consultaron ambas listas nacionales reales y se verificó su navegación y
+guardado desde navegador con PostgreSQL local. El SQL de prueba usa rollback y
+requiere un administrador en la base desechable.
+
 - Listado con búsqueda, procedimiento, estado oficial, perfil, comuna/dirección, presupuestos CLP, favoritos y seguimiento comercial.
 - Fichas con comprador, presupuesto y su tipo, lugar/plazo de entrega, convocatoria, cierre original, productos y documentos informados.
 - Perfiles configurables: regiones, palabras positivas/negativas, comunas preferidas y presupuestos. Las comunas destacan coincidencias; no certifican distancia ni excluyen automáticamente otros destinos.
@@ -54,7 +121,7 @@ Los datos persistidos y las páginas ya encoladas se conservan ante fallos. Un l
 
 ## Configuración y despliegue
 
-Estado al terminar la implementación: código y migración comprobados localmente. La conexión MCP de Supabase falló al renovar OAuth y **la migración no se aplicó a la base remota**. El despliegue del servidor sigue a cargo del dueño.
+Estado de la primera entrega: código y migración comprobados localmente. La conexión MCP de Supabase falló al renovar OAuth y la instalación inicial fue realizada por el dueño, que confirmó su funcionamiento. La ampliación «General diario» requiere su migración nueva y despliegue. El servidor sigue a cargo del dueño.
 
 1. Aplicar en Supabase, mediante SQL Editor o el flujo habitual de migraciones, el contenido completo de `supabase/migrations/20261012233000_radar_comercial.sql`. No volver a aplicar si ya figura en el historial. La migración agrega estructuras propias; no modifica reservas, Club ni carta.
 2. En el `.env` del servidor, agregar sin publicar el ticket ya entregado:

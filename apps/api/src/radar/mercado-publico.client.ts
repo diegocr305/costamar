@@ -35,7 +35,7 @@ export class MercadoPublicoClient {
     return !!this.config.get("MERCADO_PUBLICO_TICKET");
   }
   private async get(
-    owner: string,
+    owner: string | null,
     path: string,
     params: Record<string, string>,
     v2: boolean,
@@ -53,11 +53,14 @@ export class MercadoPublicoClient {
     for (const [key, value] of Object.entries(params))
       url.searchParams.set(key, value);
     if (!v2) url.searchParams.set("ticket", ticket);
-    for (let attempt = 0; attempt < 3; attempt++) {
-      const budget = await this.db.client.rpc("radar_consume_request", {
-        p_owner: owner,
-        p_limit: 9000,
-      });
+    const attempts = owner ? 3 : 1;
+    for (let attempt = 0; attempt < attempts; attempt++) {
+      const budget = owner
+        ? await this.db.client.rpc("radar_consume_request", {
+            p_owner: owner,
+            p_limit: 9000,
+          })
+        : await this.db.client.rpc("radar_general_consume");
       if (budget.error)
         throw new RadarUpstreamError(
           "No pudimos registrar el consumo de consultas.",
@@ -65,8 +68,10 @@ export class MercadoPublicoClient {
         );
       if (!budget.data)
         throw new RadarUpstreamError(
-          "Se pausó la consulta por el límite de consumo.",
-          3600,
+          owner
+            ? "Se pausó la consulta por el límite de consumo."
+            : "La consulta está en pausa o se solicitó hace poco. Espera unos segundos y vuelve a intentar.",
+          owner ? 3600 : 5,
         );
       await wait(
         Math.min(
@@ -153,13 +158,13 @@ export class MercadoPublicoClient {
                 0,
                 true,
               );
-        if (!safe.transient || attempt === 2) throw safe;
+        if (!safe.transient || attempt === attempts - 1) throw safe;
         await wait(1000 * 2 ** attempt);
       }
     }
     throw new RadarUpstreamError("Mercado Público no respondió.", 300);
   }
-  async agilePage(owner: string, params: Record<string, string>) {
+  async agilePage(owner: string | null, params: Record<string, string>) {
     const data = await this.get(owner, "/v2/compra-agil", params, true),
       p = data.payload;
     if (
@@ -174,7 +179,7 @@ export class MercadoPublicoClient {
       );
     return p;
   }
-  async activeLicitaciones(owner: string) {
+  async activeLicitaciones(owner: string | null) {
     return (
       await this.get(
         owner,
@@ -184,7 +189,7 @@ export class MercadoPublicoClient {
       )
     ).Listado;
   }
-  async detail(owner: string, source: RadarSource, code: string) {
+  async detail(owner: string | null, source: RadarSource, code: string) {
     if (!validCode(source, code))
       throw new RadarUpstreamError(
         "El código de proceso no tiene un formato admitido.",
