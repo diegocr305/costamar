@@ -13,8 +13,21 @@ El dueño realiza el despliegue desde la carpeta del repositorio:
 ```
 
 El script ejecuta git pull --ff-only, recompila servicios y revisa su estado.
-No modifica `.env` ni `/etc/nginx`. Las migraciones entregadas por MCP ya están
-aplicadas en Supabase: no ejecutarlas de nuevo.
+No modifica `.env` ni `/etc/nginx`. Las migraciones actuales de Club, reservas
+y Radar ya están aplicadas: no ejecutarlas de nuevo. Las nuevas migraciones se
+aplican antes de publicar el código que depende de ellas.
+
+Radar está habilitado. Al desplegar API, el script agrega el override y recrea
+el worker para mantener versiones alineadas. Para actualizar su interfaz:
+
+```bash
+./deploy.sh api admin radar-worker
+```
+
+La migración de General diario `20261013001000_radar_general_and_matching.sql`
+fue aplicada manualmente por el dueño. El conector MCP Supabase falla al renovar
+OAuth; no confundir ese fallo con una caída de la base ni repetir migraciones.
+Correo permanece desactivado.
 
 ## Comprobación
 

@@ -57,7 +57,9 @@ git pull --ff-only
 No requiere nuevas variables de entorno ni configurar correo. Mantener
 `RADAR_EMAIL_ENABLED=false` si todavía no se activará. La nueva migración fue
 probada en PostgreSQL local; el conector MCP continúa fallando al renovar OAuth,
-por lo que no se aplicó automáticamente a la base remota.
+por lo que la aplicó manualmente el dueño, que confirmó ejecución sin errores
+y desplegó API/Admin/worker. Se comprobaron remotamente el esquema nuevo,
+la ruta protegida y el worker sin errores. No repetir esta migración.
 
 Rutas nuevas, con los mismos permisos superadmin/admin:
 
@@ -121,7 +123,12 @@ Los datos persistidos y las páginas ya encoladas se conservan ante fallos. Un l
 
 ## Configuración y despliegue
 
-Estado de la primera entrega: código y migración comprobados localmente. La conexión MCP de Supabase falló al renovar OAuth y la instalación inicial fue realizada por el dueño, que confirmó su funcionamiento. La ampliación «General diario» requiere su migración nueva y despliegue. El servidor sigue a cargo del dueño.
+Estado actual: primera entrega y ampliación «General diario» instaladas por el
+dueño. La migración nueva terminó sin errores y API/Admin/worker fueron
+desplegados. Esquema, ruta privada y worker comprobados remotamente; falta el
+recorrido autenticado de resultados, seguimiento y archivos. El servidor sigue
+a cargo del dueño. Las instrucciones siguientes son para instalaciones nuevas;
+no repetir las migraciones de esta instalación.
 
 1. Aplicar en Supabase, mediante SQL Editor o el flujo habitual de migraciones, el contenido completo de `supabase/migrations/20261012233000_radar_comercial.sql`. No volver a aplicar si ya figura en el historial. La migración agrega estructuras propias; no modifica reservas, Club ni carta.
 2. En el `.env` del servidor, agregar sin publicar el ticket ya entregado:
@@ -207,4 +214,10 @@ $env:RADAR_TEST_REST_URL='http://127.0.0.1:54331'
 pnpm --filter @costamar/api exec jest --runInBand
 ```
 
-Falta comprobar en el entorno remoto la migración, el acceso Google del dueño, las descargas de Storage y el envío real de correo cuando se elija/configure el proveedor. Los tests locales no sustituyen esas verificaciones.
+La migración de General diario y el despliegue ya están confirmados. Falta
+comprobar ambas fuentes con sesión real, selección de una ficha, persistencia
+de notas/favoritos y carga/descarga de Storage. El correo real queda para cuando
+se elija/configure el proveedor. Erin tiene acceso Google de administradora
+confirmado por el dueño. Los tests locales no sustituyen esos recorridos.
+Ver [registro de producción](radar-verificacion-produccion-2026-10-12.md) y
+[guía de uso](guia-radar-comercial.md).

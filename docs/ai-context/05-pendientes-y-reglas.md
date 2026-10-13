@@ -71,17 +71,17 @@ o datos que todavía no están disponibles.
 
 ## Validaciones prácticas pendientes
 
-- Comprobación remota del 12-10-2026: Radar anterior funciona; General diario
-  devuelve 404 y faltan sus columnas/cache en Supabase. Ver
-  [resultado y actualización](../radar-verificacion-produccion-2026-10-12.md).
+- Radar actualizado por el dueño: migración de General diario aplicada sin
+  errores y API/Admin/worker desplegados. Columnas/cache y ruta privada
+  confirmadas remotamente; worker reciente sin errores. Ver
+  [resultado y límites](../radar-verificacion-produccion-2026-10-12.md).
 - Erin: acceso Google de administradora **OK**, confirmado por el dueño
   el 12-10-2026; no es superadministradora.
 
-- Radar inicial confirmado por el dueño en producción. Para filtros ampliados
-  y General diario, aplicar 20261013001000_radar_general_and_matching.sql y
-  desplegar API/Admin/worker. El conector Supabase falla al renovar OAuth;
-  esta migración nueva no se aplicó remotamente.
-  Configurar Resend antes de activar correo; validar Storage y Google del dueño.
+- Radar: comprobar con sesión real ambas fuentes del General diario, guardar
+  una ficha de interés, persistir favorito/nota y cargar/descargar un archivo.
+  No repetir migraciones ya aplicadas. Configurar Resend antes de activar correo.
+  El conector MCP Supabase sigue fallando al renovar OAuth; REST funciona.
 
 - Google real de cada empleado, cámara QR y PWA en sus teléfonos.
 - Ensayo de reservas y canjes con el equipo, siguiendo la [guía](../guia-equipo-atencion.md).

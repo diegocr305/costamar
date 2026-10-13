@@ -19,7 +19,7 @@ sustituyen este estado.
 | Resumen del Club | Altas, encuestas, cumpleaños, cupones y canjes para superadmin/admin | [Resumen](club-resumen-admin.md) |
 | Reservas | Solicitud web/Club, agenda, ingreso manual, mesas/uniones, confirmación, llegada/salida y auditoría | [Reservas](reservas-primera-version.md) |
 | Análisis CSV | Herramienta local reproducible y reporte privado; no importación en la BD | [Análisis](../tools/analysis/README.md) |
-| Radar comercial | Búsqueda oficial, sincronización, fichas, perfiles, favoritos, seguimiento, avisos y documentos privados; preparado localmente | [Radar](radar-comercial.md) |
+| Radar comercial | Búsqueda oficial, sincronización, fichas, perfiles, favoritos, seguimiento, avisos, documentos privados, filtros ampliados y General diario desplegados | [Radar](radar-comercial.md) |
 
 API, configuración pública de reservas y web/Club/admin respondieron HTTP 200 en
 la comprobación de lectura del 12-10-2026. Eso verifica disponibilidad, no sustituye
@@ -47,10 +47,11 @@ El dueño realiza el despliegue de nuevas correcciones mediante `deploy.sh`.
 ## Próximo orden propuesto
 
 El dueño aprobó desarrollar primero Radar Comercial y confirmó la primera
-versión en producción. La ampliación de filtros y General diario está
-implementada y comprobada localmente; requiere su migración nueva y desplegar
-API/Admin/worker. El conector Supabase falla al renovar OAuth, por lo que esa
-migración nueva se entrega para ejecución del dueño. El correo sigue desactivado.
+versión en producción. El dueño aplicó sin errores la migración de filtros
+ampliados y General diario y desplegó API/Admin/worker. La comprobación remota
+confirmó columnas/cache, ruta protegida disponible y worker reciente sin errores.
+El correo sigue desactivado. Falta el recorrido autenticado de ambas fuentes,
+guardado de fichas, seguimiento y archivos en producción.
 Después se retoman los siguientes pasos operativos:
 
 1. Usar reservas y canjes con el equipo y validar Google/cámara/PWA en los teléfonos reales.
@@ -64,9 +65,9 @@ automáticamente clientes de Fudo como socios del Club.
 
 ## Validación que depende del entorno real
 
-- Revisión remota del Radar del 12-10-2026: API, worker y datos iniciales OK;
-  General diario devuelve 404 y su migración falta en la base. Seguir la
-  [corrección preparada](radar-verificacion-produccion-2026-10-12.md).
+- Radar actualizado por el dueño: migración aplicada y API/Admin/worker
+  desplegados. General diario pasó de 404 a 401 sin sesión, como corresponde
+  a una ruta privada. Ver [comprobaciones y límites](radar-verificacion-produccion-2026-10-12.md).
 - Acceso de Erin como administradora: **OK**, confirmado por el dueño el
   12-10-2026. Cuenta Google y rol efectivo `admin` verificados en la base;
   los permisos exclusivos de superadministrador se conservan.

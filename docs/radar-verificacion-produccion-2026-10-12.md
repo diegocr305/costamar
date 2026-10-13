@@ -1,5 +1,25 @@
 # Radar: comprobación de producción
 
+## Estado posterior a la actualización: pendiente de despliegue resuelto
+
+El dueño confirmó que aplicó sin errores la migración nueva y ejecutó
+`./deploy.sh api admin radar-worker`. Se volvió a comprobar a las 22:08 de Chile:
+
+- Columnas `match_kind`/`manual_selected` y tabla `radar_general_cache`: disponibles.
+- API health: HTTP 200, Supabase disponible.
+- `/api/v1/radar/general`: HTTP 401 sin sesión; ya no devuelve 404.
+- JavaScript publicado de Admin: contiene «General diario».
+- Worker: heartbeat 01:07:42 UTC, revisión exitosa 01:06:32 UTC,
+  sin error ni bloqueo registrado.
+
+El incidente de versión anterior descrito abajo está resuelto. **No repetir
+la migración ni desplegar otra vez por este documento.** El recorrido autenticado
+de resultados y archivos continúa pendiente: una ruta protegida disponible y un
+esquema correcto no demuestran por sí solos ese recorrido. La cache general
+estaba vacía en esta comprobación, lo que tampoco demuestra un fallo de la fuente.
+
+## Registro anterior a la actualización
+
 Comprobación realizada el 12-10-2026, aproximadamente a las 21:55 de Chile
 (13-10-2026 00:55 UTC). Las cifras y horas describen ese momento.
 

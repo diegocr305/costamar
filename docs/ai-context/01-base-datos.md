@@ -58,6 +58,39 @@ Migraciones de reservas:
 
 [Reglas y mapa](../reservas-primera-version.md).
 
+## Radar Comercial
+
+Migraciones instaladas: `20261012233000_radar_comercial.sql` y
+`20261013001000_radar_general_and_matching.sql`. El dueño confirmó su aplicación;
+la estructura nueva fue comprobada mediante REST. No ejecutarlas otra vez.
+
+| Tabla | Contenido |
+| --- | --- |
+| radar_profiles | Palabras, exclusiones, regiones, comunas y presupuestos |
+| radar_opportunities | Fichas, productos/documentos JSON, clasificación y seguimiento |
+| radar_versions | Cambios de fichas obtenidas de la fuente |
+| radar_alerts | Avisos internos y estado de entrega opcional por correo |
+| radar_candidates | Cola de detalles y prioridad de revisión |
+| radar_cursors | Progreso de descubrimiento por fuente/región |
+| radar_control | Lease, heartbeat, sincronización, pausas y límite manual |
+| radar_requests | Consultas para controlar cuota móvil de 24 horas |
+| radar_uploads | Metadatos de archivos privados subidos por administradores |
+| radar_general_cache | Listados generales con fecha de consulta |
+
+`match_kind` distingue matched/review/manual; `manual_selected` conserva la
+selección de una compra fuera del perfil. Favoritos y notas son compartidos por
+los administradores; `tracking_updated_at` evita sobrescribir cambios concurrentes.
+El General diario usa cache de 15 minutos y comparte cuota/pausas con el worker.
+
+RPC nuevas: `radar_general_consume`, `radar_general_pause` y
+`radar_import_general`. La migración también adapta ingesta, cola y liberación
+del lease. Tablas/RPC privadas para backend service_role; no dar acceso directo
+al navegador. La importación comprueba el rol efectivo del actor.
+Bucket `radar-documents` privado, máximo 10 MB; descarga vía API autorizada
+con enlace temporal de 60 segundos. Ticket y credenciales nunca en frontend.
+
+Detalles: [Radar](../radar-comercial.md).
+
 ## Seguridad y comprobación
 
 Funciones SECURITY DEFINER con search_path endurecido; ejecutar críticos sólo

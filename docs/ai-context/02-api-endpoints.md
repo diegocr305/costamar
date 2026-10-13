@@ -137,7 +137,8 @@ perfiles, estado/cola de sincronización, avisos y documentos privados.
 Contrato y despliegue: [Radar Comercial](../radar-comercial.md).
 La primera versión está confirmada por el dueño en producción. La ampliación
 General diario agrega GET /radar/general y POST /radar/general/:source/:code/import,
-y clasificación matched/review/manual. Requiere la migración nueva
-20261013001000_radar_general_and_matching.sql y despliegue de API/Admin/worker.
-El conector Supabase falla al renovar OAuth, así que esa migración nueva se
-entrega para ejecución manual. Correo Resend preparado, desactivado.
+y clasificación matched/review/manual. La migración
+20261013001000_radar_general_and_matching.sql fue aplicada por el dueño y
+API/Admin/worker desplegados; esquema y ruta protegida confirmados remotamente.
+Correo Resend preparado, desactivado. Falta el recorrido autenticado completo
+de General diario y documentos en producción.

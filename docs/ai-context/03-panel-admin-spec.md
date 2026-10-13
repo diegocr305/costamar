@@ -15,6 +15,7 @@ anterior de reservas/campañas: ambos módulos están implementados.
 | /club/campanas | Campañas, catálogo, cupos, resultados y cupones | superadmin/admin/manager |
 | /club/socios | Socios, encuesta y preferencias | superadmin/admin |
 | /usuarios | Autorizar/suspender personal de atención | superadmin |
+| /radar | Mi Radar, General diario, fichas, perfiles, seguimiento y avisos | superadmin/admin |
 | /carta | Consultar carta; escritura restringida en API | superadmin/admin/manager; escritura superadmin/admin |
 | /inventario | Pantalla de preparación, sin stock funcional | superadmin/admin/inventory |
 | /pedidos | Pantalla de preparación; Fudo sigue como POS | Personal autorizado por navegación |

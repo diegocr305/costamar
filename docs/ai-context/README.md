@@ -14,9 +14,10 @@ de fases no representan pendientes actuales ni autorización para reglas nuevas.
 6. `05-pendientes-y-reglas.md` — reglas de negocio, decisiones pendientes, pendientes técnicos.
 
 ## Prioridad del dueño
-1. Consolidar la operación de reservas y cupones con meseros y caja.
-2. Analizar ventas exportadas y preparar decisiones de gastos/cuentas por pagar.
-3. Recetas/costos e inventario después, cuando haya datos suficientes.
+1. Consolidar Radar Comercial, desplegado con General diario; correo al final.
+2. Consolidar la operación de reservas y cupones con meseros y caja.
+3. Analizar ventas exportadas y preparar decisiones de gastos/cuentas por pagar.
+4. Recetas/costos e inventario después, cuando haya datos suficientes.
 
 ## Cómo trabajar en este repo
 - Monorepo pnpm. Comandos: `pnpm --filter @costamar/<app> <script>` (build, dev, test, lint).
@@ -28,6 +29,9 @@ de fases no representan pendientes actuales ni autorización para reglas nuevas.
 - CSV e informes privados fuera de Git; resultados en `private-reports/`.
 
 ## Documentos complementarios (fuera de esta carpeta)
+- `docs/radar-comercial.md` — reglas, arquitectura, endpoints y operación del Radar.
+- `docs/guia-radar-comercial.md` — rutina de revisión para dueño y administradora.
+- `docs/radar-verificacion-produccion-2026-10-12.md` — pruebas remotas y límites.
 - `docs/deployment.md` — despliegue general, actualización segura, rollback, fixes.
 - `docs/club-oauth-setup.md` — configuración Google OAuth + Supabase Auth.
 - `docs/club-fundadores-conciliacion.md` — reporte de socios para la campaña.
