@@ -71,6 +71,12 @@ o datos que todavía no están disponibles.
 
 ## Validaciones prácticas pendientes
 
+- Comprobación remota del 12-10-2026: Radar anterior funciona; General diario
+  devuelve 404 y faltan sus columnas/cache en Supabase. Ver
+  [resultado y actualización](../radar-verificacion-produccion-2026-10-12.md).
+- Erin: acceso Google de administradora **OK**, confirmado por el dueño
+  el 12-10-2026; no es superadministradora.
+
 - Radar inicial confirmado por el dueño en producción. Para filtros ampliados
   y General diario, aplicar 20261013001000_radar_general_and_matching.sql y
   desplegar API/Admin/worker. El conector Supabase falla al renovar OAuth;

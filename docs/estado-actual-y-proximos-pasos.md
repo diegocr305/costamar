@@ -64,6 +64,12 @@ automáticamente clientes de Fudo como socios del Club.
 
 ## Validación que depende del entorno real
 
+- Revisión remota del Radar del 12-10-2026: API, worker y datos iniciales OK;
+  General diario devuelve 404 y su migración falta en la base. Seguir la
+  [corrección preparada](radar-verificacion-produccion-2026-10-12.md).
+- Acceso de Erin como administradora: **OK**, confirmado por el dueño el
+  12-10-2026. Cuenta Google y rol efectivo `admin` verificados en la base;
+  los permisos exclusivos de superadministrador se conservan.
 - Inicio de sesión Google de cada integrante autorizado.
 - Cámara QR en Android/iPhone mediante HTTPS.
 - Instalación y actualización de la PWA en dispositivos reales.
