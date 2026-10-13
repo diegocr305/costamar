@@ -29,6 +29,7 @@ de fases no representan pendientes actuales ni autorización para reglas nuevas.
 - CSV e informes privados fuera de Git; resultados en `private-reports/`.
 
 ## Documentos complementarios (fuera de esta carpeta)
+- `docs/web-redesign-2026-10-12.md` — rediseño público preparado localmente, sin desplegar.
 - `docs/radar-comercial.md` — reglas, arquitectura, endpoints y operación del Radar.
 - `docs/guia-radar-comercial.md` — rutina de revisión para dueño y administradora.
 - `docs/radar-verificacion-produccion-2026-10-12.md` — pruebas remotas y límites.

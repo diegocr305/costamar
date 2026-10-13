@@ -21,7 +21,7 @@
       [class.is-open]="menuOpen()"
       [attr.aria-expanded]="menuOpen()"
       aria-controls="cm-primary-nav"
-      aria-label="Abrir menú de navegación"
+      [attr.aria-label]="menuOpen() ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'"
       (click)="toggleMenu()"
     >
       <span></span><span></span><span></span>
@@ -38,9 +38,7 @@
       <a routerLink="/pedidos" routerLinkActive="is-active" (click)="closeMenu()">Pedidos</a>
       <a [href]="business.clubUrl" rel="noopener" (click)="closeMenu()">Club</a>
       <a
-        [href]="business.whatsapp"
-        target="_blank"
-        rel="noopener"
+        routerLink="/reservas"
         class="cm-header__cta"
         (click)="closeMenu()"
         >Reservar</a
@@ -49,7 +47,7 @@
   </div>
 </header>
 
-<main id="contenido">
+<main id="contenido" tabindex="-1">
   <router-outlet></router-outlet>
 </main>
 

@@ -22,10 +22,10 @@ export class SeoService {
   private readonly meta = inject(Meta);
   private readonly document = inject(DOCUMENT);
 
-  // Dejar vacío hasta confirmar dominio definitivo en producción.
-  private readonly baseUrl = '';
+  private readonly baseUrl = 'https://restaurantecostamar.cl';
 
   update(data: SeoData): void {
+    this.document.getElementById('cm-jsonld')?.remove();
     this.title.setTitle(data.title);
     this.meta.updateTag({ name: 'description', content: data.description });
     this.meta.updateTag({ property: 'og:title', content: data.title });

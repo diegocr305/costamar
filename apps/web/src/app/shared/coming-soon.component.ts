@@ -26,7 +26,7 @@ import { BUSINESS } from '@costamar/shared';
       .soon {
         max-width: 640px;
         margin: 0 auto;
-        padding: 3rem 1.5rem;
+        padding: 5rem 1.5rem;
         text-align: center;
       }
       .soon__status {
@@ -42,9 +42,9 @@ import { BUSINESS } from '@costamar/shared';
         display: inline-block;
         margin-top: 1rem;
         padding: 0.75rem 1.5rem;
-        background: #25d366;
-        color: #fff;
-        border-radius: 8px;
+        background: var(--cm-action);
+        color: var(--cm-deep);
+        border-radius: var(--cm-radius);
         text-decoration: none;
         font-weight: 600;
       }

@@ -1,4 +1,5 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, signal, inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { BUSINESS } from '@costamar/shared';
 
@@ -10,6 +11,7 @@ import { BUSINESS } from '@costamar/shared';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  private readonly document = inject(DOCUMENT);
   protected readonly business = BUSINESS;
   protected readonly year = new Date().getFullYear();
 
@@ -29,6 +31,7 @@ export class AppComponent {
   protected onEscape(): void {
     if (this.menuOpen()) {
       this.closeMenu();
+      this.document.querySelector<HTMLButtonElement>('.cm-burger')?.focus();
     }
   }
 }

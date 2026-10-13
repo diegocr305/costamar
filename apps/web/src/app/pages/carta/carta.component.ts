@@ -1,12 +1,14 @@
 import { CurrencyPipe, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   Component,
+  afterEveryRender,
   OnInit,
   PLATFORM_ID,
   computed,
   inject,
   signal,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import type { CartaPublica, Product } from '@costamar/shared';
 import { CartaService } from '../../core/carta.service';
@@ -27,6 +29,18 @@ export class CartaComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly document = inject(DOCUMENT);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly route = inject(ActivatedRoute);
+  private lastFragment: string | null = null;
+
+  constructor() {
+    afterEveryRender(() => {
+      const fragment = this.route.snapshot.fragment;
+      if (this.isBrowser && this.state() === 'loaded' && fragment && fragment !== this.lastFragment) {
+        const target = this.document.getElementById(fragment);
+        if (target) { target.scrollIntoView({ block: 'start' }); this.lastFragment = fragment; }
+      }
+    });
+  }
 
   protected readonly state = signal<LoadState>('loading');
   protected readonly carta = signal<CartaPublica | null>(null);
@@ -93,6 +107,7 @@ export class CartaComponent implements OnInit {
       return;
     }
     const el = this.document.getElementById(this.anchorId(categoryId));
-    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const reduced = this.document.defaultView?.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
   }
 }

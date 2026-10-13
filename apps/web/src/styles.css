@@ -7,17 +7,21 @@
   --cm-primary: #12a7c2;
   --cm-primary-dark: #087c91;
   --cm-secondary: #75bdc5;
-  --cm-gold: #e28e06;
+  --cm-gold: #a85215;
+  --cm-action: #ef8a42;
   --cm-ocean: #1263a0;
-  --cm-background: #f5fbfc;
+  --cm-background: #faf7f1;
   --cm-surface: #ffffff;
+  --cm-surface-2: #f0eee6;
+  --cm-border: #d8dedb;
+  --cm-radius: 12px;
   --cm-text: #17324d;
   --cm-muted: #5a7382;
 
   --cm-font-head: 'Rufina', Georgia, 'Times New Roman', serif;
   --cm-font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  --cm-maxw: 1120px;
+  --cm-maxw: 1200px;
   --cm-shadow: 0 10px 30px rgba(18, 99, 160, 0.08);
 
   /* Superficies oscuras premium (hero/bloques destacados).
@@ -79,3 +83,19 @@ h4 {
   border: 0;
   margin: 0.75rem auto 0;
 }
+
+.cm-section { max-width:var(--cm-maxw); margin-inline:auto; padding:5rem 2rem; }
+.cm-button { display:inline-flex; align-items:center; justify-content:space-between; gap:1.2rem; min-height:48px; padding:.8rem 1.4rem; border:1px solid transparent; border-radius:8px; font:inherit; font-size:.92rem; font-weight:700; text-decoration:none; cursor:pointer; transition:background .2s ease,transform .2s ease; }
+.cm-button--primary { background:var(--cm-action); color:#172e38; }
+.cm-button--primary:hover { background:#f59b5d; }
+.cm-button--secondary { color:var(--cm-deep); background:transparent; border-color:var(--cm-deep); }
+.cm-button--secondary:hover { background:var(--cm-surface-2); }
+.cm-button--light { color:#fff; border-color:#9bb7c1; background:rgba(8,29,39,.25); }
+.cm-button--light:hover { background:rgba(8,29,39,.6); }
+.cm-text-link { display:inline-flex; align-items:center; gap:1rem; padding-block:.65rem; font-weight:700; text-decoration:none; color:var(--cm-primary-dark); }
+:where(a,button,input,select,textarea,[tabindex]):focus-visible { outline:3px solid var(--cm-primary-dark); outline-offset:4px; }
+:where(.hero,.club,.cm-footer) :where(a,button):focus-visible { outline-color:#91d9e0; }
+button,input,select,textarea { font-family:inherit; }
+html { scroll-padding-top:100px; }
+@media(max-width:760px) { .cm-section { padding:3.5rem 1.25rem; } }
+@media(prefers-reduced-motion:reduce) { .cm-button { transition:none; } }

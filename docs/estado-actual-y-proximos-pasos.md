@@ -28,6 +28,9 @@ El dueño realiza el despliegue de nuevas correcciones mediante `deploy.sh`.
 
 ## Correcciones de la revisión
 
+- Rediseño de web pública preparado **localmente**, pendiente de revisión visual:
+  home con fotos derivadas de Carta, Club, tokens compartidos y navegación móvil.
+  No está desplegado. Ver [auditoría y validación](web-redesign-2026-10-12.md).
 - Consultar una reserva desde el Club actualiza también su resumen individual.
 - Un enlace privado inválido puede reintentarse o abandonarse para crear una nueva solicitud, sin reutilizar por accidente su identificador.
 - Al expirar un horario mientras el formulario queda abierto, se solicita elegir otra hora.

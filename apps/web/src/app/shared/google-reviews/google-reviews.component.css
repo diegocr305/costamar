@@ -50,7 +50,7 @@
 
 .invite__btn:hover {
   transform: translateY(-2px);
-  background: #c87a05;
+  background: #85400f;
 }
 
 .reviews__all {
@@ -116,9 +116,9 @@
 }
 
 .chip--active {
-  background: var(--cm-primary);
+  background: var(--cm-primary-dark);
   color: #fff;
-  border-color: var(--cm-primary);
+  border-color: var(--cm-primary-dark);
 }
 
 .select {

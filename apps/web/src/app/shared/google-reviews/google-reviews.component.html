@@ -6,9 +6,7 @@
   @if (!hasReviews()) {
     <!-- Estado sin datos reales: invitación a Google Maps (no inventar nada) -->
     <div class="invite">
-      <div class="invite__stars" aria-hidden="true">
-        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-      </div>
+      <span class="cm-eyebrow">Google Maps</span>
       <p class="invite__text">
         Nuestros clientes comparten su experiencia en Google. Lee sus opiniones
         y déjanos la tuya en nuestra ficha oficial.
@@ -54,6 +52,7 @@
       </div>
       <div class="controls__group">
         <select
+          aria-label="Ordenar opiniones"
           class="select"
           [ngModel]="sortOrder()"
           (ngModelChange)="setSort($event)"
