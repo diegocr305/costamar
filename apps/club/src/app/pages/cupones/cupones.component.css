@@ -134,7 +134,7 @@
 
 .coupon__code {
   font-family: monospace;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--cm-surface-2);
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
   color: var(--cm-gold);
@@ -161,12 +161,12 @@
 
 .coupon__status--issued {
   background: rgba(18, 167, 194, 0.15);
-  color: #8ee5ef;
+  color: #0b6a7c;
 }
 
 .coupon__status--redeemed {
   background: rgba(46, 160, 67, 0.15);
-  color: #a6eab5;
+  color: #1f7a39;
 }
 
 .coupon__status--expired,

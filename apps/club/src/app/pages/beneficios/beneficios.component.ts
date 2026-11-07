@@ -27,10 +27,10 @@ import { AuthService } from '../../core/auth.service';
   `,
   styles: [`
     .page { flex: 1; padding: 2rem 1.5rem; } .back { color: var(--cm-muted); text-decoration: none; font-size: .9rem; }
-    .eyebrow { display: block; margin-top: 1.5rem; color: #ffbf58; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; }
+    .eyebrow { display: block; margin-top: 1.5rem; color: var(--cm-gold); font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; }
     h1 { margin: .4rem 0 .75rem; font-size: 1.9rem; } .lead, .note { color: var(--cm-muted); } .note { font-size: .85rem; }
-    .benefit { background: var(--cm-surface); border: 1px solid var(--cm-border); border-radius: 16px; padding: 1.25rem; margin: 1rem 0; }
-    .benefit--birthday { border-color: #80dceb70; } .icon { font-size: 1.8rem; } h2 { font-size: 1.2rem; margin: .5rem 0; }
+    .benefit { background: var(--cm-surface); border: 1px solid var(--cm-border); border-radius: 16px; padding: 1.25rem; margin: 1rem 0; box-shadow: var(--cm-shadow); }
+    .benefit--birthday { border-color: #7cc3d6; } .icon { font-size: 1.8rem; } h2 { font-size: 1.2rem; margin: .5rem 0; }
     .how { margin: 1.5rem 0; } ol { padding-left: 1.3rem; } li { margin: .5rem 0; } .cm-btn { width: 100%; }
   `],
 })

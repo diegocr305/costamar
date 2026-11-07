@@ -2,7 +2,7 @@ import { Component,HostListener,OnInit,inject,signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient,HttpParams } from '@angular/common/http';
 import { firstValueFrom,timeout } from 'rxjs';
-import { RESERVATION_LABELS,RESERVATION_AREAS,chileLocalDateTime,chileLocalToIso,type Reservation,type ReservationConfig,type ReservationPage,type ReservationStatus } from '@costamar/shared';
+import { RESERVATION_LABELS,RESERVATION_AREAS,BUSINESS,chileLocalDateTime,chileLocalToIso,type Reservation,type ReservationConfig,type ReservationPage,type ReservationStatus,type CouponWhatsappReminder } from '@costamar/shared';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../core/auth.service';
 
@@ -12,7 +12,8 @@ export class ReservasAdminComponent implements OnInit {
  protected config=signal<ReservationConfig|null>(null);protected settingsDraft=signal<ReservationConfig|null>(null);
  protected result=signal<ReservationPage>({items:[],total:0,page:1,pageSize:20});protected selected=signal<Reservation|null>(null);
  protected loading=signal(false);protected saving=signal(false);protected error=signal('');protected success=signal('');
- protected date=chileLocalDateTime(new Date().toISOString()).slice(0,10);protected status='';protected query='';
+ protected date='';protected status='';protected query='';
+ protected readonly today=chileLocalDateTime(new Date().toISOString()).slice(0,10);
  protected newForm=false;protected newName='';protected newPhone='';protected newParty=2;protected newAt=chileLocalDateTime(new Date().toISOString());protected newNotes='';private newKey='';private newToken='';
  protected editAt='';protected editParty=2;protected editStatus:ReservationStatus='pending';protected editTables:number[]=[];protected capacity:number|null=null;protected staffNote='';
  protected editZone:'salon'|'terraza'|'barra'='salon';
@@ -27,7 +28,33 @@ export class ReservasAdminComponent implements OnInit {
  protected readyAt(r:Reservation){return this.timestamp(new Date(Date.parse(r.releasedAt!)+r.bufferMinutes*60000).toISOString());}
  protected final(r:Reservation){return ['completed','cancelled','no_show'].includes(r.status);}
  protected transitions(r:Reservation){const allowed:Record<string,string[]>={pending:['pending','confirmed','cancelled'],confirmed:['confirmed','seated','cancelled','no_show'],seated:['seated','completed']};return this.statuses.filter(s=>(allowed[r.status]??[r.status]).includes(s.value));}
- async ngOnInit(){await this.loadConfig();await this.load();}
+ protected reminders=signal<CouponWhatsappReminder[]>([]);protected remindersOpen=signal(false);protected remindersLoading=signal(false);
+ async ngOnInit(){await this.loadConfig();await this.load();void this.loadReminders();}
+
+ // ---------- Cupones por vencer: cola de WhatsApp para el equipo ----------
+ /** Carga los cupones por vencer pendientes de avisar por WhatsApp. */
+ protected async loadReminders(){
+  this.remindersLoading.set(true);
+  try{this.reminders.set(await firstValueFrom(this.http.get<CouponWhatsappReminder[]>(environment.apiUrl+'/club/staff/coupon-reminders').pipe(timeout(10000))));}
+  catch{/* silencioso: la agenda es lo principal; el equipo puede reintentar */}
+  finally{this.remindersLoading.set(false);}
+ }
+ protected reminderExpiry(iso:string){return new Date(iso).toLocaleDateString('es-CL',{timeZone:'America/Santiago',day:'numeric',month:'long'});}
+ protected reminderDaysLeft(iso:string){return Math.max(0,Math.ceil((Date.parse(iso)-Date.now())/86400000));}
+ /** Abre WhatsApp con el recordatorio del cupón pre-escrito para el socio. */
+ protected reminderLink(r:CouponWhatsappReminder){
+  const left=this.reminderDaysLeft(r.expiresAt);const when=this.reminderExpiry(r.expiresAt);
+  const benefit=r.benefit||r.campaignName;
+  const text=`Hola ${r.fullName.split(' ')[0]}, te saluda ${BUSINESS.name}. Te recordamos que tu beneficio del Club (${benefit}) vence el ${when}${left<=1?' (mañana)':` (en ${left} días)`}. Te esperamos para que lo disfrutes.`;
+  return `https://wa.me/${r.phone.replace('+','')}?text=${encodeURIComponent(text)}`;
+ }
+ /** Marca el aviso como enviado y lo quita de la cola. */
+ protected async markReminderSent(r:CouponWhatsappReminder){
+  try{
+   await firstValueFrom(this.http.post(environment.apiUrl+'/club/staff/coupon-reminders/'+r.reminderId+'/sent',{}).pipe(timeout(10000)));
+   this.reminders.set(this.reminders().filter(x=>x.reminderId!==r.reminderId));
+  }catch{this.error.set('No pudimos registrar el aviso. Inténtalo de nuevo.');}
+ }
  protected async loadConfig(){this.error.set('');try{this.config.set(await firstValueFrom(this.http.get<ReservationConfig>(this.base+'/config').pipe(timeout(10000))));}catch{this.error.set('No pudimos cargar el mapa de mesas. Reintenta antes de asignar una mesa.');}}
  @HostListener('document:visibilitychange') protected onVisible(){if(document.visibilityState==='visible'&&!this.saving())void this.load(this.result().page);}
  protected async load(page=1){
@@ -43,8 +70,29 @@ export class ReservasAdminComponent implements OnInit {
  protected async save(){
   const r=this.selected(),at=chileLocalToIso(this.editAt);if(!r||!at||this.saving())return;this.saving.set(true);this.error.set('');this.success.set('');
   const payload={status:this.editStatus,...(r.status==='seated'?{}:{partySize:this.editParty,reservedAt:at,tableNumbers:this.editTables}),staffNote:this.staffNote,...(this.capacity?{confirmedCapacity:this.capacity}:{})};
-  try{const updated=await firstValueFrom(this.http.patch<Reservation>(this.base+'/'+r.id,payload).pipe(timeout(15000)));this.open(updated);await this.load(this.result().page);this.success.set('Reserva actualizada. El cambio y su responsable quedaron registrados.');}
+  try{const updated=await firstValueFrom(this.http.patch<Reservation>(this.base+'/'+r.id,payload).pipe(timeout(15000)));this.open(updated);await this.load(this.result().page);this.success.set(updated.status==='confirmed'?'Reserva confirmada. Avisa al cliente por WhatsApp con el botón de arriba.':'Reserva actualizada. El cambio y su responsable quedaron registrados.');}
   catch(e:unknown){this.error.set(this.message(e));}finally{this.saving.set(false);}
+ }
+ /** Limpia el filtro de fecha para ver todas las reservas próximas en un solo listado. */
+ protected clearDate(){if(this.date){this.date='';void this.load();}}
+ protected get showingAll(){return !this.date;}
+ /** Agrupa las reservas del listado por día chileno, para la vista "todas las fechas". */
+ protected grouped(){
+  const groups=new Map<string,{label:string;items:Reservation[]}>();
+  for(const r of this.result().items){
+   const key=chileLocalDateTime(r.reservedAt).slice(0,10);
+   if(!groups.has(key))groups.set(key,{label:new Date(r.reservedAt).toLocaleDateString('es-CL',{timeZone:'America/Santiago',weekday:'long',day:'numeric',month:'long'}),items:[]});
+   groups.get(key)!.items.push(r);
+  }
+  return [...groups.entries()].sort((a,b)=>a[0]<b[0]?-1:1).map(([key,value])=>({key,...value}));
+ }
+ /** Reservas confirmadas o en visita futura se pueden avisar por WhatsApp. */
+ protected canWhatsapp(r:Reservation){return r.status==='confirmed'&&/^\+569\d{8}$/.test(r.customerPhone);}
+ /** Abre WhatsApp con un mensaje de confirmación pre-llenado dirigido al cliente. */
+ protected whatsappLink(r:Reservation){
+  const when=new Date(r.reservedAt).toLocaleString('es-CL',{timeZone:'America/Santiago',weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+  const text=`Hola ${r.customerName.split(' ')[0]}, te saluda ${BUSINESS.name}. Confirmamos tu reserva para el ${when} para ${r.partySize} ${r.partySize===1?'persona':'personas'} (referencia ${r.reference}). Te esperamos. Si necesitas cambiar algo, respóndenos por aquí.`;
+  return `https://wa.me/${r.customerPhone.replace('+','')}?text=${encodeURIComponent(text)}`;
  }
  protected async create(){
   const at=chileLocalToIso(this.newAt);if(!at||!this.newName.trim()||!/^\d{8}$/.test(this.newPhone)||this.saving())return;

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Query } from '@nestjs/common';
 import type { AuthenticatedUser } from '../auth/auth.types';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -23,6 +23,16 @@ export class ClubStaffController {
 
   @Get('redemptions/recent')
   recent(@Query() filters: RecentRedemptionsDto) { return this.staff.recentRedemptions(filters.tableLabel); }
+
+  /** Cola de cupones por vencer para avisar por WhatsApp (wa.me manual). */
+  @Get('coupon-reminders')
+  couponReminders() { return this.staff.whatsappReminders(); }
+
+  /** Marca un aviso de WhatsApp como enviado por el equipo. */
+  @Post('coupon-reminders/:reminderId/sent')
+  markCouponReminder(@Param('reminderId', ParseUUIDPipe) reminderId: string) {
+    return this.staff.markWhatsappReminder(reminderId);
+  }
 
   /** Al escanear el QR (member_code): datos mínimos del socio + sus cupones. */
   @Get('lookup/:memberCode')

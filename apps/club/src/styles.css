@@ -5,22 +5,28 @@
 :root {
   /* Marca */
   --cm-primary: #12a7c2;
-  --cm-primary-dark: #0b8aa3;
-  --cm-gold: #e28e06;
+  --cm-primary-dark: #087c91;
+  --cm-gold: #a85215; /* dorado cálido legible sobre fondo claro (igual que la web) */
+  --cm-action: #ef8a42; /* naranja de acción (botones) */
   --cm-ocean: #1263a0;
 
-  /* Tema OSCURO premium (paleta marina Costa Mar) */
-  --cm-background: #0e2a38; /* azul profundo */
-  --cm-surface: #15415a; /* azul marino (tarjetas) */
-  --cm-surface-2: #1b4f6b; /* superficie elevada */
-  --cm-border: rgba(255, 255, 255, 0.1);
-  --cm-text: #f5ebdd; /* marfil */
-  --cm-muted: #a7c4d2; /* azul grisáceo claro */
-  --cm-heading: #ffffff;
+  /* Tema CLARO premium (paleta cálida Costa Mar, coherente con la web) */
+  --cm-background: #faf7f1; /* crema */
+  --cm-surface: #ffffff; /* tarjetas */
+  --cm-surface-2: #f0eee6; /* superficie elevada */
+  --cm-border: #d8dedb;
+  --cm-text: #17324d; /* azul marino tinta */
+  --cm-muted: #5a7382; /* azul grisáceo */
+  --cm-heading: #1263a0; /* títulos en azul océano */
+
+  /* Superficies oscuras de acento (tarjeta digital, hero): mantienen contraste. */
+  --cm-deep: #0e2a38;
+  --cm-deep-2: #15415a;
+  --cm-on-deep: #f5ebdd; /* texto marfil sobre superficies oscuras */
 
   --cm-font-head: 'Rufina', Georgia, 'Times New Roman', serif;
   --cm-font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --cm-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --cm-shadow: 0 10px 30px rgba(18, 99, 160, 0.08);
 }
 
 * {
@@ -47,7 +53,7 @@ h3 {
 }
 
 a {
-  color: var(--cm-gold);
+  color: var(--cm-primary-dark);
 }
 
 /* Botón base reutilizable */
@@ -73,8 +79,8 @@ a {
 }
 
 .cm-btn--primary {
-  background: var(--cm-primary-dark);
-  color: #fff;
+  background: var(--cm-action);
+  color: #172e38;
 }
 
 .cm-btn--google {
@@ -84,8 +90,19 @@ a {
 }
 
 .cm-btn--gold {
-  background: var(--cm-gold);
-  color: #16202a;
+  background: var(--cm-action);
+  color: #172e38;
+}
+
+/* Acción secundaria: contorno marino, para no competir con el botón primario. */
+.cm-btn--secondary {
+  background: transparent;
+  color: var(--cm-primary-dark);
+  border: 1px solid var(--cm-primary-dark);
+}
+
+.cm-btn--secondary:hover {
+  background: var(--cm-surface-2);
 }
 
 .cm-btn:disabled { opacity: 0.65; cursor: wait; transform: none; }

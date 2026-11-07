@@ -60,9 +60,9 @@
 .phone-field input { flex: 1; min-width: 0; width: 100%; }
 .field__help { color: var(--cm-muted); font-size: 0.85rem; }
 
-/* El selector de fecha nativo en oscuro */
+/* El selector de fecha nativo en claro */
 .field input[type='date'] {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 .field input:focus-visible {

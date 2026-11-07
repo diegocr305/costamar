@@ -83,6 +83,21 @@ export interface EligibilityResult {
   reason?: string;
 }
 
+/**
+ * Recordatorio de cupón por vencer pendiente de avisar por WhatsApp.
+ * El equipo lo envía manualmente con wa.me desde el panel admin.
+ */
+export interface CouponWhatsappReminder {
+  reminderId: string;
+  couponId: string;
+  code: string;
+  expiresAt: string;
+  fullName: string;
+  phone: string;
+  campaignName: string;
+  benefit?: string;
+}
+
 /** Edad mínima para el club y campañas con alcohol. */
 export const CLUB_MIN_AGE = 18;
 

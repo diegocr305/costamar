@@ -4,7 +4,7 @@
   "description": "Programa de socios de Costa Mar Barra Cevichera.",
   "lang": "es",
   "theme_color": "#1263a0",
-  "background_color": "#f5fbfc",
+  "background_color": "#faf7f1",
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",

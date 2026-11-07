@@ -7,6 +7,33 @@ import type { RedemptionHistoryDto } from './dto/redemption-history.dto';
 export class ClubStaffService {
   constructor(private readonly supabase: SupabaseService) {}
 
+  /**
+   * Cola de recordatorios de cupones por vencer pendientes de avisar por
+   * WhatsApp. El RPC refresca la selección (7 días) antes de devolverla,
+   * así la cola está siempre al día. El equipo envía con wa.me y marca.
+   */
+  async whatsappReminders() {
+    const { data, error } = await this.supabase.client.rpc('club_whatsapp_reminder_queue');
+    if (error) throw new BadRequestException('No pudimos cargar los avisos de cupones por vencer. Inténtalo de nuevo.');
+    return (data ?? []).map((r: Record<string, unknown>) => ({
+      reminderId: r['reminder_id'] as string,
+      couponId: r['coupon_id'] as string,
+      code: r['code'] as string,
+      expiresAt: r['expires_at'] as string,
+      fullName: r['full_name'] as string,
+      phone: r['phone'] as string,
+      campaignName: r['campaign_name'] as string,
+      benefit: (r['benefit'] as string | null) ?? undefined,
+    }));
+  }
+
+  /** Marca un aviso de WhatsApp como enviado por el equipo. */
+  async markWhatsappReminder(reminderId: string) {
+    const { error } = await this.supabase.client.rpc('club_mark_whatsapp_reminder', { p_reminder_id: reminderId });
+    if (error) throw new BadRequestException('No pudimos registrar el aviso. Inténtalo de nuevo.');
+    return { marked: true };
+  }
+
   async recentRedemptions(tableLabel?: string) {
     const raw = tableLabel?.trim().replace(/\s+/g, ' ');
     const table = raw && /^\d+$/.test(raw) ? `Mesa ${raw}` : raw;
