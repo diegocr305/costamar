@@ -254,3 +254,123 @@ sudo nginx -t && sudo systemctl reload nginx
 docker stop costamar-club
 ```
 La web y la API siguen funcionando: el club es independiente.
+
+---
+
+## 8. Entrega actual: agenda de reservas + WhatsApp, cupones por vencer y tema claro del Club
+
+Commit `c3fbf70`. Esta entrega toca **api**, **admin** y **club** (la web NO cambia).
+El despliegue tiene **dos partes independientes**:
+
+- **Parte 1 (contenedores):** aplica de inmediato con `deploy.sh`. Incluye la agenda
+  de reservas con "todas las fechas", el botón de confirmar reserva por WhatsApp y el
+  Club en tema claro. No necesita tocar la base de datos.
+- **Parte 2 (Supabase):** la base de datos de los recordatorios de cupones. Es un paso
+  aparte y **puede esperar**, pero la cola de WhatsApp del panel **no funcionará hasta
+  aplicar la migración** (el endpoint consulta RPCs que esa migración crea). El email
+  automático necesita además la Edge Function y la cuenta de Resend.
+
+> Regla de oro de siempre: `git pull` no toca tu `.env`; reconstruir contenedores no
+> borra sus variables; `deploy.sh` no toca Nginx ni Supabase.
+
+### Parte 1 — Desplegar los contenedores (servidor Lightsail)
+
+```bash
+cd ~/costamar
+./deploy.sh api admin club
+# Si la primera vez falta permiso de ejecución:
+#   chmod +x deploy.sh && ./deploy.sh api admin club
+```
+
+`deploy.sh` hace `git pull --ff-only`, reconstruye `api`, `admin` y `club`, y verifica
+el health de cada uno. La web no se incluye porque no cambió.
+
+#### Checklist Parte 1 (contenedores)
+
+- [ ] `cd ~/costamar` y rama correcta (`git rev-parse --abbrev-ref HEAD` → `main`).
+- [ ] `./deploy.sh api admin club` termina sin errores.
+- [ ] API health: `curl -fsS http://127.0.0.1:3000/api/v1/health` → `{"status":"ok",...}`.
+- [ ] Admin responde: `curl -I http://127.0.0.1:4001` → `200`.
+- [ ] Club responde: `curl -I http://127.0.0.1:4002` → `200`.
+- [ ] En el panel admin, **Reservas**: aparecen "Ver todas las fechas" / "Solo hoy" y, en
+      una reserva confirmada, el botón **Confirmar por WhatsApp** abre `wa.me`.
+- [ ] El **Club** se ve en tema claro (fondo crema), sin textos ilegibles.
+
+> Nota: mientras la Parte 2 no esté aplicada, el bloque "Cupones por vencer" del panel de
+> reservas puede mostrar un error al cargar la cola. Es esperable hasta aplicar la migración.
+
+### Parte 2 — Base de datos de cupones por vencer (Supabase)
+
+Se ejecuta **desde tu máquina** (donde el proyecto está vinculado con `supabase link`),
+no en el servidor. Guía detallada: `docs/club-cupones-recordatorios.md`.
+
+#### 2.1 Aplicar la migración (habilita la cola de WhatsApp del panel)
+
+```bash
+npx supabase@3.0.0 db push
+```
+
+Crea la tabla `club_coupon_reminders`, las RPCs, y el cron diario. Con esto la cola de
+WhatsApp del panel de reservas ya funciona (envío manual con `wa.me`). El email todavía no.
+
+#### Checklist Parte 2.1 (migración)
+
+- [ ] `npx supabase@3.0.0 db push` aplica `20261107120000_club_coupon_reminders.sql` sin errores.
+- [ ] En Supabase SQL Editor: `select * from public.club_whatsapp_reminder_queue();` responde (aunque esté vacío).
+- [ ] En el panel admin → Reservas, el bloque "Cupones por vencer" carga sin error.
+
+#### 2.2 Email automático con Resend (PENDIENTE — requiere tu cuenta)
+
+> **Pendiente de ti.** Hasta completar esto, el aviso por **email NO se envía**; solo
+> funciona la cola de WhatsApp (Parte 2.1). El sistema no se rompe: el cron igual arma la
+> cola todos los días y el email queda en pausa.
+
+Pasos (detalle en `docs/club-cupones-recordatorios.md`):
+
+- [ ] Crear cuenta en [resend.com](https://resend.com) (plan gratis: 3.000 correos/mes).
+- [ ] Agregar el dominio `restaurantecostamar.cl` en Resend (**Domains → Add Domain**).
+- [ ] Copiar los registros DNS (SPF/DKIM) de Resend a **Cloudflare → DNS** como **DNS only** (nube gris).
+- [ ] Esperar a que Resend marque el dominio **Verified**.
+- [ ] Generar una **API key** (`re_...`) en Resend.
+- [ ] Generar un secreto de cron: `openssl rand -hex 32`.
+- [ ] Cargar secretos de la Edge Function:
+  ```bash
+  npx supabase@3.0.0 secrets set \
+    RESEND_API_KEY="re_tu_llave" \
+    REMINDER_FROM="Costa Mar <club@restaurantecostamar.cl>" \
+    CRON_SECRET="el-secreto-generado" \
+    CLUB_URL="https://club.restaurantecostamar.cl"
+  ```
+- [ ] Desplegar la función: `npx supabase@3.0.0 functions deploy coupon-reminders`.
+- [ ] En el SQL Editor de Supabase, apuntar el cron a la función (usar el **mismo** `CRON_SECRET`):
+  ```sql
+  alter database postgres set app.settings.edge_base_url   = 'https://<PROJECT_REF>.supabase.co';
+  alter database postgres set app.settings.edge_cron_secret = 'el-mismo-CRON_SECRET';
+  ```
+- [ ] Probar con un cupón de prueba a <7 días para un socio con `marketing_email=true`:
+  ```bash
+  curl -i -X POST "https://<PROJECT_REF>.supabase.co/functions/v1/coupon-reminders" \
+    -H "Authorization: Bearer <CRON_SECRET>" -H "Content-Type: application/json" -d '{}'
+  # Esperado: {"processed":N,"sent":N,"failed":0,"skipped":0}
+  ```
+
+### Orden recomendado de toda la entrega
+
+1. **Ahora:** Parte 1 (`./deploy.sh api admin club`). Reservas y tema claro quedan activos.
+2. **Antes de que el equipo use "Cupones por vencer":** Parte 2.1 (`db push`).
+3. **Cuando tengas Resend:** Parte 2.2 (Edge Function + secretos).
+
+### Rollback de esta entrega
+
+```bash
+# Contenedores: volver al commit anterior y reconstruir
+cd ~/costamar
+git checkout 54b5c25        # commit previo a esta entrega
+./deploy.sh api admin club
+git checkout main           # cuando se corrija
+
+# Supabase: la migración es aditiva (tabla + RPCs nuevas, no altera datos de cupones).
+# Para desactivar solo el cron de recordatorios sin perder nada:
+#   select cron.unschedule('costamar-coupon-reminders-std');
+#   select cron.unschedule('costamar-coupon-reminders-dst');
+```
