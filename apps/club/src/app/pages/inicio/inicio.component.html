@@ -27,7 +27,7 @@
       <a routerLink="/cupones" [queryParams]="availableCoupons().length === 0 && hasUsed() ? {estado:'utilizados'} : {}" class="cm-btn cm-btn--primary inicio__cta">{{availableCoupons().length === 0 && hasUsed() ? 'Ver mis regalos utilizados' : 'Ver mis cupones'}}</a>
       @if (news().length > 0) {
         <h2 class="inicio__title news-title">Beneficios del Club</h2>
-        <ul class="campaigns">@for (c of news(); track c.id) { <li class="campaign"><strong>{{ c.type === 'birthday' ? '🎂 Un regalo en tu mes de cumpleaños' : c.type === 'founders' ? '🎁 Bienvenida para socios fundadores' : c.name }}</strong><p>{{ c.type === 'birthday' ? 'Tu bebestible y postre aparecerán automáticamente durante tu mes, con tu perfil completo.' : c.type === 'founders' ? 'Bebestible personal con consumo en el local, sujeto a cupos y condiciones.' : c.description }}</p></li> }</ul>
+        <ul class="campaigns">@for (c of news(); track c.id) { <li class="campaign"><strong>{{ c.type === 'birthday' ? '🎂 Un regalo en tu mes de cumpleaños' : c.type === 'founders' ? '🎁 Regalo de bienvenida para cada socio nuevo' : c.name }}</strong><p>{{ c.type === 'birthday' ? 'Tu bebestible y postre aparecerán automáticamente durante tu mes, con tu perfil completo.' : c.type === 'founders' ? 'Bebestible personal con consumo en el local. Tienes 30 días para usarlo.' : c.description }}</p></li> }</ul>
       }
       <!-- Bloque de acciones secundarias, agrupado y jerarquizado -->
       <div class="inicio__more">

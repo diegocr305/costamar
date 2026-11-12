@@ -13,7 +13,7 @@ import { AuthService } from '../../core/auth.service';
       <article class="benefit">
         <span class="icon" aria-hidden="true">🎁</span><h2>Tu regalo de bienvenida</h2>
         <p><strong>1 bebestible personal de regalo</strong> a elección entre jugo, bebida o schop de cerveza, con consumo asociado en el restaurante.</p>
-        <p class="note">Para los primeros 50 socios fundadores elegibles. Un regalo por socio, sujeto a cupos y disponibilidad. El beneficio es personal.</p>
+        <p class="note">Para cada socio nuevo con perfil completo. Un regalo por socio y 30 días para usarlo desde que lo recibes. Personal y sujeto a disponibilidad de productos.</p>
       </article>
       <article class="benefit benefit--birthday">
         <span class="icon" aria-hidden="true">🎂</span><h2>Barco Cumpleañero</h2>
