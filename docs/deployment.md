@@ -555,3 +555,52 @@ permitido (usa `onboarding@resend.dev` hacia tu propio correo mientras no verifi
 #   select cron.unschedule('costamar-coupon-reminders-dst');
 # El orden nuevo de reservas se revierte reaplicando reservation_list de 20261012184342_reservation_arrival_occupancy.sql
 ```
+
+---
+
+## 10. Avisos de reservas por correo (en segundos) y recordatorio
+
+**Estado (12-nov-2026):** migración `20261112120000_reservation_alerts.sql` aplicada y función `reservation-alert` desplegada en producción. Falta solo desplegar el panel (`./deploy.sh admin`) para ver el contador.
+
+### Cómo funciona
+
+| Situación | Qué pasa |
+| --- | --- |
+| Un cliente envía una solicitud (web o Club) entre **08:00 y 22:59** (hora de Chile) | Llega un correo en segundos a `DIGEST_TO` (hoy `costamarbarracevichera@gmail.com`). Si la visita es hoy, el asunto empieza con `HOY 16:00 · …` |
+| La solicitud llega **fuera de ese horario** | No se envía correo; queda pendiente y entra al resumen de las 09:00 |
+| Una visita de **hoy** sigue pendiente **1 hora** después | Llega **un** correo "Sigue sin confirmar: …" (una sola vez por reserva; el cron revisa cada 10 min) |
+| Ya se confirmó o canceló antes de enviar | No se envía nada |
+| Entran más de **20** solicitudes en una hora | Los avisos extra se omiten (contra spam) y quedan en el resumen de las 09:00 |
+| Reserva ingresada por el equipo en el panel | No avisa (ya la conoce quien la ingresó) |
+
+El correo trae: cliente, cuándo (y cuánto falta si es hoy), personas, teléfono, referencia, comentario, un botón verde **Contactar por WhatsApp** (mensaje ya escrito) y un botón **Abrir en el panel**.
+
+En el panel de Reservas, el atajo **Por confirmar** muestra un contador con las solicitudes pendientes; la lista y el contador se actualizan solos cada minuto mientras la pestaña esté visible.
+
+**Garantía:** si el sistema de avisos fallara, la reserva del cliente se crea igual (el trigger ignora cualquier error y deja solo un WARNING en los logs).
+
+### Desplegar el panel (servidor Lightsail)
+
+```bash
+cd ~/costamar
+./deploy.sh admin
+```
+
+### Checklist
+
+- [ ] `./deploy.sh admin` terminó sin errores y, tras Ctrl+F5, el atajo **Por confirmar** muestra un número.
+- [ ] Prueba real (entre 08:00 y 22:59): en `https://restaurantecostamar.cl/reservas` envía una solicitud de prueba para hoy. Debe llegar el correo en segundos. Luego cancélala desde el panel.
+- [ ] Se ve el aviso registrado (SQL Editor): `select kind, status, detail, created_at from public.reservation_alerts order by created_at desc limit 5;` → `status = sent`.
+- [ ] Si no llega: `status = failed` trae el motivo en `detail` (p. ej. `resend:403`); `skipped` con "fuera de horario" es lo esperado de noche.
+
+### Apagarlo (si hiciera falta)
+
+```sql
+drop trigger reservation_alert_on_insert on public.reservations;       -- deja de avisar solicitudes nuevas
+select cron.unschedule('costamar-reservation-reminders');               -- deja de enviar recordatorios
+```
+El resumen diario de las 09:00 no se ve afectado.
+
+### Pendiente para más adelante: Telegram (gratis)
+
+Un correo puede pasar desapercibido. Telegram permite una notificación push inmediata y es gratis: se crea un bot con @BotFather, se guarda su token en los secrets de Supabase y la misma función `reservation-alert` publica el mensaje en un chat o grupo del equipo (con el botón de WhatsApp como enlace). No está implementado; se retoma cuando se decida.

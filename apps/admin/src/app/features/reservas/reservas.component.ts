@@ -1,4 +1,4 @@
-import { Component,HostListener,OnInit,inject,signal } from '@angular/core';
+import { Component,HostListener,OnDestroy,OnInit,inject,signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient,HttpParams } from '@angular/common/http';
 import { firstValueFrom,timeout } from 'rxjs';
@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../core/auth.service';
 
 @Component({selector:'cm-reservas-admin',standalone:true,imports:[FormsModule],templateUrl:'./reservas.component.html',styleUrl:'./reservas.component.css'})
-export class ReservasAdminComponent implements OnInit {
+export class ReservasAdminComponent implements OnInit,OnDestroy {
  private readonly http=inject(HttpClient);private readonly auth=inject(AuthService);private readonly base=environment.apiUrl+'/reservations/admin';private request=0;
  protected config=signal<ReservationConfig|null>(null);protected settingsDraft=signal<ReservationConfig|null>(null);
  protected result=signal<ReservationPage>({items:[],total:0,page:1,pageSize:20});protected selected=signal<Reservation|null>(null);
@@ -32,7 +32,21 @@ export class ReservasAdminComponent implements OnInit {
  protected final(r:Reservation){return ['completed','cancelled','no_show'].includes(r.status);}
  protected transitions(r:Reservation){const allowed:Record<string,string[]>={pending:['pending','confirmed','cancelled'],confirmed:['confirmed','seated','cancelled','no_show'],seated:['seated','completed']};return this.statuses.filter(s=>(allowed[r.status]??[r.status]).includes(s.value));}
  protected reminders=signal<CouponWhatsappReminder[]>([]);protected remindersOpen=signal(false);protected remindersLoading=signal(false);
- async ngOnInit(){await this.loadConfig();await this.load();void this.loadReminders();}
+ async ngOnInit(){await this.loadConfig();await this.load();void this.loadReminders();void this.loadPendingCount();this.pollTimer=setInterval(()=>void this.poll(),60000);}
+ ngOnDestroy(){if(this.pollTimer)clearInterval(this.pollTimer);}
+
+ // ---------- Solicitudes por confirmar: se actualiza sola cada minuto ----------
+ protected pendingCount=signal<number|null>(null);private pollTimer?:ReturnType<typeof setInterval>;
+ /** Total de solicitudes por confirmar (mismo criterio que el atajo "Por confirmar"). */
+ protected async loadPendingCount(){
+  try{const r=await firstValueFrom(this.http.get<ReservationPage>(this.base,{params:new HttpParams().set('page',1).set('status','pending').set('q','')}).pipe(timeout(10000)));this.pendingCount.set(r.total);}
+  catch{/* silencioso: se reintenta en el próximo ciclo */}
+ }
+ /** Cada minuto, solo con la pestaña visible: actualiza el contador y la lista (sin parpadeo ni borrar mensajes). */
+ private async poll(){
+  if(document.visibilityState!=='visible'||this.saving())return;
+  await Promise.all([this.loadPendingCount(),this.query.trim()?Promise.resolve():this.load(this.result().page,true)]);
+ }
 
  // ---------- Cupones por vencer: cola de WhatsApp para el equipo ----------
  /** Carga los cupones por vencer pendientes de avisar por WhatsApp. */
@@ -60,11 +74,11 @@ export class ReservasAdminComponent implements OnInit {
  }
  protected async loadConfig(){this.error.set('');try{this.config.set(await firstValueFrom(this.http.get<ReservationConfig>(this.base+'/config').pipe(timeout(10000))));}catch{this.error.set('No pudimos cargar el mapa de mesas. Reintenta antes de asignar una mesa.');}}
  @HostListener('document:visibilitychange') protected onVisible(){if(document.visibilityState==='visible'&&!this.saving())void this.load(this.result().page);}
- protected async load(page=1){
-  const request=++this.request;this.loading.set(true);this.error.set('');let params=new HttpParams().set('page',page).set('status',this.status).set('q',this.query.trim());
+ protected async load(page=1,quiet=false){
+  const request=++this.request;if(!quiet){this.loading.set(true);this.error.set('');}let params=new HttpParams().set('page',page).set('status',this.status).set('q',this.query.trim());
   // Al buscar por nombre, teléfono o RES-… se busca en todas las fechas.
   if(this.date&&!this.query.trim())params=params.set('date',this.date);
-  try{const result=await firstValueFrom(this.http.get<ReservationPage>(this.base,{params}).pipe(timeout(10000)));if(request===this.request)this.result.set(result);}catch{if(request===this.request)this.error.set('No pudimos cargar la agenda. Reintenta.');}finally{if(request===this.request)this.loading.set(false);}
+  try{const result=await firstValueFrom(this.http.get<ReservationPage>(this.base,{params}).pipe(timeout(10000)));if(request===this.request)this.result.set(result);}catch{if(!quiet&&request===this.request)this.error.set('No pudimos cargar la agenda. Reintenta.');}finally{if(request===this.request)this.loading.set(false);}
  }
  protected open(r:Reservation){this.selected.set(r);this.editAt=chileLocalDateTime(r.reservedAt);this.editParty=r.partySize;this.editStatus=r.status;this.editTables=[...r.tableNumbers];this.capacity=r.confirmedCapacity;this.staffNote=r.staffNote??'';this.editZone=r.assignedArea??(r.areaPreference==='any'?'salon':r.areaPreference);this.error.set('');this.success.set('');this.panelError.set('');this.panelSuccess.set('');
   // En pantallas angostas el panel queda debajo de la lista: llevarlo a la vista.
@@ -77,7 +91,7 @@ export class ReservasAdminComponent implements OnInit {
  protected async save(){
   const r=this.selected(),at=chileLocalToIso(this.editAt);if(!r||!at||this.saving())return;this.saving.set(true);this.panelError.set('');this.panelSuccess.set('');
   const payload={status:this.editStatus,...(r.status==='seated'?{}:{partySize:this.editParty,reservedAt:at,tableNumbers:this.editTables}),staffNote:this.staffNote,...(this.capacity?{confirmedCapacity:this.capacity}:{})};
-  try{const updated=await firstValueFrom(this.http.patch<Reservation>(this.base+'/'+r.id,payload).pipe(timeout(15000)));this.open(updated);await this.load(this.result().page);this.panelSuccess.set(updated.status==='confirmed'?'Reserva confirmada. Avisa al cliente con el botón verde de WhatsApp.':'Reserva actualizada. El cambio y su responsable quedaron registrados.');}
+  try{const updated=await firstValueFrom(this.http.patch<Reservation>(this.base+'/'+r.id,payload).pipe(timeout(15000)));this.open(updated);await this.load(this.result().page);void this.loadPendingCount();this.panelSuccess.set(updated.status==='confirmed'?'Reserva confirmada. Avisa al cliente con el botón verde de WhatsApp.':'Reserva actualizada. El cambio y su responsable quedaron registrados.');}
   catch(e:unknown){this.panelError.set(this.message(e));}finally{this.saving.set(false);}
  }
  // ---------- Vistas rápidas: hoy primero, luego pendientes / todas / búsqueda ----------
@@ -125,7 +139,7 @@ export class ReservasAdminComponent implements OnInit {
   const at=chileLocalToIso(this.newAt);if(!at||!this.newName.trim()||!/^\d{8}$/.test(this.newPhone)||this.saving())return;
   if(!this.newKey){this.newKey=crypto.randomUUID();this.newToken=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(n=>n.toString(16).padStart(2,'0')).join('');}
   this.saving.set(true);this.error.set('');
-  try{const r=await firstValueFrom(this.http.post<Reservation>(this.base,{requestId:this.newKey,accessToken:this.newToken,customerName:this.newName.trim(),customerPhone:'+569'+this.newPhone,partySize:this.newParty,reservedAt:at,notes:this.newNotes,areaPreference:'any'}).pipe(timeout(15000)));this.newForm=false;this.newKey='';this.newToken='';this.date=chileLocalDateTime(at).slice(0,10);this.status='';this.query='';await this.load();this.open(r);this.success.set('Solicitud creada. Asigna las mesas y confirma cuando verifiques la disponibilidad.');}
+  try{const r=await firstValueFrom(this.http.post<Reservation>(this.base,{requestId:this.newKey,accessToken:this.newToken,customerName:this.newName.trim(),customerPhone:'+569'+this.newPhone,partySize:this.newParty,reservedAt:at,notes:this.newNotes,areaPreference:'any'}).pipe(timeout(15000)));this.newForm=false;this.newKey='';this.newToken='';this.date=chileLocalDateTime(at).slice(0,10);this.status='';this.query='';await this.load();void this.loadPendingCount();this.open(r);this.success.set('Solicitud creada. Asigna las mesas y confirma cuando verifiques la disponibilidad.');}
   catch(e:unknown){this.error.set(this.message(e));}finally{this.saving.set(false);}
  }
  protected editSettings(){const c=this.config();if(c)this.settingsDraft.set(JSON.parse(JSON.stringify(c)));}
