@@ -45,7 +45,7 @@ export class RadarSync {
           p_owner: owner,
           p_interval: Math.max(
             60,
-            Number(this.config.get("RADAR_INTERVAL_SECONDS")) || 900,
+            Number(this.config.get("RADAR_INTERVAL_SECONDS")) || 3600,
           ),
         }),
       );

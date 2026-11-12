@@ -12,8 +12,11 @@ export class ReservasAdminComponent implements OnInit {
  protected config=signal<ReservationConfig|null>(null);protected settingsDraft=signal<ReservationConfig|null>(null);
  protected result=signal<ReservationPage>({items:[],total:0,page:1,pageSize:20});protected selected=signal<Reservation|null>(null);
  protected loading=signal(false);protected saving=signal(false);protected error=signal('');protected success=signal('');
- protected date='';protected status='';protected query='';
  protected readonly today=chileLocalDateTime(new Date().toISOString()).slice(0,10);
+ // Primera opción: las reservas de hoy. La búsqueda y "Todas" salen de aquí.
+ protected date=this.today;protected status='';protected query='';
+ // Mensajes del panel de gestión: se muestran junto al botón Guardar, no arriba de la página.
+ protected panelError=signal('');protected panelSuccess=signal('');
  protected newForm=false;protected newName='';protected newPhone='';protected newParty=2;protected newAt=chileLocalDateTime(new Date().toISOString());protected newNotes='';private newKey='';private newToken='';
  protected editAt='';protected editParty=2;protected editStatus:ReservationStatus='pending';protected editTables:number[]=[];protected capacity:number|null=null;protected staffNote='';
  protected editZone:'salon'|'terraza'|'barra'='salon';
@@ -58,40 +61,64 @@ export class ReservasAdminComponent implements OnInit {
  protected async loadConfig(){this.error.set('');try{this.config.set(await firstValueFrom(this.http.get<ReservationConfig>(this.base+'/config').pipe(timeout(10000))));}catch{this.error.set('No pudimos cargar el mapa de mesas. Reintenta antes de asignar una mesa.');}}
  @HostListener('document:visibilitychange') protected onVisible(){if(document.visibilityState==='visible'&&!this.saving())void this.load(this.result().page);}
  protected async load(page=1){
-  const request=++this.request;this.loading.set(true);this.error.set('');let params=new HttpParams().set('page',page).set('status',this.status).set('q',this.query.trim());if(this.date)params=params.set('date',this.date);
+  const request=++this.request;this.loading.set(true);this.error.set('');let params=new HttpParams().set('page',page).set('status',this.status).set('q',this.query.trim());
+  // Al buscar por nombre, teléfono o RES-… se busca en todas las fechas.
+  if(this.date&&!this.query.trim())params=params.set('date',this.date);
   try{const result=await firstValueFrom(this.http.get<ReservationPage>(this.base,{params}).pipe(timeout(10000)));if(request===this.request)this.result.set(result);}catch{if(request===this.request)this.error.set('No pudimos cargar la agenda. Reintenta.');}finally{if(request===this.request)this.loading.set(false);}
  }
- protected open(r:Reservation){this.selected.set(r);this.editAt=chileLocalDateTime(r.reservedAt);this.editParty=r.partySize;this.editStatus=r.status;this.editTables=[...r.tableNumbers];this.capacity=r.confirmedCapacity;this.staffNote=r.staffNote??'';this.editZone=r.assignedArea??(r.areaPreference==='any'?'salon':r.areaPreference);this.error.set('');this.success.set('');}
+ protected open(r:Reservation){this.selected.set(r);this.editAt=chileLocalDateTime(r.reservedAt);this.editParty=r.partySize;this.editStatus=r.status;this.editTables=[...r.tableNumbers];this.capacity=r.confirmedCapacity;this.staffNote=r.staffNote??'';this.editZone=r.assignedArea??(r.areaPreference==='any'?'salon':r.areaPreference);this.error.set('');this.success.set('');this.panelError.set('');this.panelSuccess.set('');
+  // En pantallas angostas el panel queda debajo de la lista: llevarlo a la vista.
+  if(typeof window!=='undefined'&&window.innerWidth<=1000)setTimeout(()=>document.getElementById('reserva-detalle')?.scrollIntoView({behavior:'smooth',block:'start'}),0);}
  protected toggleTable(number:number,checked:boolean){this.editTables=checked?[...this.editTables.filter(n=>this.config()?.tables?.find(t=>t.number===n)?.area===this.editZone),number].sort((a,b)=>a-b):this.editTables.filter(n=>n!==number);this.capacity=this.knownCapacity();}
  protected knownCapacity():number|null {const c=this.config();if(this.editTables.length===1)return c?.tables?.find(t=>t.number===this.editTables[0])?.maximum??null;if(this.editTables.length===2)return c?.pairs?.find(p=>p.enabled!==false&&p.a===this.editTables[0]&&p.b===this.editTables[1])?.capacity??null;return null;}
  protected needsReview(){return this.editTables.length>1&&this.knownCapacity()===null;}
  protected specialGroupChange(){const r=this.selected();return !!(r&&this.editTables.length>2&&this.isCashier()&&['confirmed','seated'].includes(this.editStatus)&&(r.status==='pending'||JSON.stringify(this.editTables)!==JSON.stringify(r.tableNumbers)||this.editParty!==r.partySize||Date.parse(chileLocalToIso(this.editAt)??'')!==Date.parse(r.reservedAt)||this.capacity!==r.confirmedCapacity));}
  protected tablesByArea(area:string){return this.config()?.tables?.filter(t=>t.area===area)??[];}
  protected async save(){
-  const r=this.selected(),at=chileLocalToIso(this.editAt);if(!r||!at||this.saving())return;this.saving.set(true);this.error.set('');this.success.set('');
+  const r=this.selected(),at=chileLocalToIso(this.editAt);if(!r||!at||this.saving())return;this.saving.set(true);this.panelError.set('');this.panelSuccess.set('');
   const payload={status:this.editStatus,...(r.status==='seated'?{}:{partySize:this.editParty,reservedAt:at,tableNumbers:this.editTables}),staffNote:this.staffNote,...(this.capacity?{confirmedCapacity:this.capacity}:{})};
-  try{const updated=await firstValueFrom(this.http.patch<Reservation>(this.base+'/'+r.id,payload).pipe(timeout(15000)));this.open(updated);await this.load(this.result().page);this.success.set(updated.status==='confirmed'?'Reserva confirmada. Avisa al cliente por WhatsApp con el botón de arriba.':'Reserva actualizada. El cambio y su responsable quedaron registrados.');}
-  catch(e:unknown){this.error.set(this.message(e));}finally{this.saving.set(false);}
+  try{const updated=await firstValueFrom(this.http.patch<Reservation>(this.base+'/'+r.id,payload).pipe(timeout(15000)));this.open(updated);await this.load(this.result().page);this.panelSuccess.set(updated.status==='confirmed'?'Reserva confirmada. Avisa al cliente con el botón verde de WhatsApp.':'Reserva actualizada. El cambio y su responsable quedaron registrados.');}
+  catch(e:unknown){this.panelError.set(this.message(e));}finally{this.saving.set(false);}
  }
- /** Limpia el filtro de fecha para ver todas las reservas próximas en un solo listado. */
- protected clearDate(){if(this.date){this.date='';void this.load();}}
- protected get showingAll(){return !this.date;}
- /** Agrupa las reservas del listado por día chileno, para la vista "todas las fechas". */
- protected grouped(){
-  const groups=new Map<string,{label:string;items:Reservation[]}>();
-  for(const r of this.result().items){
-   const key=chileLocalDateTime(r.reservedAt).slice(0,10);
-   if(!groups.has(key))groups.set(key,{label:new Date(r.reservedAt).toLocaleDateString('es-CL',{timeZone:'America/Santiago',weekday:'long',day:'numeric',month:'long'}),items:[]});
-   groups.get(key)!.items.push(r);
-  }
-  return [...groups.entries()].sort((a,b)=>a[0]<b[0]?-1:1).map(([key,value])=>({key,...value}));
+ // ---------- Vistas rápidas: hoy primero, luego pendientes / todas / búsqueda ----------
+ protected mode():'search'|'today'|'pending'|'all'|'custom'{
+  if(this.query.trim())return 'search';
+  if(this.date===this.today&&!this.status)return 'today';
+  if(!this.date&&this.status==='pending')return 'pending';
+  if(!this.date&&!this.status)return 'all';
+  return 'custom';
  }
- /** Reservas confirmadas o en visita futura se pueden avisar por WhatsApp. */
- protected canWhatsapp(r:Reservation){return r.status==='confirmed'&&/^\+569\d{8}$/.test(r.customerPhone);}
- /** Abre WhatsApp con un mensaje de confirmación pre-llenado dirigido al cliente. */
+ protected showToday(){this.date=this.today;this.status='';this.query='';void this.load();}
+ protected showPending(){this.date='';this.status='pending';this.query='';void this.load();}
+ protected showAll(){this.date='';this.status='';this.query='';void this.load();}
+ /** Misma clasificación que usa el servidor para ordenar, para rotular cada bloque. */
+ private sectionOf(r:Reservation):{key:string;label:string}{
+  const open=['pending','confirmed','seated'].includes(r.status),recent=Date.parse(r.reservedAt)>=Date.now()-86400000;
+  if(r.status==='pending'&&recent)return {key:'pending',label:'Por confirmar'};
+  if(['confirmed','seated'].includes(r.status)&&recent)return {key:'upcoming',label:'Confirmadas y próximas'};
+  if(open)return {key:'stale',label:'Fecha pasada sin cerrar · cancela o marca “No asistió”'};
+  return {key:'closed',label:'Historial · cerradas'};
+ }
+ /** Bloques consecutivos en el orden del servidor. Con una fecha elegida, un solo bloque sin título. */
+ protected sections(){
+  const items=this.result().items;
+  if(this.date&&!this.query.trim())return items.length?[{key:'day',label:'',items}]:[];
+  const out:{key:string;label:string;items:Reservation[]}[]=[];
+  for(const r of items){const s=this.sectionOf(r),last=out[out.length-1];if(last&&last.key===s.key)last.items.push(r);else out.push({...s,items:[r]});}
+  return out;
+ }
+ /** Solicitud pendiente cuya fecha ya pasó: el sistema no permite confirmarla sin cambiar la fecha. */
+ protected pastPending(r:Reservation){return r.status==='pending'&&Date.parse(r.reservedAt)<Date.now()-15*60000;}
+ /** Pendientes (para contactar y confirmar disponibilidad) y confirmadas (para avisar) tienen WhatsApp. */
+ protected canWhatsapp(r:Reservation){return ['pending','confirmed'].includes(r.status)&&/^\+569\d{8}$/.test(r.customerPhone);}
+ protected whatsappLabel(r:Reservation){return r.status==='pending'?'Contactar por WhatsApp':'Confirmar por WhatsApp';}
+ /** Abre WhatsApp con el mensaje adecuado: consulta si está pendiente, confirmación si ya está confirmada. */
  protected whatsappLink(r:Reservation){
   const when=new Date(r.reservedAt).toLocaleString('es-CL',{timeZone:'America/Santiago',weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
-  const text=`Hola ${r.customerName.split(' ')[0]}, te saluda ${BUSINESS.name}. Confirmamos tu reserva para el ${when} para ${r.partySize} ${r.partySize===1?'persona':'personas'} (referencia ${r.reference}). Te esperamos. Si necesitas cambiar algo, respóndenos por aquí.`;
+  const people=`${r.partySize} ${r.partySize===1?'persona':'personas'}`,name=r.customerName.split(' ')[0];
+  const text=r.status==='pending'
+   ?`Hola ${name}, te saluda ${BUSINESS.name}. Recibimos tu solicitud de reserva para el ${when} para ${people} (referencia ${r.reference}). Estamos revisando la disponibilidad y te confirmamos en breve. ¿Sigue vigente?`
+   :`Hola ${name}, te saluda ${BUSINESS.name}. Confirmamos tu reserva para el ${when} para ${people} (referencia ${r.reference}). Te esperamos. Si necesitas cambiar algo, respóndenos por aquí.`;
   return `https://wa.me/${r.customerPhone.replace('+','')}?text=${encodeURIComponent(text)}`;
  }
  protected async create(){

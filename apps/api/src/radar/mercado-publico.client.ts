@@ -58,7 +58,14 @@ export class MercadoPublicoClient {
       const budget = owner
         ? await this.db.client.rpc("radar_consume_request", {
             p_owner: owner,
-            p_limit: 9000,
+            // Tope diario propio, más conservador que el máximo de la base (9000).
+            p_limit: Math.min(
+              9000,
+              Math.max(
+                50,
+                Number(this.config.get("RADAR_DAILY_REQUEST_LIMIT")) || 1000,
+              ),
+            ),
           })
         : await this.db.client.rpc("radar_general_consume");
       if (budget.error)

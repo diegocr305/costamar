@@ -116,7 +116,7 @@ La ingestión transaccional conserva el seguimiento manual, guarda versiones y g
 
 ## Sincronización
 
-El intervalo propuesto es 900 segundos. El worker verifica la cola cada 30 segundos y utiliza un lease de base de datos para evitar procesos duplicados. Consulta secuencialmente, con 5 segundos entre solicitudes por defecto, cachea candidatos y procesa lotes acotados.
+El intervalo recomendado es 3600 segundos (1 vez por hora; antes 900). El worker verifica su base cada 30 segundos, pero eso **no** llama a Mercado Público: solo pregunta a `radar_claim` si ya corresponde un ciclo. Las consultas reales ocurren como máximo una vez por `RADAR_INTERVAL_SECONDS`, con `RADAR_REQUEST_DELAY_MS` entre solicitudes y un tope diario `RADAR_DAILY_REQUEST_LIMIT` (1000 por defecto). Si Mercado Público responde 429, el worker pausa según `Retry-After`. El worker usa un lease de base de datos para evitar procesos duplicados. Consulta secuencialmente, con 5 segundos entre solicitudes por defecto, cachea candidatos y procesa lotes acotados.
 
 Compra Ágil comienza por procesos publicados de las regiones configuradas. Luego consulta ventanas de cambios con solapamiento de cinco minutos y una fecha final fija por ventana. Se guardan página y candidatos pendientes antes de avanzar. Al cambiar un perfil se reinicia la búsqueda de procesos abiertos, y hay conciliación diaria. La primera carga puede necesitar varios ciclos; el panel lo indica.
 
@@ -141,7 +141,8 @@ no repetir las migraciones de esta instalación.
 ```dotenv
 RADAR_ENABLED=true
 MERCADO_PUBLICO_TICKET=COMPLETAR_EN_EL_SERVIDOR
-RADAR_INTERVAL_SECONDS=900
+RADAR_INTERVAL_SECONDS=3600
+RADAR_DAILY_REQUEST_LIMIT=1000
 RADAR_REQUEST_DELAY_MS=5000
 RADAR_EMAIL_ENABLED=false
 ```

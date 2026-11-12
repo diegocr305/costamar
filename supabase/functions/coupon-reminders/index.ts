@@ -87,7 +87,17 @@ function emailHtml(row: PendingEmail): string {
   </div></body></html>`;
 }
 
-async function sendEmail(row: PendingEmail): Promise<{ ok: boolean; detail: string }> {
+// Modo prueba: con el remitente de pruebas de Resend (@resend.dev) solo se puede entregar al
+// correo dueño de la cuenta. En ese modo NO se envía (ni se marca) a nadie fuera de DIGEST_TO,
+// para no quemar el único aviso que tiene cada socio. Al verificar el dominio y cambiar
+// REMINDER_FROM, los avisos pendientes salen solos.
+const TEST_SENDER = REMINDER_FROM.toLowerCase().includes('@resend.dev');
+const TEST_RECIPIENTS = (Deno.env.get('DIGEST_TO') ?? '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+
+/** Errores de configuración o transitorios: el aviso queda 'pending' y se reintenta en la próxima corrida. */
+const isRetryable = (status: number) => status === 401 || status === 403 || status === 429 || status >= 500;
+
+async function sendEmail(row: PendingEmail): Promise<{ ok: boolean; retryable: boolean; detail: string }> {
   const left = daysLeft(row.expires_at);
   const subject = left === 1
     ? 'Tu beneficio del Club Costa Mar vence mañana'
@@ -105,9 +115,9 @@ async function sendEmail(row: PendingEmail): Promise<{ ok: boolean; detail: stri
       html: emailHtml(row),
     }),
   });
-  if (res.ok) return { ok: true, detail: 'resend:accepted' };
+  if (res.ok) return { ok: true, retryable: false, detail: 'resend:accepted' };
   const text = await res.text().catch(() => '');
-  return { ok: false, detail: `resend:${res.status}:${text}`.slice(0, 500) };
+  return { ok: false, retryable: isRetryable(res.status), detail: `resend:${res.status}:${text}`.slice(0, 500) };
 }
 
 Deno.serve(async (req) => {
@@ -149,6 +159,7 @@ Deno.serve(async (req) => {
   let sent = 0;
   let failed = 0;
   let skipped = 0;
+  let held = 0; // pendientes que se conservan para reintentar (modo prueba o error transitorio)
 
   // 3+4) Envía y cierra cada recordatorio.
   for (const row of rows) {
@@ -161,7 +172,15 @@ Deno.serve(async (req) => {
       skipped++;
       continue;
     }
+    if (TEST_SENDER && !TEST_RECIPIENTS.includes(row.email.toLowerCase())) {
+      held++;
+      continue;
+    }
     const result = await sendEmail(row);
+    if (!result.ok && result.retryable) {
+      held++;
+      continue;
+    }
     await admin.rpc('club_mark_email_reminder', {
       p_reminder_id: row.reminder_id,
       p_status: result.ok ? 'sent' : 'failed',
@@ -171,7 +190,7 @@ Deno.serve(async (req) => {
     else failed++;
   }
 
-  return new Response(JSON.stringify({ processed: rows.length, sent, failed, skipped }), {
+  return new Response(JSON.stringify({ processed: rows.length, sent, failed, skipped, held, testMode: TEST_SENDER }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });

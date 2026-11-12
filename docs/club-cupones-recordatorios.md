@@ -1,5 +1,7 @@
 # Recordatorios de cupones por vencer — Club Costa Mar
 
+> **Actualización 12-nov-2026:** los comandos de esta guía (`supabase db push`, `supabase secrets set` con la clave en la línea de comandos, `functions deploy` sin `--project-ref`) quedaron reemplazados por los de [docs/deployment.md, sección 9](deployment.md). En especial: **no uses `db push`** en este proyecto (el historial de migraciones remoto no coincide con el repo) y carga la clave de Resend desde un archivo local ignorado por git, no escribiéndola en la terminal.
+
 Avisa a los socios **7 días antes** de que expire un cupón del Club, en dos canales
 según el consentimiento que cada socio dio al inscribirse:
 

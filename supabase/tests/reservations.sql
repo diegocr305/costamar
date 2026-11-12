@@ -3,7 +3,7 @@ set local plpgsql.check_asserts=on;
 do $$
 declare
  v_owner uuid:=gen_random_uuid();v_staff uuid:=gen_random_uuid();v_member uuid:=gen_random_uuid();v_other uuid:=gen_random_uuid();
- v_day date:=(now() at time zone 'America/Santiago')::date+2;v_at timestamptz;v_input jsonb;v_a jsonb;v_b jsonb;v_c jsonb;v_id uuid;v_hash text:=repeat('a',64);v_count bigint;v_config jsonb;
+ v_day date:=(date_trunc('week',now() at time zone 'America/Santiago')::date+9);v_at timestamptz;v_input jsonb;v_a jsonb;v_b jsonb;v_c jsonb;v_id uuid;v_hash text:=repeat('a',64);v_count bigint;v_config jsonb;
 begin
  insert into auth.users(id,email,raw_app_meta_data) values(v_owner,'res-owner-'||v_owner||'@example.invalid','{"role":"superadmin"}'),(v_staff,'res-staff-'||v_staff||'@example.invalid','{"role":"cashier"}'),(v_member,'res-member-'||v_member||'@example.invalid','{}'),(v_other,'res-other-'||v_other||'@example.invalid','{}');
  insert into public.user_roles(user_id,role_id) select v_owner,id from public.roles where name='superadmin';

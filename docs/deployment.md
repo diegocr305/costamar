@@ -301,13 +301,15 @@ el health de cada uno. La web no se incluye porque no cambió.
 
 ### Parte 2 — Base de datos de cupones por vencer (Supabase)
 
+> **No uses `supabase db push` en este proyecto.** El historial de migraciones de producción tiene versiones con otras marcas de tiempo que no existen en el repo, y el CLI se niega a continuar (la "solución" sería reescribir ese historial con `migration repair`, que no se recomienda). Las migraciones nuevas se aplican con el Power de Supabase (`apply_migration`) o pegando el archivo en el SQL Editor. Ver sección 9.3.
+
 Se ejecuta **desde tu máquina** (donde el proyecto está vinculado con `supabase link`),
 no en el servidor. Guía detallada: `docs/club-cupones-recordatorios.md`.
 
 #### 2.1 Aplicar la migración (habilita la cola de WhatsApp del panel)
 
 ```bash
-npx supabase@3.0.0 db push
+# Ver sección 9.3: se aplica con el Power de Supabase o el SQL Editor (no con db push)
 ```
 
 Crea la tabla `club_coupon_reminders`, las RPCs, y el cron diario. Con esto la cola de
@@ -315,7 +317,7 @@ WhatsApp del panel de reservas ya funciona (envío manual con `wa.me`). El email
 
 #### Checklist Parte 2.1 (migración)
 
-- [ ] `npx supabase@3.0.0 db push` aplica `20261107120000_club_coupon_reminders.sql` sin errores.
+- [ ] La migración `20261107120000_club_coupon_reminders.sql` está aplicada (ver sección 9.3).
 - [ ] En Supabase SQL Editor: `select * from public.club_whatsapp_reminder_queue();` responde (aunque esté vacío).
 - [ ] En el panel admin → Reservas, el bloque "Cupones por vencer" carga sin error.
 
@@ -357,7 +359,7 @@ Pasos (detalle en `docs/club-cupones-recordatorios.md`):
 ### Orden recomendado de toda la entrega
 
 1. **Ahora:** Parte 1 (`./deploy.sh api admin club`). Reservas y tema claro quedan activos.
-2. **Antes de que el equipo use "Cupones por vencer":** Parte 2.1 (`db push`).
+2. **Antes de que el equipo use "Cupones por vencer":** Parte 2.1 (migración, ver sección 9.3).
 3. **Cuando tengas Resend:** Parte 2.2 (Edge Function + secretos).
 
 ### Rollback de esta entrega
@@ -373,4 +375,183 @@ git checkout main           # cuando se corrija
 # Para desactivar solo el cron de recordatorios sin perder nada:
 #   select cron.unschedule('costamar-coupon-reminders-std');
 #   select cron.unschedule('costamar-coupon-reminders-dst');
+```
+
+---
+
+## 9. Mercado Público cada hora, reservas por prioridad, correo diario y Resend
+
+Esta entrega agrupa cuatro cambios. Cada uno tiene su checklist. El orden recomendado es:
+9.1 (servidor) → 9.3 (migraciones) → 9.4 (Resend + funciones) → 9.5 (pruebas).
+
+### 9.1 Mercado Público: de cada 15 minutos a cada hora (servidor Lightsail)
+
+**Qué pasaba:** el worker mira su base cada 30 segundos, pero eso **no** llama a Mercado Público;
+solo pregunta si ya toca un ciclo. Las consultas reales ocurrían cada `RADAR_INTERVAL_SECONDS`
+(900 s = 15 min). Medido en producción el 11-nov: **1.779 consultas en 24 h** (≈19 por ciclo).
+
+**Recomendación:** `RADAR_INTERVAL_SECONDS=3600` (1 vez por hora) ≈ 450 consultas/día.
+Mantiene los datos frescos para oportunidades que duran días y reduce la carga un 75 %.
+Hacerlo 3 veces al día (`28800`) ahorra más, pero una Compra Ágil corta podría publicarse y
+cerrar entre revisiones. No verifiqué un límite oficial de Mercado Público; el worker ya
+pausa solo si responde 429 y ahora además respeta un tope diario propio.
+
+El valor del `.env` **del servidor** manda: el 3600 por defecto del código solo aplica si la
+variable no existe. Edita el `.env` real:
+
+```bash
+cd ~/costamar
+nano .env
+#   RADAR_INTERVAL_SECONDS=3600
+#   RADAR_DAILY_REQUEST_LIMIT=1000     # tope de consultas en 24 h (máximo técnico 9000)
+./deploy.sh api                         # recrea api + radar-worker con los valores nuevos
+docker compose -f docker-compose.piloto.yml -f docker-compose.radar.yml --env-file .env \
+  exec radar-worker printenv RADAR_INTERVAL_SECONDS RADAR_DAILY_REQUEST_LIMIT
+```
+
+Para ver el consumo real (SQL Editor de Supabase):
+
+```sql
+select count(*) as consultas_24h from public.radar_requests where created_at > now() - interval '24 hours';
+```
+
+#### Checklist 9.1
+- [ ] `.env` del servidor tiene `RADAR_INTERVAL_SECONDS=3600` y `RADAR_DAILY_REQUEST_LIMIT=1000`.
+- [ ] `./deploy.sh api` terminó sin errores y `printenv` dentro de `radar-worker` muestra 3600 y 1000.
+- [ ] Al día siguiente `consultas_24h` baja de ~1.800 a ~450 (o menos).
+- [ ] El panel del Radar sigue mostrando "última revisión" reciente (se actualiza cada hora).
+
+### 9.2 Reservas en el panel: qué cambió
+
+- **Abre en "Hoy"** (por hora). Atajos: **Hoy · Por confirmar · Todas**. El buscador (nombre, teléfono, RES-…) busca en **todas** las fechas.
+- **Orden de "Todas":** primero *Por confirmar* (la más próxima arriba), luego *Confirmadas y próximas*, luego
+  *Fecha pasada sin cerrar* y al final el *Historial*. Lo más antiguo ya no aparece primero.
+- **WhatsApp en pendientes:** "Contactar por WhatsApp" (consulta disponibilidad) y, ya confirmadas, "Confirmar por WhatsApp".
+- **Panel de gestión:** queda fijo a la derecha, y los avisos de éxito/error salen **dentro del panel**
+  (antes salían arriba de la página y parecía que "no pasaba nada").
+- **Por qué algunas reservas no se pueden modificar (es por diseño):**
+  - *Canceladas, finalizadas y "No asistió"* están cerradas: solo lectura + historial.
+  - *Pendientes con fecha pasada* no se pueden confirmar: cambia la fecha/hora a una futura o cancélala.
+  - *Confirmadas con fecha pasada* se pueden marcar "No asistió" o cancelar.
+
+#### Checklist 9.2 (después de `./deploy.sh api admin`)
+- [ ] Al entrar a Reservas se ve **Hoy**.
+- [ ] **Por confirmar** muestra primero la solicitud más próxima.
+- [ ] En una pendiente aparece **Contactar por WhatsApp**; en una confirmada, **Confirmar por WhatsApp**.
+- [ ] Gestionar una reserva y guardar con error (p. ej. confirmar sin mesa) muestra el mensaje **dentro del panel**.
+
+### 9.3 Aplicar las migraciones nuevas en Supabase (producción)
+
+Migraciones pendientes, **en este orden**:
+
+1. `supabase/migrations/20261107120000_club_coupon_reminders.sql` — cupones por vencer (tabla, RPCs, cron).
+2. `supabase/migrations/20261107140000_reservations_priority_and_digest.sql` — orden de reservas + resumen diario + cron.
+3. `supabase/migrations/20261107150000_edge_settings_from_vault.sql` — los despachos de cron leen URL y secreto de Vault.
+
+> **Estado (12-nov-2026):** las tres migraciones y las dos Edge Functions ya están aplicadas/desplegadas en producción. Falta solo cargar `RESEND_API_KEY`.
+
+Ambas son aditivas (no borran datos) y se probaron sobre una copia completa del esquema.
+**No uses `db push`** (ver aviso en la sección 8). Opciones:
+
+- **Con el asistente:** pídele que las aplique con el Power de Supabase (`apply_migration`); primero revisa `list_migrations`.
+- **A mano:** SQL Editor de Supabase → pegar el contenido de cada archivo → Run.
+
+Verificación (SQL Editor):
+
+```sql
+select to_regclass('public.club_coupon_reminders') is not null as cupones,
+       exists(select 1 from pg_proc where proname = 'reservation_daily_digest') as resumen,
+       (select string_agg(jobname, ', ') from cron.job where jobname like 'costamar-%') as crons;
+-- Esperado: cupones = true, resumen = true y crons con costamar-reservations-digest y costamar-coupon-reminders-*
+```
+
+#### Checklist 9.3
+- [ ] Migración `20261107120000` aplicada sin errores.
+- [ ] Migración `20261107140000` aplicada sin errores.
+- [ ] La consulta de verificación devuelve `true`, `true` y los cron esperados.
+- [ ] En Reservas, el bloque "Cupones por vencer" carga sin error.
+
+### 9.4 Resend y las dos Edge Functions
+
+**Dónde va la clave de Resend: en los *secrets* de Supabase, NO en el `.env` de Lightsail.** Los
+correos de cupones y del resumen diario los envían las Edge Functions desde Supabase. El
+`RESEND_API_KEY` del `.env` del servidor solo lo usa el Radar (`RADAR_EMAIL_ENABLED`); es otra función.
+Buena práctica: una clave distinta por uso (en Resend → API Keys, permiso *Sending access*).
+
+**La clave nunca va al repo ni al chat.** Usa un archivo local ignorado por git:
+
+```powershell
+copy supabase\functions\.env.example supabase\functions\.env.local
+# Abre supabase\functions\.env.local y completa:
+#   RESEND_API_KEY=re_...             (la que creaste en Resend)
+#   CRON_SECRET=<un secreto largo>    genera uno con:  [guid]::NewGuid().ToString('N') + [guid]::NewGuid().ToString('N')
+npx supabase@3.0.0 secrets set --env-file supabase/functions/.env.local --project-ref pebdhasajkvsjttclbhf
+del supabase\functions\.env.local
+```
+
+**Para probar sin dominio verificado** (`.env.example` ya viene así): remitente
+`Costa Mar <onboarding@resend.dev>` y destinatario `costamarbarracevichera@gmail.com`. Con ese
+remitente de prueba Resend **solo entrega al correo dueño de la cuenta**. Por eso:
+
+- El **resumen diario de reservas** (va a ti) funciona de inmediato.
+- Los **cupones por vencer** (van a los socios) están protegidos en modo prueba: con un remitente `@resend.dev` la función solo envía a `DIGEST_TO` y **no marca ni quema** el aviso de ningún socio; los errores 401/403/429/5xx de Resend dejan el aviso pendiente para reintentar. Para que lleguen a los socios necesitan el dominio `restaurantecostamar.cl`
+  verificado en Resend (registros SPF/DKIM en Cloudflare como *DNS only*) y luego cambiar
+  `REMINDER_FROM` a `Costa Mar <club@restaurantecostamar.cl>`.
+
+Desplegar las funciones (`verify_jwt = false` ya está fijado en `supabase/config.toml`; es necesario
+porque el cron llama con `Bearer <CRON_SECRET>`, que no es un JWT de Supabase):
+
+```powershell
+npx supabase@3.0.0 functions deploy coupon-reminders --project-ref pebdhasajkvsjttclbhf
+npx supabase@3.0.0 functions deploy reservations-digest --project-ref pebdhasajkvsjttclbhf
+```
+
+Decirle al cron a qué URL llamar. **Se guarda en Supabase Vault** (cifrado). `ALTER DATABASE ... SET app.settings.*` no funciona en Supabase alojado: el rol no tiene permiso. La migración `20261107150000_edge_settings_from_vault.sql` ya hace que las funciones lean de Vault. Una sola vez, en el SQL Editor, con **el mismo** `CRON_SECRET`:
+
+```sql
+select vault.create_secret('https://pebdhasajkvsjttclbhf.supabase.co', 'edge_base_url');
+select vault.create_secret('EL-MISMO-CRON_SECRET', 'edge_cron_secret');
+```
+
+> El resumen diario sale **todos los días a las 09:00 hora de Chile** (el cron corre a las 12:00 y 13:00 UTC y
+> solo una de las dos es las 9:00 según el horario de verano). Si ese día no hay reservas ni pendientes, no envía nada.
+
+#### Checklist 9.4
+- [ ] Cuenta de Resend creada y clave generada (permiso *Sending access*).
+- [ ] `supabase/functions/.env.local` completado, subido con `secrets set` y **borrado**.
+- [ ] `npx supabase@3.0.0 secrets list --project-ref pebdhasajkvsjttclbhf` muestra `RESEND_API_KEY`, `CRON_SECRET`, `REMINDER_FROM`, `DIGEST_TO`.
+- [ ] Ambas funciones desplegadas (`npx supabase@3.0.0 functions list --project-ref pebdhasajkvsjttclbhf`).
+- [ ] `edge_base_url` y `edge_cron_secret` creados en Vault (el secreto debe ser igual al `CRON_SECRET` de la función). Para rotarlo: `select vault.update_secret(id, 'nuevo') from vault.secrets where name = 'edge_cron_secret';` y `secrets set CRON_SECRET=...`.
+- [ ] (Más adelante) Dominio `restaurantecostamar.cl` **Verified** en Resend y `REMINDER_FROM` cambiado a `club@restaurantecostamar.cl`.
+
+### 9.5 Pruebas manuales en producción
+
+```powershell
+# Resumen diario: envía aunque no haya nada (force) a tu correo de cuenta Resend
+curl.exe -i -X POST "https://pebdhasajkvsjttclbhf.supabase.co/functions/v1/reservations-digest" `
+  -H "Authorization: Bearer TU_CRON_SECRET" -H "Content-Type: application/json" -d '{\"force\":true}'
+# Esperado: HTTP 200 {"sent":true,...} y un correo en costamarbarracevichera@gmail.com
+
+# Sin credencial debe rechazar:
+curl.exe -i -X POST "https://pebdhasajkvsjttclbhf.supabase.co/functions/v1/reservations-digest"
+# Esperado: HTTP 401
+```
+
+Errores comunes: `401` = el `Bearer` no coincide con `CRON_SECRET`; `502 resend:403` = remitente/dominio no
+permitido (usa `onboarding@resend.dev` hacia tu propio correo mientras no verifiques el dominio);
+`500 DIGEST_TO not set` = falta el secret.
+
+#### Checklist 9.5
+- [ ] `force:true` responde 200 y llega el correo con "Reservas de hoy".
+- [ ] Sin `Authorization` responde 401.
+- [ ] Al día siguiente, a las 09:00 de Chile, llega el correo automático (si hay reservas o pendientes).
+
+### Rollback de esta entrega
+```bash
+# Servidor: volver el intervalo (si lo necesitas) editando .env y ./deploy.sh api
+# Supabase: apagar los cron sin perder datos (SQL Editor)
+#   select cron.unschedule('costamar-reservations-digest');
+#   select cron.unschedule('costamar-coupon-reminders-std');
+#   select cron.unschedule('costamar-coupon-reminders-dst');
+# El orden nuevo de reservas se revierte reaplicando reservation_list de 20261012184342_reservation_arrival_occupancy.sql
 ```
