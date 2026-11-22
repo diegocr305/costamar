@@ -66,4 +66,15 @@ export class ClubAdminService {
     if (error) throw new BadRequestException('No pudimos cargar el historial de correos. Inténtalo de nuevo.');
     return data;
   }
+  /** Avisos de cumpleaños/bienvenida pendientes por WhatsApp (socios sin correo autorizado). */
+  async memberWhatsappQueue() {
+    const { data, error } = await this.supabase.client.rpc('club_member_whatsapp_queue');
+    if (error) throw new BadRequestException('No pudimos cargar los avisos por WhatsApp. Inténtalo de nuevo.');
+    return data ?? [];
+  }
+  async markMemberWhatsapp(id: string) {
+    const { data, error } = await this.supabase.client.rpc('club_mark_member_whatsapp', { p_id: id });
+    if (error) throw new BadRequestException('No pudimos registrar el aviso. Inténtalo de nuevo.');
+    return { marked: data === true };
+  }
 }

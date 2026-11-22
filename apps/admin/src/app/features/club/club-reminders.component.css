@@ -20,3 +20,15 @@ td small { display: block; color: var(--cm-muted); font-size: .75rem; margin-top
 @media (max-width: 780px) { .summary { grid-template-columns: repeat(2, minmax(0,1fr)); } }.club-tabs { margin-top: 1.25rem; } .club-tabs button { display: inline-flex; min-height: 44px; align-items: center; border: 0; cursor: pointer; padding: .65rem 1rem; border-radius: 10px; color: var(--cm-muted); background: #e7f0f4; font: inherit; font-weight: 700; font-size: .87rem; }
 .club-tabs button.active { background: #d8f1f5; color: #075f70; box-shadow: inset 0 -2px 0 #087c91; }
 .hint { color: var(--cm-muted); font-size: .88rem; margin: .9rem 0 0; }
+.wa { background: #fff; border: 1px solid var(--cm-border); border-radius: 18px; padding: 1.1rem 1.25rem; margin: 1.25rem 0 0; }
+.wa__head { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; }
+.wa__head h2 { margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: .5rem; }
+.wa__badge { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; padding: 0 .4rem; border-radius: 999px; background: #25d366; color: #fff; font-size: .8rem; }
+.wa__hint { color: var(--cm-muted); font-size: .85rem; margin: .5rem 0 .8rem; } .wa__error { color: #a12626; } .wa__empty { color: var(--cm-muted); margin: 0; }
+.wa__list { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+.wa__list li { display: flex; flex-wrap: wrap; gap: .7rem; align-items: center; justify-content: space-between; padding: .85rem; border: 1px solid var(--cm-border); border-radius: 12px; }
+.wa__item--opened { background: #f1fbf5; border-color: #9fdcb7 !important; }
+.wa__info { display: grid; gap: .2rem; min-width: 0; } .wa__info strong { font-size: .95rem; } .wa__info span { font-size: .8rem; color: var(--cm-muted); overflow-wrap: anywhere; }
+.wa__actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+@media (max-width: 560px) { .wa__actions { width: 100%; } .wa__actions > * { flex: 1; justify-content: center; text-align: center; } }
+.cm-button--whatsapp { background: #25d366; border-color: #25d366; color: #0b3021; } .cm-button--whatsapp:hover { background: #38df76; border-color: #38df76; }

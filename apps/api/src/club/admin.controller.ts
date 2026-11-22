@@ -32,5 +32,7 @@ export class ClubAdminController {
   @Get('campaigns/:id/coupons') coupons(@Param('id', ParseUUIDPipe) id: string, @Query() filters: CampaignCouponsQueryDto) { return this.admin.coupons(id, filters); }
   @Get('reminders') reminders(@Query() filters: ReminderHistoryDto) { return this.admin.reminderHistory(filters); }
   @Get('member-emails') memberEmails(@Query() filters: MemberEmailHistoryDto) { return this.admin.memberEmailHistory(filters); }
+  @Get('member-whatsapp') memberWhatsapp() { return this.admin.memberWhatsappQueue(); }
+  @Post('member-whatsapp/:id/sent') markMemberWhatsapp(@Param('id', ParseUUIDPipe) id: string) { return this.admin.markMemberWhatsapp(id); }
   @Get('redemptions') history(@Query() filters: RedemptionHistoryDto) { return this.staff.redemptionHistory(filters); }
 }

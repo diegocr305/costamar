@@ -8,6 +8,25 @@
     @if (source() === 'expiry') { Se avisa 7 días antes de que venza un cupón, por correo (automático) y WhatsApp (cola del equipo). }
     @else { Cumpleaños: el día 1 de cada mes a las 10:05 (y al día siguiente para quienes se inscriben a mitad de mes). Bienvenida: unos 15 minutos después de recibir el regalo de fundador. }
   </p>
+  @if (source() === 'emails') {
+    <section class="wa">
+      <div class="wa__head"><h2>Por enviar por WhatsApp <span class="wa__badge">{{ whatsapp().length }}</span></h2><button type="button" class="cm-button" (click)="loadWhatsapp()">Actualizar ↻</button></div>
+      <p class="wa__hint">Socios que no autorizaron correo pero sí WhatsApp. Desde el celular con el número de Costa Mar: toca <strong>Enviar por WhatsApp</strong>, envía el mensaje y vuelve para tocar <strong>Marcar enviado</strong>.</p>
+      @if (whatsappError()) { <p class="wa__error" role="alert">{{ whatsappError() }}</p> }
+      @if (whatsapp().length === 0 && !whatsappError()) { <p class="wa__empty">No hay avisos pendientes por WhatsApp.</p> }
+      <ul class="wa__list">
+        @for (w of whatsapp(); track w.id) {
+          <li [class.wa__item--opened]="opened()[w.id]">
+            <div class="wa__info"><strong>{{ w.memberName }}</strong><span>{{ w.kind === 'birthday' ? 'Cumpleaños' : 'Bienvenida' }} · {{ w.benefit || w.campaignName }}</span><span>{{ w.phone }} · vence {{ day(w.expiresAt) }}</span></div>
+            <div class="wa__actions">
+              <a class="cm-button cm-button--whatsapp" [href]="whatsappLink(w)" target="_blank" rel="noopener" (click)="markOpened(w)">Enviar por WhatsApp</a>
+              <button type="button" class="cm-button" [class.cm-button--primary]="opened()[w.id]" (click)="markWhatsappSent(w)">Marcar enviado</button>
+            </div>
+          </li>
+        }
+      </ul>
+    </section>
+  }
   <div class="summary">
     <div><strong>{{ result().summary.sent }}</strong><span>Enviados</span></div>
     <div><strong>{{ result().summary.pending }}</strong><span>Pendientes</span></div>
