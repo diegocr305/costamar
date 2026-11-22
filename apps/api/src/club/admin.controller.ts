@@ -8,6 +8,7 @@ import { RedemptionHistoryDto } from './dto/redemption-history.dto';
 import { ClubStaffService } from './staff.service';
 import { SupabaseService } from '../supabase/supabase.service';
 import { SegmentDto } from './dto/segment.dto';
+import { MemberEmailHistoryDto, ReminderHistoryDto } from './dto/reminder-history.dto';
 import { BadRequestException } from '@nestjs/common';
 
 @Controller('club/admin')
@@ -29,5 +30,7 @@ export class ClubAdminController {
   @Get('campaigns/:id/products') products(@Param('id', ParseUUIDPipe) id: string) { return this.admin.products(id); }
   @Put('campaigns/:id/products') setProducts(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: CampaignProductsDto) { return this.admin.saveCampaign(user.userId, id, dto); }
   @Get('campaigns/:id/coupons') coupons(@Param('id', ParseUUIDPipe) id: string, @Query() filters: CampaignCouponsQueryDto) { return this.admin.coupons(id, filters); }
+  @Get('reminders') reminders(@Query() filters: ReminderHistoryDto) { return this.admin.reminderHistory(filters); }
+  @Get('member-emails') memberEmails(@Query() filters: MemberEmailHistoryDto) { return this.admin.memberEmailHistory(filters); }
   @Get('redemptions') history(@Query() filters: RedemptionHistoryDto) { return this.staff.redemptionHistory(filters); }
 }

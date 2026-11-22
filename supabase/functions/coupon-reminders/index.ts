@@ -94,6 +94,8 @@ function emailHtml(row: PendingEmail): string {
 const TEST_SENDER = REMINDER_FROM.toLowerCase().includes('@resend.dev');
 const TEST_RECIPIENTS = (Deno.env.get('DIGEST_TO') ?? '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 /** Errores de configuración o transitorios: el aviso queda 'pending' y se reintenta en la próxima corrida. */
 const isRetryable = (status: number) => status === 401 || status === 403 || status === 429 || status >= 500;
 
@@ -179,6 +181,7 @@ Deno.serve(async (req) => {
     const result = await sendEmail(row);
     if (!result.ok && result.retryable) {
       held++;
+      await sleep(1500);
       continue;
     }
     await admin.rpc('club_mark_email_reminder', {
@@ -188,6 +191,7 @@ Deno.serve(async (req) => {
     });
     if (result.ok) sent++;
     else failed++;
+    await sleep(600); // Resend: máximo 2 solicitudes por segundo.
   }
 
   return new Response(JSON.stringify({ processed: rows.length, sent, failed, skipped, held, testMode: TEST_SENDER }), {

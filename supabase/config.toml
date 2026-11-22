@@ -425,3 +425,6 @@ verify_jwt = false
 
 [functions.reservation-alert]
 verify_jwt = false
+
+[functions.club-emails]
+verify_jwt = false

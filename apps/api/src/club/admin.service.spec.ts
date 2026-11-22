@@ -58,3 +58,23 @@ describe('horarios chilenos de campañas', () => {
     expect(chileLocalToIso('2026-09-06T00:30')).toBeNull();
   });
 });
+
+describe('historial de recordatorios', () => {
+  it('pasa los filtros a la RPC de solo lectura y oculta errores de BD', async () => {
+    const rpc = jest.fn().mockResolvedValueOnce({ data: { items: [], total: 0 }, error: null }).mockResolvedValueOnce({ data: null, error: { message: 'raw' } });
+    const service = new ClubAdminService({ client: { rpc } } as unknown as SupabaseService);
+    await service.reminderHistory({ channel: 'email', status: 'failed', q: ' ana ', page: 2, pageSize: 20 });
+    expect(rpc).toHaveBeenCalledWith('club_admin_reminder_history', { p_channel: 'email', p_status: 'failed', p_query: 'ana', p_page: 2, p_page_size: 20 });
+    await expect(service.reminderHistory({ page: 1, pageSize: 20 })).rejects.toBeInstanceOf(BadRequestException);
+  });
+});
+
+describe('historial de correos de cumpleaños y bienvenida', () => {
+  it('pasa los filtros a la RPC y oculta errores de BD', async () => {
+    const rpc = jest.fn().mockResolvedValueOnce({ data: { items: [], total: 0 }, error: null }).mockResolvedValueOnce({ data: null, error: { message: 'raw' } });
+    const service = new ClubAdminService({ client: { rpc } } as unknown as SupabaseService);
+    await service.memberEmailHistory({ kind: 'welcome', status: 'sent', q: '  cm-  ', page: 1, pageSize: 20 });
+    expect(rpc).toHaveBeenCalledWith('club_admin_member_email_history', { p_kind: 'welcome', p_status: 'sent', p_query: 'cm-', p_page: 1, p_page_size: 20 });
+    await expect(service.memberEmailHistory({ page: 1, pageSize: 20 })).rejects.toBeInstanceOf(BadRequestException);
+  });
+});

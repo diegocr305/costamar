@@ -60,6 +60,7 @@ export const routes: Routes = [
         canActivate: [roleGuard(['superadmin', 'admin', 'manager'])],
         loadComponent: () => import('./features/club/club-campaigns.component').then(m => m.ClubCampaignsComponent),
       },
+      {path:'club/recordatorios',canActivate:[roleGuard(['superadmin','admin','manager'])],loadComponent:()=>import('./features/club/club-reminders.component').then(m=>m.ClubRemindersComponent)},
       {path:'club/socios',canActivate:[roleGuard(['superadmin','admin'])],loadComponent:()=>import('./features/club/club-members.component').then(m=>m.ClubMembersComponent)},
       {
         path: 'club/historial',

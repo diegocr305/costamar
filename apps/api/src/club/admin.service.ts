@@ -2,6 +2,7 @@ import { BadRequestException, ConflictException, ForbiddenException, Injectable,
 import { SupabaseService } from '../supabase/supabase.service';
 import type { CampaignAdmin, ClubOverview } from '@costamar/shared';
 import type { CampaignCouponsQueryDto, CreateCampaignDto, UpdateCampaignDto } from './dto/campaign.dto';
+import type { MemberEmailHistoryDto, ReminderHistoryDto } from './dto/reminder-history.dto';
 
 @Injectable()
 export class ClubAdminService {
@@ -47,6 +48,22 @@ export class ClubAdminService {
       p_campaign_id: id, p_status: filters.status ?? null, p_query: filters.q?.trim() || null, p_page: filters.page, p_page_size: filters.pageSize,
     });
     if (error) this.fail(error);
+    return data;
+  }
+  async reminderHistory(filters: ReminderHistoryDto) {
+    const { data, error } = await this.supabase.client.rpc('club_admin_reminder_history', {
+      p_channel: filters.channel ?? null, p_status: filters.status ?? null, p_query: filters.q?.trim() || null,
+      p_page: filters.page, p_page_size: filters.pageSize,
+    });
+    if (error) throw new BadRequestException('No pudimos cargar el historial de recordatorios. Inténtalo de nuevo.');
+    return data;
+  }
+  async memberEmailHistory(filters: MemberEmailHistoryDto) {
+    const { data, error } = await this.supabase.client.rpc('club_admin_member_email_history', {
+      p_kind: filters.kind ?? null, p_status: filters.status ?? null, p_query: filters.q?.trim() || null,
+      p_page: filters.page, p_page_size: filters.pageSize,
+    });
+    if (error) throw new BadRequestException('No pudimos cargar el historial de correos. Inténtalo de nuevo.');
     return data;
   }
 }

@@ -17,6 +17,7 @@ export const NAV_SECTIONS: NavSection[] = [
   {label:'Reservas',path:'/reservas',roles:['superadmin','admin','manager','cashier']},
   { label: 'Socios y preferencias', path: '/club/socios', roles: ['superadmin','admin'] },
   { label: 'Campañas y beneficios', path: '/club/campanas', roles: ['superadmin', 'admin', 'manager'] },
+  { label: 'Correos y recordatorios', path: '/club/recordatorios', roles: ['superadmin', 'admin', 'manager'] },
   {
     label: 'Inicio',
     path: '/dashboard',
@@ -55,6 +56,6 @@ export const NAV_SECTIONS: NavSection[] = [
 ];
 
 export function sectionsForRole(role: UserRole): NavSection[] {
-  const order = ['/dashboard', '/reservas', '/radar', '/club/validar', '/club/historial', '/club/campanas', '/club/socios', '/carta', '/pedidos', '/inventario', '/usuarios'];
+  const order = ['/dashboard', '/reservas', '/radar', '/club/validar', '/club/historial', '/club/campanas', '/club/recordatorios', '/club/socios', '/carta', '/pedidos', '/inventario', '/usuarios'];
   return NAV_SECTIONS.filter((s) => s.roles.includes(role)).sort((a, b) => order.indexOf(a.path) - order.indexOf(b.path));
 }

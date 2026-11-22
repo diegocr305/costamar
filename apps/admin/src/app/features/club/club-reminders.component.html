@@ -1,0 +1,62 @@
+<section class="reminders">
+  <header class="page-head"><div><span class="eyebrow">Club Costa Mar · Avisos a socios</span><h1>Correos y recordatorios</h1><p>Historial de los avisos automáticos a socios. Cada cupón recibe un solo aviso por tipo y canal.</p></div></header>
+  <nav class="club-tabs" aria-label="Tipo de aviso">
+    <button type="button" [class.active]="source() === 'expiry'" [attr.aria-current]="source() === 'expiry' ? 'page' : null" (click)="switchSource('expiry')">Cupones por vencer</button>
+    <button type="button" [class.active]="source() === 'emails'" [attr.aria-current]="source() === 'emails' ? 'page' : null" (click)="switchSource('emails')">Cumpleaños y bienvenida</button>
+  </nav>
+  <p class="hint">
+    @if (source() === 'expiry') { Se avisa 7 días antes de que venza un cupón, por correo (automático) y WhatsApp (cola del equipo). }
+    @else { Cumpleaños: el día 1 de cada mes a las 10:05 (y al día siguiente para quienes se inscriben a mitad de mes). Bienvenida: unos 15 minutos después de recibir el regalo de fundador. }
+  </p>
+  <div class="summary">
+    <div><strong>{{ result().summary.sent }}</strong><span>Enviados</span></div>
+    <div><strong>{{ result().summary.pending }}</strong><span>Pendientes</span></div>
+    <div><strong>{{ result().summary.failed }}</strong><span>Fallidos</span></div>
+    <div><strong>{{ result().summary.skipped }}</strong><span>Omitidos</span></div>
+  </div>
+  <form class="filters" (ngSubmit)="load()">
+    @if (source() === 'expiry') {
+      <label>Canal<select name="channel" [(ngModel)]="channel"><option value="">Todos</option><option value="email">Correo</option><option value="whatsapp">WhatsApp</option></select></label>
+    } @else {
+      <label>Tipo<select name="kind" [(ngModel)]="kind"><option value="">Todos</option><option value="birthday">Cumpleaños</option><option value="welcome">Bienvenida</option></select></label>
+    }
+    <label>Estado<select name="status" [(ngModel)]="status"><option value="">Todos</option><option value="sent">Enviado</option><option value="pending">Pendiente</option><option value="failed">Fallido</option><option value="skipped">Omitido</option></select></label>
+    <label class="search">Buscar socio, correo, teléfono, código o campaña<input type="search" name="query" [(ngModel)]="query" maxlength="100" /></label>
+    <button class="cm-button cm-button--primary" type="submit" [disabled]="loading()">Buscar</button>
+    <button class="cm-button" type="button" (click)="load(result().page)" [disabled]="loading()">Actualizar ↻</button>
+  </form>
+  @if (loading()) { <p class="state" role="status">Cargando historial…</p> }
+  @else if (error()) { <div class="state" role="alert"><p>No pudimos cargar el historial.</p><button class="cm-button" (click)="load()">Reintentar</button></div> }
+  @else {
+    <div class="results-summary"><strong>{{ result().total }} {{ result().total === 1 ? 'aviso' : 'avisos' }}</strong><span>Hora de Chile · más recientes primero</span></div>
+    @if (result().items.length === 0) {
+      <div class="empty"><h2>Aún no hay avisos</h2>
+        @if (source() === 'expiry') { <p>Aparecerán cuando un cupón entre en su ventana de 7 días antes de vencer.</p> }
+        @else { <p>Aparecerán cuando un socio reciba su cupón de cumpleaños o de bienvenida.</p> }
+      </div>
+    }
+    <div class="table-wrap">
+      @if (result().items.length > 0) {
+        <table>
+          <thead><tr><th>Fecha</th><th>Socio</th><th>{{ source() === 'expiry' ? 'Canal' : 'Tipo' }}</th><th>Contacto</th><th>Cupón</th><th>Vence</th><th>Estado</th></tr></thead>
+          <tbody>
+            @for (r of result().items; track r.id) {
+              <tr>
+                <td>{{ timestamp(r.sentAt ?? r.createdAt) }}</td>
+                <td>{{ r.memberName }}<small>{{ r.campaignName }}</small></td>
+                <td>{{ typeLabel(r) }}</td>
+                <td class="wrap">{{ r.contact || '—' }}</td>
+                <td class="code">{{ r.couponCode }}</td>
+                <td>{{ day(r.expiresAt) }}</td>
+                <td><span class="badge badge--{{ r.status }}">{{ label(r.status) }}</span>@if (r.detail && r.status !== 'sent') { <small class="wrap">{{ r.detail }}</small> }</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+    @if (result().total > result().pageSize) {
+      <nav class="pagination" aria-label="Páginas del historial"><button class="cm-button" [disabled]="result().page === 1" (click)="load(result().page - 1)">← Anterior</button><span>Página {{ result().page }}</span><button class="cm-button" [disabled]="result().page * result().pageSize >= result().total" (click)="load(result().page + 1)">Siguiente →</button></nav>
+    }
+  }
+</section>
